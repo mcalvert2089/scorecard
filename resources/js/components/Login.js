@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import store from '../store/index'
+import { isAuthenticated } from "../actions/index"
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './Header'
 
@@ -33,7 +35,7 @@ class Login extends Component {
 	    .then((result) => {
 	      if(result.status === 200) {
 	      	if( typeof result.data.access_token !== 'undefined' ) {
-		      	// store.dispatch( isAuthenticated(true) )
+		      	store.dispatch( isAuthenticated(true) )
 	      	}
 	      }
 	    })

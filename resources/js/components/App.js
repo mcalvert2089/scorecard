@@ -1,34 +1,38 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import store from '../store/index'
 import Header from './Header'
+import Router from './Router'
 import Home from './Home'
 import Login from './Login'
 import Register from './Register'
 import ActivateAccount from './ActivateAccount'
 import NotFound from './NotFound'
+import {connect} from "react-redux"
+import { isAuthenticated } from '../actions/index'
 
 class App extends Component {
   render () {
+    let message
+
+    if (this.props.is_authenticated) {
+      message = 'loggedIn'
+    } else {
+      message = 'loggedOut'
+    }
+
     return (
-      <BrowserRouter>
-        <div id="content">
-	        <div>
-	          <Header />
-	        </div>
-			<Switch>
-				<Route exact path='/' component={Home}/>
-
-      			<Route path='/activate/:key' component={ActivateAccount}/>
-      			
-      			<Route exact path="/login" component={Login} />
-				<Route exact path="/register" component={Register} />
-
-				// 404
-      			<Route path="*" component={NotFound} />
-			</Switch>
-		</div>
-      </BrowserRouter>
+      <Provider store={store}>
+          <div id="content">
+  	        <div>
+  	          <Header />
+  	        </div>
+            <Router />
+      		</div>
+        </Provider>
     )
   }
 }

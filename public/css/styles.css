@@ -1,3 +1,19 @@
+a {
+	color:#ff0;
+	text-decoration: none;
+}
+
+a:hover {
+	color:#fff;
+	text-decoration: underline;
+}
+
 #login-box {
 	width: 300px;
+}
+
+#banner {
+	background:#222 url('img/baseball-player.jpg') 45% 56% no-repeat;
+	background-size: 1150px;
+	height:300px;
 }
