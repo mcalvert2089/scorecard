@@ -22,7 +22,6 @@ const mapDispatchToProps = dispatch => ({
   isAuthenticated: dispatch(isAuthenticated())
 })
 
-
 class Main extends Component {
   render () {
     let message
@@ -34,30 +33,32 @@ class Main extends Component {
     }
 
     return (
-          <HashRouter>
-            <Switch>
-              // public routes
-              <Route exact path='/' component={Home}/>
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <Route path='/activate/:key' component={ActivateAccount}/>
-              
-              if (! this.props.is_authenticated) {
-                 <Redirect to={ '/login' } />
-              }
-              
-              // protected routes
-              // Teams
-              <Route path='/teams' component={Teams}/>
+          <div>
+            AUTH: { message } 
+            <HashRouter>
+              <Switch>
+                // public routes
+                <Route exact path='/' component={Home}/>
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
+                <Route path='/activate/:key' component={ActivateAccount}/>
+                
+                if (! this.props.is_authenticated) {
+                   <Redirect to={ '/login' } />
+                }
+                
+                // protected routes
+                // Teams
+                <Route path='/teams' component={Teams}/>
 
-              // 404
-              <Route path="*" component={NotFound} />
-            </Switch>
-          </HashRouter>
+                // 404
+                <Route path="*" component={NotFound} />
+              </Switch>
+            </HashRouter>
+          </div>
     )
   }
 }
 
-export default Main
-// export default connect(mapStateToProps, mapDispatchToProps)(Main)
+export default connect(mapStateToProps, mapDispatchToProps)(Main)
 
