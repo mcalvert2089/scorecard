@@ -66722,14 +66722,21 @@ function (_Component) {
       }, "Home"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/teams",
         className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-      }, "Teams"))), !loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Teams"))), !loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "text-sm lg:flex-grow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/login",
         className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-      }, "Login"))), loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Login"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "text-sm lg:flex-grow"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: "/register",
+        className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
+      }, "Register")))), loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "text-sm lg:flex-grow"
@@ -66988,7 +66995,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      return null;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Logging out"));
     }
   }]);
 
@@ -67023,8 +67030,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Register__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Register */ "./resources/js/components/Register.js");
 /* harmony import */ var _ActivateAccount__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ActivateAccount */ "./resources/js/components/ActivateAccount.js");
 /* harmony import */ var _pages_Teams__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./pages/Teams */ "./resources/js/components/pages/Teams.js");
-/* harmony import */ var _NotFound__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./NotFound */ "./resources/js/components/NotFound.js");
-/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../actions/index */ "./resources/js/actions/index.js");
+/* harmony import */ var _pages_TeamsAdd__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./pages/TeamsAdd */ "./resources/js/components/pages/TeamsAdd.js");
+/* harmony import */ var _NotFound__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./NotFound */ "./resources/js/components/NotFound.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../actions/index */ "./resources/js/actions/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -67059,6 +67067,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+
 window.store = _store_index__WEBPACK_IMPORTED_MODULE_5__["default"];
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -67069,7 +67078,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    isAuthenticated: dispatch(Object(_actions_index__WEBPACK_IMPORTED_MODULE_13__["isAuthenticated"])())
+    isAuthenticated: dispatch(Object(_actions_index__WEBPACK_IMPORTED_MODULE_14__["isAuthenticated"])())
   };
 };
 
@@ -67115,11 +67124,16 @@ function (_Component) {
         path: "/logout",
         component: _Logout__WEBPACK_IMPORTED_MODULE_8__["default"]
       }), "// Teams", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
+        exact: true,
         path: "/teams",
         component: _pages_Teams__WEBPACK_IMPORTED_MODULE_11__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
+        exact: true,
+        path: "/teams/add",
+        component: _pages_TeamsAdd__WEBPACK_IMPORTED_MODULE_12__["default"]
       }), "// 404", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
         path: "*",
-        component: _NotFound__WEBPACK_IMPORTED_MODULE_12__["default"]
+        component: _NotFound__WEBPACK_IMPORTED_MODULE_13__["default"]
       }))));
     }
   }]);
@@ -67351,6 +67365,185 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/TeamsAdd.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/pages/TeamsAdd.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TeamsAdd; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+
+
+
+
+
+var TeamsAdd =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(TeamsAdd, _React$Component);
+
+  function TeamsAdd(props) {
+    var _this;
+
+    _classCallCheck(this, TeamsAdd);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TeamsAdd).call(this, props));
+    _this.state = {
+      name: '',
+      manager: '',
+      city: '',
+      state: '',
+      isHidden: true
+    };
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(TeamsAdd, [{
+    key: "handleChange",
+    value: function handleChange(e) {
+      this.setState(_defineProperty({}, e.target.name, e.target.value));
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(event) {
+      var _this2 = this;
+
+      event.preventDefault();
+      this.isHidden = true;
+      var _this$state = this.state,
+          name = _this$state.name,
+          manager = _this$state.manager,
+          city = _this$state.city,
+          state = _this$state.state; // TODO: don't hard code user_id, get it from state
+
+      var user_id = '1';
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/api/teams', {
+        name: name,
+        manager: manager,
+        city: city,
+        state: state,
+        user_id: user_id
+      }, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem('access_token')
+        }
+      }).then(function (result) {
+        if (result.status === 200) {
+          _this2.toggleHidden();
+        }
+      });
+      this.isHidden = false;
+    }
+  }, {
+    key: "toggleHidden",
+    value: function toggleHidden() {
+      this.setState({
+        isHidden: !this.state.isHidden
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, !this.state.isHidden && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AddedAlert, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "w-full max-w-md",
+        onSubmit: this.handleSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex flex-wrap -mx-3 mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "w-full px-3 mb-6 md:mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+      }, "Team Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white",
+        type: "text",
+        name: "name",
+        onChange: this.handleChange,
+        required: true
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "w-full px-3 mb-6 md:mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+      }, "Manager"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white",
+        type: "text",
+        name: "manager",
+        onChange: this.handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "w-full px-3 mb-6 md:mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+      }, "City"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white",
+        type: "text",
+        name: "city",
+        onChange: this.handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "w-full px-3 mb-6 md:mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+      }, "State"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white",
+        type: "text",
+        name: "state",
+        onChange: this.handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "w-full px-3 mb-6 md:mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "border-2 border-green text-green hover:border-grey hover:text-grey cursor-pointer rounded",
+        type: "submit",
+        name: "submit",
+        value: "Add"
+      })))));
+    }
+  }]);
+
+  return TeamsAdd;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+
+
+var AddedAlert = function AddedAlert() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "flex mb-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "flex-initial border-2 border-green bg-yellow-lighter text-green-dark py-2 px-4 font-semibold rounded"
+  }, "A new team has been added"));
+};
 
 /***/ }),
 

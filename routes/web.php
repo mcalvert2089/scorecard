@@ -13,6 +13,8 @@
 // Auth::routes(['verify' => true]);
 
 Route::post('/account-activate', 'Auth\RegisterController@activateAccount');
+Route::get('/activate/{key}', 'UserActivationController@activate')->name('activate.user');
+
 Route::view('/{path?}', 'app')
 	->where('path', '.*')
 	->name('react');

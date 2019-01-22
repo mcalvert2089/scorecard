@@ -10,6 +10,7 @@ import Logout from './Logout'
 import Register from './Register'
 import ActivateAccount from './ActivateAccount'
 import Teams from './pages/Teams'
+import TeamsAdd from './pages/TeamsAdd'
 import NotFound from './NotFound'
 import { isAuthenticated } from '../actions/index'
 
@@ -49,7 +50,8 @@ class Main extends Component {
                 // protected routes
                 <Route path='/logout' component={Logout}/>
                 // Teams
-                <Route path='/teams' component={Teams}/>
+                <Route exact path='/teams' component={Teams}/>
+                <Route exact path='/teams/add' component={TeamsAdd}/>
 
                 // 404
                 <Route path="*" component={NotFound} />

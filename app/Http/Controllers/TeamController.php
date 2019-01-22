@@ -15,7 +15,7 @@ class TeamController extends Controller
 		return $this->team->all();
 	}
 
-    public function create(Request $request) {
+    public function store(Request $request) {
     	$this->team->create($request->only($this->team->getModel()->fillable));
     }
 

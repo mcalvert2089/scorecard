@@ -9,5 +9,5 @@ class Team extends Model
 {
 	use Uuids, SoftDeletes;
     public $incrementing = false;
-    protected $fillable = ['name', 'manager', 'city', 'state'];
+    protected $fillable = [ 'name', 'manager', 'city', 'state', 'user_id' ];
 }

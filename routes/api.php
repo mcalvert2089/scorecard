@@ -17,20 +17,20 @@ use Illuminate\Http\Request;
 Route::post('user-check-active', 'UserController@isActivated');
 
 Route::group([ 'prefix' => 'auth' ], function () {
-    // AUTH
     Route::post('login', 'AuthController@login');
-    Route::post('signup', 'AuthController@signup');
+    // Route::post('signup', 'AuthController@signup');
   
     Route::group([ 'middleware' => 'auth:api' ], function() {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
-
-    // TEAMS
-    Route::get('teams', 'TeamController@index');
-    Route::post('teams', 'TeamController@create');
-    Route::patch('teams/{id}', 'TeamController@update');
-
-
 });
+
+
+Route::group([ 'middleware' => 'auth:api' ], function() {
+    // TEAMS
+    Route::resource('teams', 'TeamController');
+});
+
+
 

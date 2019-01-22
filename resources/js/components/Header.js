@@ -31,9 +31,16 @@ class Header extends Component {
 						</div>
 
 						{ ! loggedIn && (
-							<div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-								<div className="text-sm lg:flex-grow">
-								  <Link to="/login" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Login</Link>
+							<div>
+								<div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+									<div className="text-sm lg:flex-grow">
+									  <Link to="/login" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Login</Link>
+									</div>
+								</div>
+								<div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+									<div className="text-sm lg:flex-grow">
+									  <Link to="/register" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Register</Link>
+									</div>
 								</div>
 							</div>
 						)}

@@ -19,6 +19,7 @@ class CreateTeamsTable extends Migration
             $table->string('manager')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
+            $table->uuid('user_id');
             $table->timestamps();
             $table->softDeletes();
         });
