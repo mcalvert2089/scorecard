@@ -60,6 +60,5 @@ class Main extends Component {
   }
 }
 
-export default Main
-// export default connect(mapStateToProps, mapDispatchToProps)(Main)
+export default connect(mapStateToProps, mapDispatchToProps)(Main)
 

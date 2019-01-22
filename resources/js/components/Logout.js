@@ -11,6 +11,7 @@ class Logout extends React.Component {
 		      if(result.data.message) {
 		    		localStorage.removeItem('access_token')
         			localStorage.removeItem('loggedIn')
+        			window.location.reload()
 		    	}
 		    })
     }

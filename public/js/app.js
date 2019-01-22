@@ -66854,8 +66854,6 @@ function (_Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      var _this2 = this;
-
       event.preventDefault();
       var _this$state = this.state,
           email = _this$state.email,
@@ -66869,8 +66867,7 @@ function (_Component) {
             // store.dispatch( isAuthenticated(true) )
             localStorage.setItem('loggedIn', true);
             localStorage.setItem('access_token', result.data.access_token);
-
-            _this2.props.history.push('/');
+            window.location.reload();
           }
         }
       });
@@ -66984,6 +66981,7 @@ function (_React$Component) {
         if (result.data.message) {
           localStorage.removeItem('access_token');
           localStorage.removeItem('loggedIn');
+          window.location.reload();
         }
       });
     }
@@ -67129,7 +67127,7 @@ function (_Component) {
   return Main;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Main); // export default connect(mapStateToProps, mapDispatchToProps)(Main)
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Main));
 
 /***/ }),
 
