@@ -11,7 +11,7 @@ class Logout extends React.Component {
 		      if(result.data.message) {
 		    		localStorage.removeItem('access_token')
         			localStorage.removeItem('loggedIn')
-        			window.location.reload()
+        			window.location.replace('/#/login')
 		    	}
 		    })
     }
@@ -19,7 +19,12 @@ class Logout extends React.Component {
     render () {
         return (
             <div>
-                <h2>Logging out</h2>
+                <div className="flex justify-center">
+                    <h2>Logging out</h2>
+                </div>
+                <div className="flex justify-center">
+                    <i className="fas fa-sync fa-spin"></i>
+                </div>
             </div>
         )
     }

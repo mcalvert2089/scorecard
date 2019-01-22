@@ -12,8 +12,11 @@ export default class Teams extends React.Component {
 		return (
 		  <div>
 		    <h2>Teams</h2>
-		    <i className="fas fa-plus" style={addStyle}></i>
-		    <Link to='/teams/add' className="text-blue">Add Team</Link>
+		    
+		    <Link to='/teams/add' className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded">
+		    	<i className="fas fa-plus" style={addStyle}></i>
+		    	Add Team
+		    </Link>
 		  </div>
 		) 
 	}

@@ -35,7 +35,7 @@ class Main extends Component {
     let loggedIn = localStorage.getItem('loggedIn')
 
     return (
-          <div>
+          <div className="container mx-auto">
             <HashRouter>
               <Switch>
                 // public routes
@@ -49,6 +49,7 @@ class Main extends Component {
 
                 // protected routes
                 <Route path='/logout' component={Logout}/>
+                
                 // Teams
                 <Route exact path='/teams' component={Teams}/>
                 <Route exact path='/teams/add' component={TeamsAdd}/>

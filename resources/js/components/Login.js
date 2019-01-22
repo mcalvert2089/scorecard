@@ -62,8 +62,8 @@ class Login extends Component {
 				      <input className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" placeholder="******************" onChange={this.handleChange} />
 				    </div>
 				    <div className="flex items-center justify-between">
-				    <input type="submit" className="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Sign In" />
-				      <a className="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker" href="#">
+				    <input type="submit" className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded" value="Sign In" />
+				      <a className="inline-block align-baseline font-bold text-sm text-green-darker hover:text-green" href="#">
 				        Forgot Password?
 				      </a>
 				    </div>

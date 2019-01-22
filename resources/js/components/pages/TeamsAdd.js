@@ -67,7 +67,7 @@ render() {
               <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="state" onChange={this.handleChange} />
             </div>
             <div className="w-full px-3 mb-6 md:mb-0">
-              <input className="border-2 border-green text-green hover:border-grey hover:text-grey cursor-pointer rounded" type="submit" name="submit" value="Add"/>
+              <input className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded" type="submit" name="submit" value="Add"/>
             </div>
           </div>
         </form>

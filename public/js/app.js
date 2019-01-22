@@ -66694,8 +66694,12 @@ function (_Component) {
     key: "render",
     value: function render() {
       var loggedIn = localStorage.getItem('loggedIn');
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
-        className: "flex items-center justify-between flex-wrap bg-green-darker p-6"
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
+        className: "bg-green-darker"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container mx-auto"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
+        className: "flex items-center justify-between flex-wrap p-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex items-center flex-no-shrink text-white mr-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -66706,7 +66710,7 @@ function (_Component) {
       }, "Scorecard")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "block lg:hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "flex items-center px-3 py-2 border rounded border-teal-light hover:text-white hover:border-white"
+        className: "flex items-center px-3 py-2 border rounded hover:text-white hover:border-white"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
         className: "fill-current h-3 w-3",
         viewBox: "0 0 20 20",
@@ -66723,28 +66727,19 @@ function (_Component) {
       }, "Home"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/teams",
         className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-      }, "Teams"))), !loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-sm lg:flex-grow"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+      }, "Teams"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: "/players",
+        className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
+      }, "Players")), !loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/login",
-        className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-      }, "Login"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-sm lg:flex-grow"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        className: "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 mr-2 lg:mt-0"
+      }, "Login"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/register",
-        className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-      }, "Register")))), loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-sm lg:flex-grow"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        className: "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0"
+      }, "Register")), loggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/logout",
-        className: "block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4"
-      }, "Logout")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0"
+      }, "Logout")))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "banner",
         className: "mb-8"
       })));
@@ -66920,10 +66915,10 @@ function (_Component) {
         className: "flex items-center justify-between"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
-        className: "bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+        className: "bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded",
         value: "Sign In"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker",
+        className: "inline-block align-baseline font-bold text-sm text-green-darker hover:text-green",
         href: "#"
       }, "Forgot Password?")))));
     }
@@ -66989,14 +66984,20 @@ function (_React$Component) {
         if (result.data.message) {
           localStorage.removeItem('access_token');
           localStorage.removeItem('loggedIn');
-          window.location.reload();
+          window.location.replace('/#/login');
         }
       });
     }
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Logging out"));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex justify-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Logging out")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex justify-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-sync fa-spin"
+      })));
     }
   }]);
 
@@ -67106,7 +67107,9 @@ function (_Component) {
     key: "render",
     value: function render() {
       var loggedIn = localStorage.getItem('loggedIn');
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Switch"], null, "// public routes", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container mx-auto"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Switch"], null, "// public routes", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
         exact: true,
         path: "/",
         component: _Home__WEBPACK_IMPORTED_MODULE_6__["default"]
@@ -67261,7 +67264,7 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.showForm && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "w-full max-w-md",
+        className: "w-full max-w-md container mx-auto",
         onSubmit: this.handleSubmit
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex flex-wrap -mx-3 mb-6"
@@ -67278,7 +67281,7 @@ function (_React$Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full px-3 mb-6 md:mb-0"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        className: "border-2 border-green text-green hover:border-grey hover:text-grey cursor-pointer rounded",
+        className: "bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded",
         type: "submit",
         name: "submit",
         value: "Register"
@@ -67352,13 +67355,13 @@ function (_React$Component) {
   _createClass(Teams, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Teams"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Teams"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/teams/add",
+        className: "bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-plus",
         style: addStyle
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-        to: "/teams/add",
-        className: "text-blue"
-      }, "Add Team"));
+      }), "Add Team"));
     }
   }]);
 
@@ -67521,7 +67524,7 @@ function (_React$Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full px-3 mb-6 md:mb-0"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        className: "border-2 border-green text-green hover:border-grey hover:text-grey cursor-pointer rounded",
+        className: "bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded",
         type: "submit",
         name: "submit",
         value: "Add"
