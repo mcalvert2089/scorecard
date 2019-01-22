@@ -39103,7 +39103,7 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.7.0
+/** @license React v0.0.0-4a1072194
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -58679,7 +58679,7 @@ implementation) {
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.7.0';
+var ReactVersion = '16.6.1-canary-4a1072194';
 
 // TODO: This type is shared between the reconciler and ReactDOM, but will
 // eventually be lifted out to the renderer.
@@ -62191,7 +62191,7 @@ module.exports = hoistNonReactStatics;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.7.0
+/** @license React v0.0.0-4a1072194
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -62213,7 +62213,7 @@ var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./nod
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.7.0';
+var ReactVersion = '16.6.1-canary-4a1072194';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -64841,7 +64841,7 @@ function resolvePathname(to) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v0.12.0
+/** @license React v0.0.0-4a1072194
  * scheduler-tracing.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -65276,7 +65276,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/** @license React v0.12.0
+/* WEBPACK VAR INJECTION */(function(global) {/** @license React v0.0.0-4a1072194
  * scheduler.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -66804,6 +66804,8 @@ function (_Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
+      var _this2 = this;
+
       event.preventDefault();
       var _this$state = this.state,
           email = _this$state.email,
@@ -66814,7 +66816,10 @@ function (_Component) {
       }).then(function (result) {
         if (result.status === 200) {
           if (typeof result.data.access_token !== 'undefined') {
-            _store_index__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch(Object(_actions_index__WEBPACK_IMPORTED_MODULE_3__["isAuthenticated"])(true));
+            // store.dispatch( isAuthenticated(true) )
+            localStorage.setItem('loggedIn', true);
+
+            _this2.props.history.push('/home');
           }
         }
       });
@@ -66871,7 +66876,7 @@ function (_Component) {
   return Login;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Login);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["withRouter"])(Login));
 
 /***/ }),
 
@@ -66959,14 +66964,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       var message;
-
-      if (this.props.is_authenticated) {
-        message = 'loggedIn';
-      } else {
-        message = 'loggedOut';
-      }
-
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "AUTH: ", message, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Switch"], null, "// public routes", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Switch"], null, "// public routes", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
         exact: true,
         path: "/",
         component: _Home__WEBPACK_IMPORTED_MODULE_6__["default"]
@@ -66979,7 +66977,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
         path: "/activate/:key",
         component: _ActivateAccount__WEBPACK_IMPORTED_MODULE_9__["default"]
-      }), "if (! this.props.is_authenticated) ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Redirect"], {
+      }), !localStorage.getItem('loggedIn') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Redirect"], {
         to: '/login'
       }), "// protected routes // Teams", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
         path: "/teams",

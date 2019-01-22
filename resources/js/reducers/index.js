@@ -2,7 +2,7 @@ import { IS_AUTHENTICATED } from "../constants/action-types"
 
 const initialState = {
   is_authenticated: false
-};
+}
 
 function rootReducer(state = initialState, action) {
 	if (action.type === IS_AUTHENTICATED) {

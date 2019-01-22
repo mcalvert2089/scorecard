@@ -26,15 +26,8 @@ class Main extends Component {
   render () {
     let message
 
-    if (this.props.is_authenticated) {
-      message = 'loggedIn'
-    } else {
-      message = 'loggedOut'
-    }
-
     return (
           <div>
-            AUTH: { message } 
             <HashRouter>
               <Switch>
                 // public routes
@@ -43,7 +36,7 @@ class Main extends Component {
                 <Route path="/register" component={Register} />
                 <Route path='/activate/:key' component={ActivateAccount}/>
                 
-                if (! this.props.is_authenticated) {
+                { ! localStorage.getItem('loggedIn') &&
                    <Redirect to={ '/login' } />
                 }
                 
