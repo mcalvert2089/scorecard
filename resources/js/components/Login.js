@@ -36,8 +36,9 @@ class Login extends Component {
 	      if(result.status === 200) {
 	      	if( typeof result.data.access_token !== 'undefined' ) {
 		      	// store.dispatch( isAuthenticated(true) )
-		      	localStorage.setItem('loggedIn', true);
-		      	this.props.history.push('/home')
+        		localStorage.setItem('loggedIn', true)
+		      	localStorage.setItem('access_token', result.data.access_token);
+		      	this.props.history.push('/')
 	      	}
 	      }
 	    })

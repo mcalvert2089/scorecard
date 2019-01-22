@@ -6,6 +6,7 @@ import { HashRouter, Route, Redirect, Switch } from 'react-router-dom'
 import store from '../store/index'
 import Home from './Home'
 import Login from './Login'
+import Logout from './Logout'
 import Register from './Register'
 import ActivateAccount from './ActivateAccount'
 import Teams from './pages/Teams'
@@ -22,9 +23,15 @@ const mapDispatchToProps = dispatch => ({
   isAuthenticated: dispatch(isAuthenticated())
 })
 
+const RedirectIfLoggedIn =  ({ ...props }) => {
+    return localStorage.getItem('loggedIn')
+        ? ( <Redirect to="/" /> )
+        : ( <Route {...props} /> )
+}
+
 class Main extends Component {
   render () {
-    let message
+    let loggedIn = localStorage.getItem('loggedIn')
 
     return (
           <div>
@@ -32,15 +39,15 @@ class Main extends Component {
               <Switch>
                 // public routes
                 <Route exact path='/' component={Home}/>
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
-                <Route path='/activate/:key' component={ActivateAccount}/>
-                
-                { ! localStorage.getItem('loggedIn') &&
-                   <Redirect to={ '/login' } />
-                }
-                
+
+                <RedirectIfLoggedIn path="/login" component={Login} />
+                <RedirectIfLoggedIn path="/register" component={Register} />
+                <RedirectIfLoggedIn path='/activate/:key' component={ActivateAccount}/>
+
+                { ! loggedIn && <Redirect to="/login" /> }
+
                 // protected routes
+                <Route path='/logout' component={Logout}/>
                 // Teams
                 <Route path='/teams' component={Teams}/>
 
@@ -53,5 +60,6 @@ class Main extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main)
+export default Main
+// export default connect(mapStateToProps, mapDispatchToProps)(Main)
 
