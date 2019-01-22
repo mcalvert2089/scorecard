@@ -29,12 +29,7 @@ export default class TeamsAdd extends React.Component {
     // TODO: don't hard code user_id, get it from state
     let user_id = '1'
 
-    axios.post('/api/teams', { name, manager, city, state, user_id },
-          { 
-            headers: {
-                "Authorization" : "Bearer " + localStorage.getItem('access_token')
-            }
-        })
+    axios.post('/api/teams', { name, manager, city, state, user_id })
       .then((result) => {
         if(result.status === 200) {
           this.toggleHidden()

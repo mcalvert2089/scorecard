@@ -6,6 +6,8 @@ import { Provider } from 'react-redux'
 import Main from './Main'
 import Header from './Header'
 
+if(localStorage.getItem('access_token')) axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('access_token')
+
 class App extends Component {
   render () {
     return (

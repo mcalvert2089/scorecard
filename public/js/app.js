@@ -66613,6 +66613,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+if (localStorage.getItem('access_token')) axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('access_token');
 
 var App =
 /*#__PURE__*/
@@ -67458,10 +67459,6 @@ function (_React$Component) {
         city: city,
         state: state,
         user_id: user_id
-      }, {
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem('access_token')
-        }
       }).then(function (result) {
         if (result.status === 200) {
           _this2.toggleHidden();
