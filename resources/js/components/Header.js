@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
+import { connect } from "react-redux"
 import { HashRouter, Route, Link } from "react-router-dom"
+import store from '../../js/store/index'
+
 
 const iconStyle = {
   fontSize: '28px',
   color: 'white'
 };
 
+const mapStateToProps = state => ({
+  first_name: state.user.first_name
+})
+
 class Header extends Component {
 	render() {
+		const { first_name } = this.props;
 		let loggedIn = localStorage.getItem('loggedIn')
 		return (
 			<HashRouter>
@@ -39,8 +47,13 @@ class Header extends Component {
 							    )}
 
 							    { loggedIn && (
-							      <div>
-							        <Link to="/logout" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Logout</Link>
+							      <div className="flex lg:flex-grow">
+								      <div className="w-1/2 text-white">
+								      	Welcome { first_name }
+								      </div>
+							          <div  className="w-1/2">
+							          	<Link to="/logout" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Logout</Link>
+							      	  </div>
 							      </div>
 							    )}
 							  </div>
@@ -54,4 +67,4 @@ class Header extends Component {
 	}
 }
 
-export default Header
+export default connect(mapStateToProps)(Header)
