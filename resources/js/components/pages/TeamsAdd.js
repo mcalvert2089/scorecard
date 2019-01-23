@@ -46,32 +46,60 @@ export default class TeamsAdd extends React.Component {
 
 render() {
   return (
-      <div>
+      <div className="container mx-auto">
         {! this.state.isHidden && <AddedAlert />}
-        <form className="w-full max-w-md" onSubmit={this.handleSubmit}>
-          <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Team Name</label>
-              <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="name" onChange={this.handleChange} required />
+         <form className="w-full max-w-xs" onSubmit={this.handleSubmit}>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-full-name">
+                Team Name
+              </label>
             </div>
-            <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Manager</label>
-              <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="manager" onChange={this.handleChange} />
+            <div className="md:w-2/3">
+              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="name" onChange={this.handleChange}/>
             </div>
-            <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">City</label>
-              <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="city" onChange={this.handleChange} />
+          </div>
+
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-manager">
+                Manager
+              </label>
             </div>
-            <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">State</label>
-              <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="state" onChange={this.handleChange} />
+            <div className="md:w-2/3">
+              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="manager" onChange={this.handleChange}/>
             </div>
-            <div className="w-full px-3 mb-6 md:mb-0">
+          </div>
+
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-city">
+                City
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="city" onChange={this.handleChange}/>
+            </div>
+          </div>
+
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-state">
+                State
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="state" onChange={this.handleChange}/>
+            </div>
+          </div>
+          <div className="md:flex md:items-center">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
               <input className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded" type="submit" name="submit" value="Add"/>
             </div>
           </div>
         </form>
-      </div>
+        </div>
     )
   }
 }  
