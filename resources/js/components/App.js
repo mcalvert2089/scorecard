@@ -1,15 +1,27 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import store from '../../js/store/index'
-import { Provider } from 'react-redux'
+import { saveUserInfo } from '../../js/actions/index'
 import Main from './Main'
 import Header from './Header'
 
 if(localStorage.getItem('access_token')) axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('access_token')
 
 class App extends Component {
-  render () {
+  	componentDidMount() {
+		if(localStorage.getItem('access_token')) {
+			axios.get('/api/auth/user')
+			    .then((result) => {
+			      if(result.status === 200) {
+			      	store.dispatch( saveUserInfo({ user: result.data }) )
+			      }
+			    })
+		}
+	}
+
+	render () {
     return (
          <Provider store={store}>
 	         <Header />

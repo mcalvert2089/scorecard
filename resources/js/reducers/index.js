@@ -1,10 +1,20 @@
-import { IS_AUTHENTICATED } from "../constants/action-types"
+import { 
+		SAVE_USER_INFO,
+		IS_AUTHENTICATED
+	} from "../constants/action-types"
 
 const initialState = {
-  is_authenticated: false
+	user: [],
+	is_authenticated: false
 }
 
 function rootReducer(state = initialState, action) {
+	if (action.type === SAVE_USER_INFO) {
+		return Object.assign({}, state, {
+	    	user: action.payload.user
+	    })
+	}
+
 	if (action.type === IS_AUTHENTICATED) {
 		return Object.assign({}, state, {
 	    	is_authenticated: action.payload

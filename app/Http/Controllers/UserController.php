@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function me() {
+    	return User::select('id', 'first_name', 'last_name', 'email')->whereId(auth()->user()->id);
+    }    
+
     public function isActivated(Request $request) {
     	$user = User::whereActivationKey($request->activation_key)->first();
     	$active = ($user->email_verified_at) ? true : false;

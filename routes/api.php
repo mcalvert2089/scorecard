@@ -28,6 +28,9 @@ Route::group([ 'prefix' => 'auth' ], function () {
 
 
 Route::group([ 'middleware' => 'auth:api' ], function() {
+	// USER
+    Route::get('me', 'UsersController@me');
+
     // TEAMS
     Route::resource('teams', 'TeamController');
 });

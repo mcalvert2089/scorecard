@@ -38,6 +38,7 @@ class Login extends Component {
 		      	// store.dispatch( isAuthenticated(true) )
         		localStorage.setItem('loggedIn', true)
 		      	localStorage.setItem('access_token', result.data.access_token);
+
 		      	window.location.reload()
 	      	}
 	      }

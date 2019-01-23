@@ -66308,21 +66308,27 @@ module.exports = function(module) {
 /*!***************************************!*\
   !*** ./resources/js/actions/index.js ***!
   \***************************************/
-/*! exports provided: isAuthenticated */
+/*! exports provided: saveUserInfo, isAuthenticated */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveUserInfo", function() { return saveUserInfo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isAuthenticated", function() { return isAuthenticated; });
 /* harmony import */ var _constants_action_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/action-types */ "./resources/js/constants/action-types.js");
 
+function saveUserInfo(payload) {
+  return {
+    type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["SAVE_USER_INFO"],
+    payload: payload
+  };
+}
 function isAuthenticated(payload) {
   return {
     type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["IS_AUTHENTICATED"],
     payload: payload
   };
 }
-;
 
 /***/ }),
 
@@ -66583,11 +66589,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _js_store_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../js/store/index */ "./resources/js/store/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _Main__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Main */ "./resources/js/components/Main.js");
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Header */ "./resources/js/components/Header.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _js_store_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../js/store/index */ "./resources/js/store/index.js");
+/* harmony import */ var _js_actions_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../js/actions/index */ "./resources/js/actions/index.js");
+/* harmony import */ var _Main__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Main */ "./resources/js/components/Main.js");
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Header */ "./resources/js/components/Header.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -66613,6 +66620,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 if (localStorage.getItem('access_token')) axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('access_token');
 
 var App =
@@ -66627,11 +66635,24 @@ function (_Component) {
   }
 
   _createClass(App, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (localStorage.getItem('access_token')) {
+        axios.get('/api/auth/user').then(function (result) {
+          if (result.status === 200) {
+            _js_store_index__WEBPACK_IMPORTED_MODULE_4__["default"].dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_5__["saveUserInfo"])({
+              user: result.data
+            }));
+          }
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_4__["Provider"], {
-        store: _js_store_index__WEBPACK_IMPORTED_MODULE_3__["default"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Main__WEBPACK_IMPORTED_MODULE_5__["default"], null));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
+        store: _js_store_index__WEBPACK_IMPORTED_MODULE_4__["default"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Main__WEBPACK_IMPORTED_MODULE_6__["default"], null));
     }
   }]);
 
@@ -67849,13 +67870,15 @@ var EditedAlert = function EditedAlert() {
 /*!************************************************!*\
   !*** ./resources/js/constants/action-types.js ***!
   \************************************************/
-/*! exports provided: IS_AUTHENTICATED */
+/*! exports provided: IS_AUTHENTICATED, SAVE_USER_INFO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IS_AUTHENTICATED", function() { return IS_AUTHENTICATED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SAVE_USER_INFO", function() { return SAVE_USER_INFO; });
 var IS_AUTHENTICATED = "IS_AUTHENTICATED";
+var SAVE_USER_INFO = "SAVE_USER_INFO";
 
 /***/ }),
 
@@ -67871,12 +67894,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_action_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/action-types */ "./resources/js/constants/action-types.js");
 
 var initialState = {
+  user: [],
   is_authenticated: false
 };
 
 function rootReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  if (action.type === _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["SAVE_USER_INFO"]) {
+    return Object.assign({}, state, {
+      user: action.payload.user
+    });
+  }
 
   if (action.type === _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["IS_AUTHENTICATED"]) {
     return Object.assign({}, state, {
