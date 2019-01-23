@@ -66308,24 +66308,17 @@ module.exports = function(module) {
 /*!***************************************!*\
   !*** ./resources/js/actions/index.js ***!
   \***************************************/
-/*! exports provided: saveUserInfo, isAuthenticated */
+/*! exports provided: saveUserInfo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveUserInfo", function() { return saveUserInfo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isAuthenticated", function() { return isAuthenticated; });
 /* harmony import */ var _constants_action_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/action-types */ "./resources/js/constants/action-types.js");
 
 function saveUserInfo(payload) {
   return {
     type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["SAVE_USER_INFO"],
-    payload: payload
-  };
-}
-function isAuthenticated(payload) {
-  return {
-    type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["IS_AUTHENTICATED"],
     payload: payload
   };
 }
@@ -67887,14 +67880,12 @@ var EditedAlert = function EditedAlert() {
 /*!************************************************!*\
   !*** ./resources/js/constants/action-types.js ***!
   \************************************************/
-/*! exports provided: IS_AUTHENTICATED, SAVE_USER_INFO */
+/*! exports provided: SAVE_USER_INFO */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IS_AUTHENTICATED", function() { return IS_AUTHENTICATED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SAVE_USER_INFO", function() { return SAVE_USER_INFO; });
-var IS_AUTHENTICATED = "IS_AUTHENTICATED";
 var SAVE_USER_INFO = "SAVE_USER_INFO";
 
 /***/ }),
@@ -67911,8 +67902,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_action_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/action-types */ "./resources/js/constants/action-types.js");
 
 var initialState = {
-  user: [],
-  is_authenticated: false
+  user: []
 };
 
 function rootReducer() {
@@ -67922,12 +67912,6 @@ function rootReducer() {
   if (action.type === _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["SAVE_USER_INFO"]) {
     return Object.assign({}, state, {
       user: action.payload.user
-    });
-  }
-
-  if (action.type === _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["IS_AUTHENTICATED"]) {
-    return Object.assign({}, state, {
-      is_authenticated: action.payload
     });
   }
 
