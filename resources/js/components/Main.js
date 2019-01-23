@@ -11,6 +11,7 @@ import Register from './Register'
 import ActivateAccount from './ActivateAccount'
 import Teams from './pages/Teams'
 import TeamsAdd from './pages/TeamsAdd'
+import TeamsEdit from './pages/TeamsEdit'
 import NotFound from './NotFound'
 import { isAuthenticated } from '../actions/index'
 
@@ -53,6 +54,7 @@ class Main extends Component {
                 // Teams
                 <Route exact path='/teams' component={Teams}/>
                 <Route exact path='/teams/add' component={TeamsAdd}/>
+                <Route exact path='/teams/edit/:id' component={TeamsEdit}/>
 
                 // 404
                 <Route path="*" component={NotFound} />

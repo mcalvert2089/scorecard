@@ -1,9 +1,19 @@
 a {
-	color:#ff0;
+	color: #1B4731;
 	text-decoration: none;
 }
 
 a:hover {
+	color:#aaa;
+	text-decoration: underline;
+}
+
+header a {
+	color:#ff0;
+	text-decoration: none;
+}
+
+header a:hover {
 	color:#fff;
 	text-decoration: underline;
 }

@@ -18,11 +18,16 @@ class TeamController extends Controller
 		return $this->team->getAll($userId);
 	}
 
+    public function show(Request $request, $id) {
+    	return  Team::find($id);
+    }
+
     public function store(Request $request) {
     	$this->team->createTeam($request);
     }
 
     public function update(Request $request, $id) {
-        $this->team->updateTeam($request, $id);
+        $team = Team::find($id);
+        return $this->team->updateTeam($team, $request);
     }
 }

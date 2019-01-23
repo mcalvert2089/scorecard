@@ -38,12 +38,17 @@ export default class Teams extends React.Component {
 		    		</tr>
 		    	</thead>
 		    	<tbody>
-				    { this.state.teams.map(post => {
-				        const { id, name, city, state, manager } = post;
+				    { this.state.teams.map(data => {
+				        const { id, name, city, state, manager } = data;
 				        return (
 				          <tr key={id}>
 				            <td>{city} {name}</td>
 				            <td>{manager}</td>
+				            <td>
+				            	<Link to={ '/teams/edit/' +  id }>
+				            		<i className="fas fa-edit"></i>
+				            	</Link>
+				            </td>
 				          </tr>
 				        )
 				      })}

@@ -47,6 +47,7 @@ export default class TeamsAdd extends React.Component {
 render() {
   return (
       <div className="container mx-auto">
+        <h1>Create Team</h1>
         {! this.state.isHidden && <AddedAlert />}
          <form className="w-full max-w-xs" onSubmit={this.handleSubmit}>
           <div className="md:flex md:items-center mb-6">
@@ -56,7 +57,7 @@ render() {
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="name" onChange={this.handleChange}/>
+              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="name" onChange={this.handleChange}/>
             </div>
           </div>
 
@@ -67,7 +68,7 @@ render() {
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="manager" onChange={this.handleChange}/>
+              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="manager" onChange={this.handleChange}/>
             </div>
           </div>
 
@@ -78,7 +79,7 @@ render() {
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="city" onChange={this.handleChange}/>
+              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="city" onChange={this.handleChange}/>
             </div>
           </div>
 
@@ -89,7 +90,7 @@ render() {
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-lighter appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="state" onChange={this.handleChange}/>
+              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-full-name" type="text" name="state" onChange={this.handleChange}/>
             </div>
           </div>
           <div className="md:flex md:items-center">

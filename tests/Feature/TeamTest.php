@@ -35,6 +35,26 @@ class TeamTest extends TestCase
     }
 
     /** @test */
+    public function user_can_retrieve_single_team()
+    { 
+        $team = factory(Team::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->actingAs($this->user, 'api')
+                 ->get('/api/teams/' . $team->id);
+        $response->assertStatus(200);
+
+        $retrievedTeam = Team::first();
+
+        $this->assertEquals($team->name, $retrievedTeam->name);
+        $this->assertEquals($team->manager, $retrievedTeam->manager);
+        $this->assertEquals($team->city, $retrievedTeam->city);
+        $this->assertEquals($team->state, $retrievedTeam->state);
+        $this->assertEquals($team->user_id, $retrievedTeam->user_id);
+    }
+
+    /** @test */
     public function user_can_create_a_team()
     {
     	$data = [];

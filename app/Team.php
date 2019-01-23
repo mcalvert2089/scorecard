@@ -28,9 +28,8 @@ class Team extends Model
         Team::create($data);
     }
 
-    public function updateTeam($request, $id) {
-    	Team::whereId($id)
-            ->update([
+    public function updateTeam(Team $team, $request) {
+        return tap($team)->update([
                 'name' => $request->name,
                 'manager' => $request->manager,
                 'city' => $request->city,
