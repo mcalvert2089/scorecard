@@ -19,15 +19,20 @@ class TeamController extends Controller
 	}
 
     public function show(Request $request, $id) {
-    	return  Team::find($id);
+    	return Team::find($id);
     }
 
     public function store(Request $request) {
-    	$this->team->createTeam($request);
+        $user_id = auth()->user()->id;
+    	$this->team->createTeam($request, $user_id);
     }
 
     public function update(Request $request, $id) {
         $team = Team::find($id);
         return $this->team->updateTeam($team, $request);
+    }
+
+    public function destroy($id) {
+        Team::whereId($id)->delete();
     }
 }

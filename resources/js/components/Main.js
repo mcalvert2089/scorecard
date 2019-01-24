@@ -13,17 +13,12 @@ import Teams from './pages/Teams'
 import TeamsAdd from './pages/TeamsAdd'
 import TeamsEdit from './pages/TeamsEdit'
 import NotFound from './NotFound'
-import { isAuthenticated } from '../actions/index'
 
 window.store = store
 
 const mapStateToProps = state => {
   return { is_authenticated: state.is_authenticated }
 }
-
-const mapDispatchToProps = dispatch => ({
-  isAuthenticated: dispatch(isAuthenticated())
-})
 
 const RedirectIfLoggedIn =  ({ ...props }) => {
     return localStorage.getItem('loggedIn')

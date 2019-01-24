@@ -1,7 +1,6 @@
 <?php
 namespace Tests\Unit;
 
-use App\Repositories\Repository;
 use App\Team;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -99,5 +98,19 @@ class TeamTest extends TestCase
         $this->assertEquals($updatedTeam->manager, $newData['manager']);
         $this->assertEquals($updatedTeam->city, $newData['city']);
         $this->assertEquals($updatedTeam->state, $newData['state']);
+    }
+
+    /** @test */
+    public function user_can_soft_delete_a_team()
+    {   
+        $team = factory(Team::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->actingAs($this->user, 'api')
+            ->delete('/api/teams/' . $team->id);
+        $response->assertStatus(200);
+
+        $this->assertSoftDeleted('teams', $team->toArray());
     }
 }

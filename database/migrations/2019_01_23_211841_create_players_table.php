@@ -19,6 +19,7 @@ class CreatePlayersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->uuid('team_id');
+            $table->uuid('user_id');
             $table->char('bats', 1)->nullable();
             $table->char('throws', 1)->nullable();
             $table->timestamps();

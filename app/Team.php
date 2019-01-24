@@ -9,21 +9,21 @@ class Team extends Model
 {
 	use Uuids, SoftDeletes;
     public $incrementing = false;
-    protected $fillable = [ 'name', 'manager', 'city', 'state', 'user_id' ];
+    protected $guarded = [];
 
     public function getAll($userId) {
     	$teams = Team::where('user_id', $userId)->get();
     	return $teams;
     }
 
-    public function createTeam($request) {
+    public function createTeam($request, $user_id) {
 		$data = [];
 
         $data['name'] = $request->name;
         $data['manager'] = $request->manager;
         $data['city'] = $request->city;
         $data['state'] = $request->state;
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = $user_id;
 
         Team::create($data);
     }

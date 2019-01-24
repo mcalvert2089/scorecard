@@ -66827,9 +66827,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/index */ "./resources/js/store/index.js");
-/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/index */ "./resources/js/actions/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Header */ "./resources/js/components/Header.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Header */ "./resources/js/components/Header.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -66849,7 +66848,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 
 
 
@@ -66898,7 +66896,6 @@ function (_Component) {
       }).then(function (result) {
         if (result.status === 200) {
           if (typeof result.data.access_token !== 'undefined') {
-            // store.dispatch( isAuthenticated(true) )
             localStorage.setItem('loggedIn', true);
             localStorage.setItem('access_token', result.data.access_token);
             window.location.reload();
@@ -66958,7 +66955,7 @@ function (_Component) {
   return Login;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["withRouter"])(Login));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["withRouter"])(Login));
 
 /***/ }),
 
@@ -67066,7 +67063,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_TeamsAdd__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./pages/TeamsAdd */ "./resources/js/components/pages/TeamsAdd.js");
 /* harmony import */ var _pages_TeamsEdit__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./pages/TeamsEdit */ "./resources/js/components/pages/TeamsEdit.js");
 /* harmony import */ var _NotFound__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./NotFound */ "./resources/js/components/NotFound.js");
-/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../actions/index */ "./resources/js/actions/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -67102,18 +67098,11 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
 window.store = _store_index__WEBPACK_IMPORTED_MODULE_5__["default"];
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
     is_authenticated: state.is_authenticated
-  };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    isAuthenticated: dispatch(Object(_actions_index__WEBPACK_IMPORTED_MODULE_15__["isAuthenticated"])())
   };
 };
 

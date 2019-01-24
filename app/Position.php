@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Position extends Model
 {
     use Uuids, SoftDeletes;
+
+    public $incrementing = false;
 }

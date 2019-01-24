@@ -31,8 +31,8 @@ Route::group([ 'middleware' => 'auth:api' ], function() {
 	// USER
     Route::get('me', 'UsersController@me');
 
-    // TEAMS
     Route::resource('teams', 'TeamController');
+    Route::resource('players', 'PlayerController');
 });
 
 
