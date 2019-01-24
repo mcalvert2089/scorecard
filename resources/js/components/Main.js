@@ -60,5 +60,5 @@ class Main extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main)
+export default connect(mapStateToProps)(Main)
 
