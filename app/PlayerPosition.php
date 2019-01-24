@@ -10,4 +10,6 @@ class PlayerPosition extends Model
     use Uuids, SoftDeletes;
 
     public $incrementing = false;
+
+    protected $fillable = [ 'player_id', 'position_id', 'primary_pos' ];
 }
