@@ -13,7 +13,7 @@ class Player extends Model
     
     public $incrementing = false;
 
-    protected $guarded = [];
+    protected $fillable = [ 'first_name', 'last_name', 'team_id', 'user_id', 'bats', 'throws' ];
 
     public function createPlayer($request, $user_id) {
 		$data = [];

@@ -3,41 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Player;
+use App\Team;
+use App\Repositories\Repository;
 use Illuminate\Http\Request;
-use Exception;
 
 class PlayerController extends Controller
 {
-    private $player;
+    protected $model;
 
-	public function __construct() {
-		$this->player = new Player;
-	}
+    public function __construct(Player $player) {
+        $this->model = new Repository($player);
+    }
 
-	public function index() {
-		$userId = auth()->user()->id;
-		return $this->player->getAll($userId);
-	}
+    public function index() {
+        return $this->model->allByUserId(auth()->user()->id);
+    }
 
-    public function show(Request $request, $id) {
-    	return Player::find($id);
+    public function show($id) {
+        return Player::find($id);
     }
 
     public function store(Request $request) {
-    	$user_id = auth()->user()->id;
-    	$this->player->createPlayer($request, $user_id);
+        $data = $request->only($this->model->getModel()->fillable);
+        $data['user_id'] = auth()->user()->id;
+        $this->model->create($data);
     }
 
     public function update(Request $request, $id) {
-    	// TO-DO: re-instate ID check once roles have been added.
-    	// if($id !== auth()->user()->id) {
-    	// 	throw new Exception('User cannot edit this player!');
-    	// }
-
-        return $this->player->updatePlayer($request, $id);
+        $this->model->update($request->only($this->model->getModel()->fillable), $id);
     }
 
     public function destroy($id) {
-    	Player::whereId($id)->delete();
+        $this->model->delete($id);
     }
 }

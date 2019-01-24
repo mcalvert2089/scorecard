@@ -2,37 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Repository;
 use App\Team;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-	private $team;
+    protected $model;
 
-	public function __construct() {
-		$this->team = new Team;
-	}
+    public function __construct(Team $team) {
+        $this->model = new Repository($team);
+    }
 
-	public function index() {
-		$userId = auth()->user()->id;
-		return $this->team->getAll($userId);
-	}
+    public function index() {
+        return $this->model->allByUserId(auth()->user()->id);
+    }
 
-    public function show(Request $request, $id) {
-    	return Team::find($id);
+    public function show($id) {
+        return Team::find($id);
     }
 
     public function store(Request $request) {
-        $user_id = auth()->user()->id;
-    	$this->team->createTeam($request, $user_id);
+        $data = $request->only($this->model->getModel()->fillable);
+        $data['user_id'] = auth()->user()->id;
+        $this->model->create($data);
     }
 
     public function update(Request $request, $id) {
-        $team = Team::find($id);
-        return $this->team->updateTeam($team, $request);
+        $this->model->update($request->only($this->model->getModel()->fillable), $id);
     }
 
     public function destroy($id) {
-        Team::whereId($id)->delete();
+        $this->model->delete($id);
     }
 }
