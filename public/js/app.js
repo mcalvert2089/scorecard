@@ -6108,6 +6108,600 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/curriable/dist/curriable.js":
+/*!**************************************************!*\
+  !*** ./node_modules/curriable/dist/curriable.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+   true ? factory(exports) :
+  undefined;
+}(this, function (exports) { 'use strict';
+
+  /**
+   * @constant __ placeholder used when parameters are skipped
+   */
+  var __ = typeof Symbol === 'function' ? Symbol('curriable placeholder') : 0xedd1;
+  /**
+   * @function recursiveCurry
+   *
+   * @description
+   * recursively curry over the arguments until all have been resolved
+   *
+   * @param fn the function to curry
+   * @param arity the length of the function to curry until
+   * @param args the existing arguments
+   * @returns the result of the function call
+   */
+  var recursiveCurry = function (fn, arity, args) {
+      return function () {
+          var length = args.length;
+          var newArgs = arguments;
+          var newArgsLength = newArgs.length;
+          var combined = [];
+          var newArgsIndex = 0;
+          var remaining = arity;
+          var value;
+          if (length) {
+              for (var index = 0; index < length; index++) {
+                  combined[index] = value =
+                      args[index] === __ && newArgsIndex < newArgsLength
+                          ? newArgs[newArgsIndex++]
+                          : args[index];
+                  if (value !== __) {
+                      --remaining;
+                  }
+              }
+          }
+          if (newArgsIndex < newArgsLength) {
+              for (; newArgsIndex < newArgsLength; newArgsIndex++) {
+                  combined[combined.length] = value = newArgs[newArgsIndex];
+                  if (value !== __ && newArgsIndex < arity) {
+                      --remaining;
+                  }
+              }
+          }
+          return remaining > 0
+              ? recursiveCurry(fn, arity, combined)
+              : fn.apply(this, combined);
+      };
+  };
+
+  // utils
+  /**
+   * @function curry
+   *
+   * @description
+   * get the method passed as a curriable method based on its parameters
+   *
+   * @param fn the method to make curriable
+   * @param arity the arity of the curried method
+   * @returns the fn passed as a curried function
+   */
+  var curry = function (fn, arity) {
+      if (arity === void 0) { arity = fn.length; }
+      var curried = recursiveCurry(fn, arity, []);
+      curried.arity = arity;
+      curried.fn = fn;
+      return curried;
+  };
+  curry.__ = __;
+  /**
+   * @function uncurry
+   *
+   * @description
+   * return a function that is the non-curried version of the fn passed
+   *
+   * @param curried the curried function to uncurry
+   * @returns the original fn
+   */
+  var uncurry = function (curried) { return curried.fn; };
+  curry.uncurry = uncurry;
+
+  exports.__ = __;
+  exports.curry = curry;
+  exports.uncurry = uncurry;
+  exports.default = curry;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+//# sourceMappingURL=curriable.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/fast-equals/es/comparator.js":
+/*!***************************************************!*\
+  !*** ./node_modules/fast-equals/es/comparator.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./node_modules/fast-equals/es/constants.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/fast-equals/es/utils.js");
+// constants
+ // utils
+
+
+var isArray = Array.isArray;
+var areMapsEqual = Object(_utils__WEBPACK_IMPORTED_MODULE_1__["createAreIterablesEqual"])(true);
+var areSetsEqual = Object(_utils__WEBPACK_IMPORTED_MODULE_1__["createAreIterablesEqual"])(false);
+
+var createComparator = function createComparator(createIsEqual) {
+  // eslint-disable-next-line no-use-before-define
+  var isEqual = typeof createIsEqual === 'function' ? createIsEqual(comparator) : comparator;
+  /**
+   * @function comparator
+   *
+   * @description
+   * compare the value of the two objects and return true if they are equivalent in values
+   *
+   * @param {any} objectA the object to test against
+   * @param {any} objectB the object to test
+   * @param {any} [meta] an optional meta object that is passed through to all equality test calls
+   * @returns {boolean} are objectA and objectB equivalent in value
+   */
+
+  function comparator(objectA, objectB, meta) {
+    if (Object(_utils__WEBPACK_IMPORTED_MODULE_1__["sameValueZeroEqual"])(objectA, objectB)) {
+      return true;
+    }
+
+    var typeOfA = typeof objectA;
+
+    if (typeOfA !== typeof objectB || typeOfA !== 'object' || !objectA || !objectB) {
+      return false;
+    }
+
+    if (Object(_utils__WEBPACK_IMPORTED_MODULE_1__["isPlainObject"])(objectA) && Object(_utils__WEBPACK_IMPORTED_MODULE_1__["isPlainObject"])(objectB)) {
+      return Object(_utils__WEBPACK_IMPORTED_MODULE_1__["areObjectsEqual"])(objectA, objectB, isEqual, meta);
+    }
+
+    var arrayA = isArray(objectA);
+    var arrayB = isArray(objectB);
+
+    if (arrayA || arrayB) {
+      return arrayA === arrayB && Object(_utils__WEBPACK_IMPORTED_MODULE_1__["areArraysEqual"])(objectA, objectB, isEqual, meta);
+    }
+
+    var dateA = objectA instanceof Date;
+    var dateB = objectB instanceof Date;
+
+    if (dateA || dateB) {
+      return dateA === dateB && Object(_utils__WEBPACK_IMPORTED_MODULE_1__["sameValueZeroEqual"])(objectA.getTime(), objectB.getTime());
+    }
+
+    var regexpA = objectA instanceof RegExp;
+    var regexpB = objectB instanceof RegExp;
+
+    if (regexpA || regexpB) {
+      return regexpA === regexpB && Object(_utils__WEBPACK_IMPORTED_MODULE_1__["areRegExpsEqual"])(objectA, objectB);
+    }
+
+    if (Object(_utils__WEBPACK_IMPORTED_MODULE_1__["isPromiseLike"])(objectA) || Object(_utils__WEBPACK_IMPORTED_MODULE_1__["isPromiseLike"])(objectB)) {
+      return objectA === objectB;
+    }
+
+    if (_constants__WEBPACK_IMPORTED_MODULE_0__["HAS_MAP_SUPPORT"]) {
+      var mapA = objectA instanceof Map;
+      var mapB = objectB instanceof Map;
+
+      if (mapA || mapB) {
+        return mapA === mapB && areMapsEqual(objectA, objectB, isEqual, meta);
+      }
+    }
+
+    if (_constants__WEBPACK_IMPORTED_MODULE_0__["HAS_SET_SUPPORT"]) {
+      var setA = objectA instanceof Set;
+      var setB = objectB instanceof Set;
+
+      if (setA || setB) {
+        return setA === setB && areSetsEqual(objectA, objectB, isEqual, meta);
+      }
+    }
+
+    return Object(_utils__WEBPACK_IMPORTED_MODULE_1__["areObjectsEqual"])(objectA, objectB, isEqual, meta);
+  }
+
+  return comparator;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (createComparator);
+
+/***/ }),
+
+/***/ "./node_modules/fast-equals/es/constants.js":
+/*!**************************************************!*\
+  !*** ./node_modules/fast-equals/es/constants.js ***!
+  \**************************************************/
+/*! exports provided: HAS_MAP_SUPPORT, HAS_SET_SUPPORT, HAS_WEAKSET_SUPPORT */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAS_MAP_SUPPORT", function() { return HAS_MAP_SUPPORT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAS_SET_SUPPORT", function() { return HAS_SET_SUPPORT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAS_WEAKSET_SUPPORT", function() { return HAS_WEAKSET_SUPPORT; });
+/**
+ * @constant {boolean} HAS_MAP_SUPPORT
+ */
+var HAS_MAP_SUPPORT = typeof Map === 'function';
+/**
+ * @constant {boolean} HAS_SET_SUPPORT
+ */
+
+var HAS_SET_SUPPORT = typeof Set === 'function';
+/**
+ * @constant {boolean} HAS_WEAKSET_SUPPORT
+ */
+
+var HAS_WEAKSET_SUPPORT = typeof WeakSet === 'function';
+
+/***/ }),
+
+/***/ "./node_modules/fast-equals/es/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/fast-equals/es/index.js ***!
+  \**********************************************/
+/*! exports provided: createCustomEqual, sameValueZeroEqual, circularDeepEqual, circularShallowEqual, deepEqual, shallowEqual, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "circularDeepEqual", function() { return circularDeepEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "circularShallowEqual", function() { return circularShallowEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deepEqual", function() { return deepEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shallowEqual", function() { return shallowEqual; });
+/* harmony import */ var _comparator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./comparator */ "./node_modules/fast-equals/es/comparator.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createCustomEqual", function() { return _comparator__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/fast-equals/es/utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "sameValueZeroEqual", function() { return _utils__WEBPACK_IMPORTED_MODULE_1__["sameValueZeroEqual"]; });
+
+// comparator
+ // utils
+
+
+
+var circularDeepEqual = Object(_comparator__WEBPACK_IMPORTED_MODULE_0__["default"])(Object(_utils__WEBPACK_IMPORTED_MODULE_1__["createCircularEqual"])());
+var circularShallowEqual = Object(_comparator__WEBPACK_IMPORTED_MODULE_0__["default"])(Object(_utils__WEBPACK_IMPORTED_MODULE_1__["createCircularEqual"])(_utils__WEBPACK_IMPORTED_MODULE_1__["sameValueZeroEqual"]));
+var deepEqual = Object(_comparator__WEBPACK_IMPORTED_MODULE_0__["default"])();
+var shallowEqual = Object(_comparator__WEBPACK_IMPORTED_MODULE_0__["default"])(function () {
+  return _utils__WEBPACK_IMPORTED_MODULE_1__["sameValueZeroEqual"];
+});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  circularDeep: circularDeepEqual,
+  circularShallow: circularShallowEqual,
+  createCustom: _comparator__WEBPACK_IMPORTED_MODULE_0__["default"],
+  deep: deepEqual,
+  sameValueZero: _utils__WEBPACK_IMPORTED_MODULE_1__["sameValueZeroEqual"],
+  shallow: shallowEqual
+});
+
+/***/ }),
+
+/***/ "./node_modules/fast-equals/es/utils.js":
+/*!**********************************************!*\
+  !*** ./node_modules/fast-equals/es/utils.js ***!
+  \**********************************************/
+/*! exports provided: addObjectToCache, hasItem, hasItems, sameValueZeroEqual, isPlainObject, isPromiseLike, isReactElement, getNewCache, createCircularEqual, toPairs, areArraysEqual, createAreIterablesEqual, areObjectsEqual, areRegExpsEqual */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addObjectToCache", function() { return addObjectToCache; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasItem", function() { return hasItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasItems", function() { return hasItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sameValueZeroEqual", function() { return sameValueZeroEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPlainObject", function() { return isPlainObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPromiseLike", function() { return isPromiseLike; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isReactElement", function() { return isReactElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNewCache", function() { return getNewCache; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCircularEqual", function() { return createCircularEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toPairs", function() { return toPairs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "areArraysEqual", function() { return areArraysEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createAreIterablesEqual", function() { return createAreIterablesEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "areObjectsEqual", function() { return areObjectsEqual; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "areRegExpsEqual", function() { return areRegExpsEqual; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./node_modules/fast-equals/es/constants.js");
+// constants
+
+var keys = Object.keys;
+/**
+ * @function addObjectToCache
+ *
+ * @description
+ * add object to cache if it is indeed an object
+ *
+ * @param {any} object the object to potentially add to the cache
+ * @param {Object|WeakSet} cache the cache to add to
+ * @returns {void}
+ */
+
+var addObjectToCache = function addObjectToCache(object, cache) {
+  return object && typeof object === 'object' && cache.add(object);
+};
+/**
+ * @function hasItem
+ *
+ * @description
+ * does the array include the item passed
+ *
+ * @param {Array<any>} array the array to check in
+ * @param {any} item the item to locate
+ * @param {function} isEqual the equality comparator
+ * @param {any} meta the meta item to pass through
+ * @returns {boolean} does the item exist in the array
+ */
+
+var hasItem = function hasItem(array, item, isEqual, meta) {
+  for (var index = 0; index < array.length; index++) {
+    if (isEqual(array[index], item, meta)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+/**
+ * @function hasItems
+ *
+ * @description
+ * are the arrays equal in value, despite being in different order
+ *
+ * @param {Array<any>} arrayA the first array to test
+ * @param {Array<any>} arrayB the second array to test
+ * @param {function} isEqual the equality comparator
+ * @param {any} meta the meta item to pass through
+ * @returns {boolean} are the arrays equal absent order
+ */
+
+var hasItems = function hasItems(arrayA, arrayB, isEqual, meta) {
+  if (arrayA.length !== arrayB.length) {
+    return false;
+  }
+
+  for (var index = 0; index < arrayA.length; index++) {
+    if (!hasItem(arrayB, arrayA[index], isEqual, meta)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+/**
+ * @function sameValueZeroEqual
+ *
+ * @description
+ * are the objects passed strictly equal or both NaN
+ *
+ * @param {any} objectA the object to compare against
+ * @param {any} objectB the object to test
+ * @returns {boolean} are the objects equal by the SameValueZero principle
+ */
+
+var sameValueZeroEqual = function sameValueZeroEqual(objectA, objectB) {
+  return objectA === objectB || objectA !== objectA && objectB !== objectB;
+};
+/**
+ * @function isPlainObject
+ *
+ * @description
+ * is the object a plain object
+ *
+ * @param {any} object the object to test
+ * @returns {boolean} is the object a plain object
+ */
+
+var isPlainObject = function isPlainObject(object) {
+  return object.constructor === Object;
+};
+/**
+ * @function isPromiseLike
+ *
+ * @description
+ * is the object promise-like (thenable)
+ *
+ * @param {any} object the object to test
+ * @returns {boolean} is the object promise-like
+ */
+
+var isPromiseLike = function isPromiseLike(object) {
+  return typeof object.then === 'function';
+};
+/**
+ * @function isReactElement
+ *
+ * @description
+ * is the object passed a react element
+ *
+ * @param {any} object the object to test
+ * @returns {boolean} is the object a react element
+ */
+
+var isReactElement = function isReactElement(object) {
+  return !!(object.$$typeof && object._store);
+};
+/**
+ * @function getNewCache
+ *
+ * @description
+ * get a new cache object to prevent circular references
+ *
+ * @returns {Object|Weakset} the new cache object
+ */
+
+var getNewCache = function getNewCache() {
+  return _constants__WEBPACK_IMPORTED_MODULE_0__["HAS_WEAKSET_SUPPORT"] ? new WeakSet() : Object.create({
+    _values: [],
+    add: function add(value) {
+      this._values.push(value);
+    },
+    has: function has(value) {
+      return !!~this._values.indexOf(value);
+    }
+  });
+};
+/**
+ * @function createCircularEqual
+ *
+ * @description
+ * create a custom isEqual handler specific to circular objects
+ *
+ * @param {funtion} [isEqual] the isEqual comparator to use instead of isDeepEqual
+ * @returns {function(any, any): boolean}
+ */
+
+var createCircularEqual = function createCircularEqual(isEqual) {
+  return function (isDeepEqual) {
+    var comparator = isEqual || isDeepEqual;
+    return function (objectA, objectB, cache) {
+      if (cache === void 0) {
+        cache = getNewCache();
+      }
+
+      var cacheHasA = cache.has(objectA);
+      var cacheHasB = cache.has(objectB);
+
+      if (cacheHasA || cacheHasB) {
+        return cacheHasA && cacheHasB;
+      }
+
+      addObjectToCache(objectA, cache);
+      addObjectToCache(objectB, cache);
+      return comparator(objectA, objectB, cache);
+    };
+  };
+};
+/**
+ * @function toPairs
+ *
+ * @param {Map|Set} iterable the iterable to convert to [key, value] pairs (entries)
+ * @returns {{keys: Array<*>, values: Array<*>}} the [key, value] pairs
+ */
+
+var toPairs = function toPairs(iterable) {
+  var pairs = {
+    keys: [],
+    values: []
+  };
+  iterable.forEach(function (value, key) {
+    return pairs.keys.push(key) && pairs.values.push(value);
+  });
+  return pairs;
+};
+/**
+ * @function areArraysEqual
+ *
+ * @description
+ * are the arrays equal in value
+ *
+ * @param {Array<any>} arrayA the array to test
+ * @param {Array<any>} arrayB the array to test against
+ * @param {function} isEqual the comparator to determine equality
+ * @param {any} meta the meta object to pass through
+ * @returns {boolean} are the arrays equal
+ */
+
+var areArraysEqual = function areArraysEqual(arrayA, arrayB, isEqual, meta) {
+  if (arrayA.length !== arrayB.length) {
+    return false;
+  }
+
+  for (var index = 0; index < arrayA.length; index++) {
+    if (!isEqual(arrayA[index], arrayB[index], meta)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+var createAreIterablesEqual = function createAreIterablesEqual(shouldCompareKeys) {
+  /**
+   * @function areIterablesEqual
+   *
+   * @description
+   * determine if the iterables are equivalent in value
+   *
+   * @param {Array<Array<any>>} pairsA the pairs to test
+   * @param {Array<Array<any>>} pairsB the pairs to test against
+   * @param {function} isEqual the comparator to determine equality
+   * @param {any} meta the cache possibly being used
+   * @returns {boolean} are the objects equal in value
+   */
+  var areIterablesEqual = shouldCompareKeys ? function (pairsA, pairsB, isEqual, meta) {
+    return hasItems(pairsA.keys, pairsB.keys, isEqual, meta) && hasItems(pairsA.values, pairsB.values, isEqual, meta);
+  } : function (pairsA, pairsB, isEqual, meta) {
+    return hasItems(pairsA.values, pairsB.values, isEqual, meta);
+  };
+  return function (iterableA, iterableB, isEqual, meta) {
+    return areIterablesEqual(toPairs(iterableA), toPairs(iterableB), isEqual, meta);
+  };
+};
+/**
+ * @function areArraysEqual
+ *
+ * @description
+ * are the objects equal in value
+ *
+ * @param {Array<any>} objectA the object to test
+ * @param {Array<any>} objectB the object to test against
+ * @param {function} isEqual the comparator to determine equality
+ * @param {any} meta the meta object to pass through
+ * @returns {boolean} are the objects equal
+ */
+
+var areObjectsEqual = function areObjectsEqual(objectA, objectB, isEqual, meta) {
+  var keysA = keys(objectA);
+  var keysB = keys(objectB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  var key;
+
+  for (var index = 0; index < keysA.length; index++) {
+    key = keysA[index];
+
+    if (!hasItem(keysB, key, sameValueZeroEqual)) {
+      return false;
+    } // if a react element, ignore the "_owner" key because its not necessary for equality comparisons
+
+
+    if (key === '_owner' && isReactElement(objectA) && isReactElement(objectB)) {
+      continue;
+    }
+
+    if (!isEqual(objectA[key], objectB[key], meta)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+/**
+ * @function areRegExpsEqual
+ *
+ * @description
+ * are the regExps equal in value
+ *
+ * @param {RegExp} regExpA the regExp to test
+ * @param {RegExp} regExpB the regExp to test agains
+ * @returns {boolean} are the regExps equal
+ */
+
+var areRegExpsEqual = function areRegExpsEqual(regExpA, regExpB) {
+  return regExpA.source === regExpB.source && regExpA.global === regExpB.global && regExpA.ignoreCase === regExpB.ignoreCase && regExpA.multiline === regExpB.multiline && regExpA.unicode === regExpB.unicode && regExpA.sticky === regExpB.sticky && regExpA.lastIndex === regExpB.lastIndex;
+};
+
+/***/ }),
+
 /***/ "./node_modules/history/es/DOMUtils.js":
 /*!*********************************************!*\
   !*** ./node_modules/history/es/DOMUtils.js ***!
@@ -7449,6 +8043,1069 @@ function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
 
 module.exports = hoistNonReactStatics;
 
+
+/***/ }),
+
+/***/ "./node_modules/identitate/es/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/identitate/es/index.js ***!
+  \*********************************************/
+/*! exports provided: createIdentity, identity, identitySecond, identityLast, identitySecondLast */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createIdentity", function() { return createIdentity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "identity", function() { return identity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "identitySecond", function() { return identitySecond; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "identityLast", function() { return identityLast; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "identitySecondLast", function() { return identitySecondLast; });
+/* harmony import */ var pathington__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pathington */ "./node_modules/pathington/es/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/identitate/es/utils.js");
+// external dependencies
+ // utils
+
+
+/**
+ * @function createIdentity
+ *
+ * @description
+ * create an identity method for a specific argument index
+ *
+ * @param {number} argIndex the index of the argument to get
+ * @param {Array<number|string>|number|string} path the nested path to retrieve the value from
+ * @returns {function(...Array<*>): *} the identity method for the given argument
+ */
+
+var createIdentity = function createIdentity(argIndex, path) {
+  var shouldGetNestedValue = path !== void 0;
+  return function () {
+    // eslint-disable-next-line prefer-rest-params
+    var value = arguments[argIndex < 0 ? arguments.length + argIndex : argIndex];
+    return shouldGetNestedValue ? Object(_utils__WEBPACK_IMPORTED_MODULE_1__["getNestedProperty"])(Object(pathington__WEBPACK_IMPORTED_MODULE_0__["parse"])(path), value) : value;
+  };
+};
+var identity = createIdentity(0);
+var identitySecond = createIdentity(1);
+var identityLast = createIdentity(-1);
+var identitySecondLast = createIdentity(-2);
+
+/***/ }),
+
+/***/ "./node_modules/identitate/es/utils.js":
+/*!*********************************************!*\
+  !*** ./node_modules/identitate/es/utils.js ***!
+  \*********************************************/
+/*! exports provided: getNestedProperty */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNestedProperty", function() { return getNestedProperty; });
+/**
+ * @function getNestedProperty
+ *
+ * @description
+ * recursive function to get the nested property at path
+ *
+ * @param {Array<number|string>} path the path to retrieve values from the object
+ * @param {*} object the object to get values from
+ * @returns {*} the retrieved values
+ */
+var getNestedProperty = function getNestedProperty(path, object) {
+  if (path.length === 1) {
+    return object ? object[path[0]] : void 0;
+  }
+
+  var property = path.shift();
+  return object && object.hasOwnProperty(property) ? getNestedProperty(path, object[property]) : void 0;
+};
+
+/***/ }),
+
+/***/ "./node_modules/immer/dist/immer.module.js":
+/*!*************************************************!*\
+  !*** ./node_modules/immer/dist/immer.module.js ***!
+  \*************************************************/
+/*! exports provided: produce, setAutoFreeze, setUseProxies, applyPatches, Immer, original, isDraft, isDraftable, nothing, immerable, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "produce", function() { return produce; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAutoFreeze", function() { return setAutoFreeze; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUseProxies", function() { return setUseProxies; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "applyPatches", function() { return applyPatches$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Immer", function() { return Immer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "original", function() { return original; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraft", function() { return isDraft; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDraftable", function() { return isDraftable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "nothing", function() { return NOTHING; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "immerable", function() { return DRAFTABLE; });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+
+
+
+
+
+
+
+
+
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+var defineProperty = function (obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+
+var NOTHING = typeof Symbol !== "undefined" ? Symbol("immer-nothing") : defineProperty({}, "immer-nothing", true);
+
+var DRAFTABLE = typeof Symbol !== "undefined" ? Symbol("immer-draftable") : "__$immer_draftable";
+
+var DRAFT_STATE = typeof Symbol !== "undefined" ? Symbol("immer-state") : "__$immer_state";
+
+function isDraft(value) {
+    return !!value && !!value[DRAFT_STATE];
+}
+
+function isDraftable(value) {
+    if (!value || (typeof value === "undefined" ? "undefined" : _typeof(value)) !== "object") return false;
+    if (Array.isArray(value)) return true;
+    var proto = Object.getPrototypeOf(value);
+    if (!proto || proto === Object.prototype) return true;
+    return !!value[DRAFTABLE] || !!value.constructor[DRAFTABLE];
+}
+
+function original(value) {
+    if (value && value[DRAFT_STATE]) {
+        return value[DRAFT_STATE].base;
+    }
+    // otherwise return undefined
+}
+
+var assign = Object.assign || function assign(target, value) {
+    for (var key in value) {
+        if (has(value, key)) {
+            target[key] = value[key];
+        }
+    }
+    return target;
+};
+
+var ownKeys = typeof Reflect !== "undefined" && Reflect.ownKeys ? Reflect.ownKeys : typeof Object.getOwnPropertySymbols !== "undefined" ? function (obj) {
+    return Object.getOwnPropertyNames(obj).concat(Object.getOwnPropertySymbols(obj));
+} : Object.getOwnPropertyNames;
+
+function shallowCopy(base) {
+    var invokeGetters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    if (Array.isArray(base)) return base.slice();
+    var clone = Object.create(Object.getPrototypeOf(base));
+    ownKeys(base).forEach(function (key) {
+        if (key === DRAFT_STATE) {
+            return; // Never copy over draft state.
+        }
+        var desc = Object.getOwnPropertyDescriptor(base, key);
+        if (desc.get) {
+            if (!invokeGetters) {
+                throw new Error("Immer drafts cannot have computed properties");
+            }
+            desc.value = desc.get.call(base);
+        }
+        if (desc.enumerable) {
+            clone[key] = desc.value;
+        } else {
+            Object.defineProperty(clone, key, {
+                value: desc.value,
+                writable: true,
+                configurable: true
+            });
+        }
+    });
+    return clone;
+}
+
+function each(value, cb) {
+    if (Array.isArray(value)) {
+        for (var i = 0; i < value.length; i++) {
+            cb(i, value[i], value);
+        }
+    } else {
+        ownKeys(value).forEach(function (key) {
+            return cb(key, value[key], value);
+        });
+    }
+}
+
+function isEnumerable(base, prop) {
+    return Object.getOwnPropertyDescriptor(base, prop).enumerable;
+}
+
+function has(thing, prop) {
+    return Object.prototype.hasOwnProperty.call(thing, prop);
+}
+
+function is(x, y) {
+    // From: https://github.com/facebook/fbjs/blob/c69904a511b900266935168223063dd8772dfc40/packages/fbjs/src/core/shallowEqual.js
+    if (x === y) {
+        return x !== 0 || 1 / x === 1 / y;
+    } else {
+        return x !== x && y !== y;
+    }
+}
+
+// @ts-check
+
+var descriptors = {};
+
+// For nested produce calls:
+var scopes = [];
+var currentScope = function currentScope() {
+    return scopes[scopes.length - 1];
+};
+
+function willFinalize(result, baseDraft, needPatches) {
+    var scope = currentScope();
+    scope.forEach(function (state) {
+        return state.finalizing = true;
+    });
+    if (result === undefined || result === baseDraft) {
+        if (needPatches) markChangesRecursively(baseDraft);
+        // This is faster when we don't care about which attributes changed.
+        markChangesSweep(scope);
+    }
+}
+
+function createDraft(base, parent) {
+    var isArray = Array.isArray(base);
+    var draft = clonePotentialDraft(base);
+    each(draft, function (prop) {
+        proxyProperty(draft, prop, isArray || isEnumerable(base, prop));
+    });
+
+    // See "proxy.js" for property documentation.
+    var state = {
+        scope: parent ? parent.scope : currentScope(),
+        modified: false,
+        finalizing: false, // es5 only
+        finalized: false,
+        assigned: {},
+        parent: parent,
+        base: base,
+        draft: draft,
+        copy: null,
+        revoke: revoke,
+        revoked: false // es5 only
+    };
+
+    createHiddenProperty(draft, DRAFT_STATE, state);
+    state.scope.push(state);
+    return draft;
+}
+
+function revoke() {
+    this.revoked = true;
+}
+
+function source(state) {
+    return state.copy || state.base;
+}
+
+function _get(state, prop) {
+    assertUnrevoked(state);
+    var value = source(state)[prop];
+    // Drafts are only created for proxyable values that exist in the base state.
+    if (!state.finalizing && value === state.base[prop] && isDraftable(value)) {
+        prepareCopy(state);
+        return state.copy[prop] = createDraft(value, state);
+    }
+    return value;
+}
+
+function _set(state, prop, value) {
+    assertUnrevoked(state);
+    state.assigned[prop] = true;
+    if (!state.modified) {
+        if (is(source(state)[prop], value)) return;
+        markChanged(state);
+        prepareCopy(state);
+    }
+    state.copy[prop] = value;
+}
+
+function markChanged(state) {
+    if (!state.modified) {
+        state.modified = true;
+        if (state.parent) markChanged(state.parent);
+    }
+}
+
+function prepareCopy(state) {
+    if (!state.copy) state.copy = clonePotentialDraft(state.base);
+}
+
+function clonePotentialDraft(base) {
+    var state = base && base[DRAFT_STATE];
+    if (state) {
+        state.finalizing = true;
+        var draft = shallowCopy(state.draft, true);
+        state.finalizing = false;
+        return draft;
+    }
+    return shallowCopy(base);
+}
+
+function proxyProperty(draft, prop, enumerable) {
+    var desc = descriptors[prop];
+    if (desc) {
+        desc.enumerable = enumerable;
+    } else {
+        descriptors[prop] = desc = {
+            configurable: true,
+            enumerable: enumerable,
+            get: function get$$1() {
+                return _get(this[DRAFT_STATE], prop);
+            },
+            set: function set$$1(value) {
+                _set(this[DRAFT_STATE], prop, value);
+            }
+        };
+    }
+    Object.defineProperty(draft, prop, desc);
+}
+
+function assertUnrevoked(state) {
+    if (state.revoked === true) throw new Error("Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? " + JSON.stringify(source(state)));
+}
+
+// This looks expensive, but only proxies are visited, and only objects without known changes are scanned.
+function markChangesSweep(scope) {
+    // The natural order of drafts in the `scope` array is based on when they
+    // were accessed. By processing drafts in reverse natural order, we have a
+    // better chance of processing leaf nodes first. When a leaf node is known to
+    // have changed, we can avoid any traversal of its ancestor nodes.
+    for (var i = scope.length - 1; i >= 0; i--) {
+        var state = scope[i];
+        if (state.modified === false) {
+            if (Array.isArray(state.base)) {
+                if (hasArrayChanges(state)) markChanged(state);
+            } else if (hasObjectChanges(state)) markChanged(state);
+        }
+    }
+}
+
+function markChangesRecursively(object) {
+    if (!object || (typeof object === "undefined" ? "undefined" : _typeof(object)) !== "object") return;
+    var state = object[DRAFT_STATE];
+    if (!state) return;
+    var base = state.base,
+        draft = state.draft,
+        assigned = state.assigned;
+
+    if (!Array.isArray(object)) {
+        // Look for added keys.
+        Object.keys(draft).forEach(function (key) {
+            // The `undefined` check is a fast path for pre-existing keys.
+            if (base[key] === undefined && !has(base, key)) {
+                assigned[key] = true;
+                markChanged(state);
+            } else if (!assigned[key]) {
+                // Only untouched properties trigger recursion.
+                markChangesRecursively(draft[key]);
+            }
+        });
+        // Look for removed keys.
+        Object.keys(base).forEach(function (key) {
+            // The `undefined` check is a fast path for pre-existing keys.
+            if (draft[key] === undefined && !has(draft, key)) {
+                assigned[key] = false;
+                markChanged(state);
+            }
+        });
+    } else if (hasArrayChanges(state)) {
+        markChanged(state);
+        assigned.length = true;
+        if (draft.length < base.length) {
+            for (var i = draft.length; i < base.length; i++) {
+                assigned[i] = false;
+            }
+        } else {
+            for (var _i = base.length; _i < draft.length; _i++) {
+                assigned[_i] = true;
+            }
+        }
+        for (var _i2 = 0; _i2 < draft.length; _i2++) {
+            // Only untouched indices trigger recursion.
+            if (assigned[_i2] === undefined) markChangesRecursively(draft[_i2]);
+        }
+    }
+}
+
+function hasObjectChanges(state) {
+    var base = state.base,
+        draft = state.draft;
+
+    // Search for added keys. Start at the back, because non-numeric keys
+    // are ordered by time of definition on the object.
+
+    var keys = Object.keys(draft);
+    for (var i = keys.length - 1; i >= 0; i--) {
+        // The `undefined` check is a fast path for pre-existing keys.
+        if (base[keys[i]] === undefined && !has(base, keys[i])) {
+            return true;
+        }
+    }
+
+    // Since no keys have been added, we can compare lengths to know if an
+    // object has been deleted.
+    return keys.length !== Object.keys(base).length;
+}
+
+function hasArrayChanges(state) {
+    var draft = state.draft;
+
+    if (draft.length !== state.base.length) return true;
+    // See #116
+    // If we first shorten the length, our array interceptors will be removed.
+    // If after that new items are added, result in the same original length,
+    // those last items will have no intercepting property.
+    // So if there is no own descriptor on the last position, we know that items were removed and added
+    // N.B.: splice, unshift, etc only shift values around, but not prop descriptors, so we only have to check
+    // the last one
+    var descriptor = Object.getOwnPropertyDescriptor(draft, draft.length - 1);
+    // descriptor can be null, but only for newly created sparse arrays, eg. new Array(10)
+    if (descriptor && !descriptor.get) return true;
+    // For all other cases, we don't have to compare, as they would have been picked up by the index setters
+    return false;
+}
+
+function createHiddenProperty(target, prop, value) {
+    Object.defineProperty(target, prop, {
+        value: value,
+        enumerable: false,
+        writable: true
+    });
+}
+
+
+
+var legacyProxy = Object.freeze({
+	scopes: scopes,
+	currentScope: currentScope,
+	willFinalize: willFinalize,
+	createDraft: createDraft
+});
+
+// @ts-check
+
+// For nested produce calls:
+var scopes$1 = [];
+var currentScope$1 = function currentScope() {
+    return scopes$1[scopes$1.length - 1];
+};
+
+// Do nothing before being finalized.
+function willFinalize$1() {}
+
+function createDraft$1(base, parent) {
+    var state = {
+        // Track which produce call this is associated with.
+        scope: parent ? parent.scope : currentScope$1(),
+        // True for both shallow and deep changes.
+        modified: false,
+        // Used during finalization.
+        finalized: false,
+        // Track which properties have been assigned (true) or deleted (false).
+        assigned: {},
+        // The parent draft state.
+        parent: parent,
+        // The base state.
+        base: base,
+        // The base proxy.
+        draft: null,
+        // Any property proxies.
+        drafts: {},
+        // The base copy with any updated values.
+        copy: null,
+        // Called by the `produce` function.
+        revoke: null
+    };
+
+    var _ref = Array.isArray(base) ? Proxy.revocable([state], arrayTraps) : Proxy.revocable(state, objectTraps),
+        revoke = _ref.revoke,
+        proxy = _ref.proxy;
+
+    state.draft = proxy;
+    state.revoke = revoke;
+
+    state.scope.push(state);
+    return proxy;
+}
+
+var objectTraps = {
+    get: get$1,
+    has: function has$$1(target, prop) {
+        return prop in source$1(target);
+    },
+    ownKeys: function ownKeys$$1(target) {
+        return Reflect.ownKeys(source$1(target));
+    },
+
+    set: set$1,
+    deleteProperty: deleteProperty,
+    getOwnPropertyDescriptor: getOwnPropertyDescriptor,
+    defineProperty: function defineProperty() {
+        throw new Error("Object.defineProperty() cannot be used on an Immer draft"); // prettier-ignore
+    },
+    getPrototypeOf: function getPrototypeOf(target) {
+        return Object.getPrototypeOf(target.base);
+    },
+    setPrototypeOf: function setPrototypeOf() {
+        throw new Error("Object.setPrototypeOf() cannot be used on an Immer draft"); // prettier-ignore
+    }
+};
+
+var arrayTraps = {};
+each(objectTraps, function (key, fn) {
+    arrayTraps[key] = function () {
+        arguments[0] = arguments[0][0];
+        return fn.apply(this, arguments);
+    };
+});
+arrayTraps.deleteProperty = function (state, prop) {
+    if (isNaN(parseInt(prop))) {
+        throw new Error("Immer only supports deleting array indices"); // prettier-ignore
+    }
+    return objectTraps.deleteProperty.call(this, state[0], prop);
+};
+arrayTraps.set = function (state, prop, value) {
+    if (prop !== "length" && isNaN(parseInt(prop))) {
+        throw new Error("Immer only supports setting array indices and the 'length' property"); // prettier-ignore
+    }
+    return objectTraps.set.call(this, state[0], prop, value);
+};
+
+function source$1(state) {
+    return state.copy || state.base;
+}
+
+function get$1(state, prop) {
+    if (prop === DRAFT_STATE) return state;
+    var drafts = state.drafts;
+
+    // Check for existing draft in unmodified state.
+
+    if (!state.modified && has(drafts, prop)) {
+        return drafts[prop];
+    }
+
+    var value = source$1(state)[prop];
+    if (state.finalized || !isDraftable(value)) return value;
+
+    // Check for existing draft in modified state.
+    if (state.modified) {
+        // Assigned values are never drafted. This catches any drafts we created, too.
+        if (value !== state.base[prop]) return value;
+        // Store drafts on the copy (when one exists).
+        drafts = state.copy;
+    }
+
+    return drafts[prop] = createDraft$1(value, state);
+}
+
+function set$1(state, prop, value) {
+    if (!state.modified) {
+        // Optimize based on value's truthiness. Truthy values are guaranteed to
+        // never be undefined, so we can avoid the `in` operator. Lastly, truthy
+        // values may be drafts, but falsy values are never drafts.
+        var isUnchanged = value ? is(state.base[prop], value) || value === state.drafts[prop] : is(state.base[prop], value) && prop in state.base;
+        if (isUnchanged) return true;
+        markChanged$1(state);
+    }
+    state.assigned[prop] = true;
+    state.copy[prop] = value;
+    return true;
+}
+
+function deleteProperty(state, prop) {
+    // The `undefined` check is a fast path for pre-existing keys.
+    if (state.base[prop] !== undefined || prop in state.base) {
+        state.assigned[prop] = false;
+        markChanged$1(state);
+    }
+    if (state.copy) delete state.copy[prop];
+    return true;
+}
+
+function getOwnPropertyDescriptor(state, prop) {
+    var owner = source$1(state);
+    var desc = Reflect.getOwnPropertyDescriptor(owner, prop);
+    if (desc) {
+        desc.writable = true;
+        desc.configurable = !Array.isArray(owner) || prop !== "length";
+    }
+    return desc;
+}
+
+function markChanged$1(state) {
+    if (!state.modified) {
+        state.modified = true;
+        state.copy = assign(shallowCopy(state.base), state.drafts);
+        state.drafts = null;
+        if (state.parent) markChanged$1(state.parent);
+    }
+}
+
+var modernProxy = Object.freeze({
+	scopes: scopes$1,
+	currentScope: currentScope$1,
+	willFinalize: willFinalize$1,
+	createDraft: createDraft$1
+});
+
+function generatePatches(state, basePath, patches, inversePatches) {
+    Array.isArray(state.base) ? generateArrayPatches(state, basePath, patches, inversePatches) : generateObjectPatches(state, basePath, patches, inversePatches);
+}
+
+function generateArrayPatches(state, basePath, patches, inversePatches) {
+    var base = state.base,
+        copy = state.copy,
+        assigned = state.assigned;
+
+    var minLength = Math.min(base.length, copy.length);
+
+    // Look for replaced indices.
+    for (var i = 0; i < minLength; i++) {
+        if (assigned[i] && base[i] !== copy[i]) {
+            var path = basePath.concat(i);
+            patches.push({ op: "replace", path: path, value: copy[i] });
+            inversePatches.push({ op: "replace", path: path, value: base[i] });
+        }
+    }
+
+    // Did the array expand?
+    if (minLength < copy.length) {
+        for (var _i = minLength; _i < copy.length; _i++) {
+            patches.push({
+                op: "add",
+                path: basePath.concat(_i),
+                value: copy[_i]
+            });
+        }
+        inversePatches.push({
+            op: "replace",
+            path: basePath.concat("length"),
+            value: base.length
+        });
+    }
+
+    // ...or did it shrink?
+    else if (minLength < base.length) {
+            patches.push({
+                op: "replace",
+                path: basePath.concat("length"),
+                value: copy.length
+            });
+            for (var _i2 = minLength; _i2 < base.length; _i2++) {
+                inversePatches.push({
+                    op: "add",
+                    path: basePath.concat(_i2),
+                    value: base[_i2]
+                });
+            }
+        }
+}
+
+function generateObjectPatches(state, basePath, patches, inversePatches) {
+    var base = state.base,
+        copy = state.copy;
+
+    each(state.assigned, function (key, assignedValue) {
+        var origValue = base[key];
+        var value = copy[key];
+        var op = !assignedValue ? "remove" : key in base ? "replace" : "add";
+        if (origValue === value && op === "replace") return;
+        var path = basePath.concat(key);
+        patches.push(op === "remove" ? { op: op, path: path } : { op: op, path: path, value: value });
+        inversePatches.push(op === "add" ? { op: "remove", path: path } : op === "remove" ? { op: "add", path: path, value: origValue } : { op: "replace", path: path, value: origValue });
+    });
+}
+
+function applyPatches(draft, patches) {
+    for (var i = 0; i < patches.length; i++) {
+        var patch = patches[i];
+        var path = patch.path;
+
+        if (path.length === 0 && patch.op === "replace") {
+            draft = patch.value;
+        } else {
+            var base = draft;
+            for (var _i3 = 0; _i3 < path.length - 1; _i3++) {
+                base = base[path[_i3]];
+                if (!base || (typeof base === "undefined" ? "undefined" : _typeof(base)) !== "object") throw new Error("Cannot apply patch, path doesn't resolve: " + path.join("/")); // prettier-ignore
+            }
+            var key = path[path.length - 1];
+            switch (patch.op) {
+                case "replace":
+                case "add":
+                    // TODO: add support is not extensive, it does not support insertion or `-` atm!
+                    base[key] = patch.value;
+                    break;
+                case "remove":
+                    if (Array.isArray(base)) {
+                        if (key !== base.length - 1) throw new Error("Only the last index of an array can be removed, index: " + key + ", length: " + base.length); // prettier-ignore
+                        base.length -= 1;
+                    } else {
+                        delete base[key];
+                    }
+                    break;
+                default:
+                    throw new Error("Unsupported patch operation: " + patch.op);
+            }
+        }
+    }
+    return draft;
+}
+
+function verifyMinified() {}
+
+var configDefaults = {
+    useProxies: typeof Proxy !== "undefined" && typeof Reflect !== "undefined",
+    autoFreeze: typeof process !== "undefined" ? "development" !== "production" : verifyMinified.name === "verifyMinified",
+    onAssign: null,
+    onDelete: null,
+    onCopy: null
+};
+
+var Immer = function () {
+    function Immer(config) {
+        classCallCheck(this, Immer);
+
+        assign(this, configDefaults, config);
+        this.setUseProxies(this.useProxies);
+        this.produce = this.produce.bind(this);
+    }
+
+    createClass(Immer, [{
+        key: "produce",
+        value: function produce(base, recipe, patchListener) {
+            var _this = this;
+
+            // curried invocation
+            if (typeof base === "function" && typeof recipe !== "function") {
+                var defaultBase = recipe;
+                recipe = base;
+
+                // prettier-ignore
+                return function () {
+                    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                        args[_key - 1] = arguments[_key];
+                    }
+
+                    var base = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultBase;
+                    return _this.produce(base, function (draft) {
+                        var _recipe;
+
+                        return (_recipe = recipe).call.apply(_recipe, [draft, draft].concat(args));
+                    });
+                };
+            }
+
+            // prettier-ignore
+            {
+                if (typeof recipe !== "function") throw new Error("if first argument is not a function, the second argument to produce should be a function");
+                if (patchListener !== undefined && typeof patchListener !== "function") throw new Error("the third argument of a producer should not be set or a function");
+            }
+
+            var result = void 0;
+            // Only create proxies for plain objects/arrays.
+            if (!isDraftable(base)) {
+                result = recipe(base);
+                if (result === undefined) return base;
+            }
+            // The given value must be proxied.
+            else {
+                    this.scopes.push([]);
+                    var baseDraft = this.createDraft(base);
+                    try {
+                        result = recipe.call(baseDraft, baseDraft);
+                        this.willFinalize(result, baseDraft, !!patchListener);
+
+                        // Never generate patches when no listener exists.
+                        var patches = patchListener && [],
+                            inversePatches = patchListener && [];
+
+                        // Finalize the modified draft...
+                        if (result === undefined || result === baseDraft) {
+                            result = this.finalize(baseDraft, [], patches, inversePatches);
+                        }
+                        // ...or use a replacement value.
+                        else {
+                                // Users must never modify the draft _and_ return something else.
+                                if (baseDraft[DRAFT_STATE].modified) throw new Error("An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft."); // prettier-ignore
+
+                                // Finalize the replacement in case it contains (or is) a subset of the draft.
+                                if (isDraftable(result)) result = this.finalize(result);
+
+                                if (patchListener) {
+                                    patches.push({
+                                        op: "replace",
+                                        path: [],
+                                        value: result
+                                    });
+                                    inversePatches.push({
+                                        op: "replace",
+                                        path: [],
+                                        value: base
+                                    });
+                                }
+                            }
+                    } finally {
+                        this.currentScope().forEach(function (state) {
+                            return state.revoke();
+                        });
+                        this.scopes.pop();
+                    }
+                    patchListener && patchListener(patches, inversePatches);
+                }
+            // Normalize the result.
+            return result === NOTHING ? undefined : result;
+        }
+    }, {
+        key: "setAutoFreeze",
+        value: function setAutoFreeze(value) {
+            this.autoFreeze = value;
+        }
+    }, {
+        key: "setUseProxies",
+        value: function setUseProxies(value) {
+            this.useProxies = value;
+            assign(this, value ? modernProxy : legacyProxy);
+        }
+    }, {
+        key: "applyPatches",
+        value: function applyPatches$$1(base, patches) {
+            // Mutate the base state when a draft is passed.
+            if (isDraft(base)) {
+                return applyPatches(base, patches);
+            }
+            // Otherwise, produce a copy of the base state.
+            return this.produce(base, function (draft) {
+                return applyPatches(draft, patches);
+            });
+        }
+        /**
+         * @internal
+         * Finalize a draft, returning either the unmodified base state or a modified
+         * copy of the base state.
+         */
+
+    }, {
+        key: "finalize",
+        value: function finalize(draft, path, patches, inversePatches) {
+            var _this2 = this;
+
+            var state = draft[DRAFT_STATE];
+            if (!state) {
+                if (Object.isFrozen(draft)) return draft;
+                return this.finalizeTree(draft);
+            }
+            // Never finalize drafts owned by an outer scope.
+            if (state.scope !== this.currentScope()) {
+                return draft;
+            }
+            if (!state.modified) return state.base;
+            if (!state.finalized) {
+                state.finalized = true;
+                this.finalizeTree(state.draft, path, patches, inversePatches);
+                if (this.onDelete) {
+                    // The `assigned` object is unreliable with ES5 drafts.
+                    if (this.useProxies) {
+                        var assigned = state.assigned;
+
+                        for (var prop in assigned) {
+                            if (!assigned[prop]) this.onDelete(state, prop);
+                        }
+                    } else {
+                        var base = state.base,
+                            copy = state.copy;
+
+                        each(base, function (prop) {
+                            if (!has(copy, prop)) _this2.onDelete(state, prop);
+                        });
+                    }
+                }
+                if (this.onCopy) this.onCopy(state);
+
+                // Nested producers must never auto-freeze their result,
+                // because it may contain drafts from parent producers.
+                if (this.autoFreeze && this.scopes.length === 1) {
+                    Object.freeze(state.copy);
+                }
+
+                if (patches) generatePatches(state, path, patches, inversePatches);
+            }
+            return state.copy;
+        }
+        /**
+         * @internal
+         * Finalize all drafts in the given state tree.
+         */
+
+    }, {
+        key: "finalizeTree",
+        value: function finalizeTree(root, path, patches, inversePatches) {
+            var _this3 = this;
+
+            var state = root[DRAFT_STATE];
+            if (state) {
+                if (!this.useProxies) {
+                    state.finalizing = true;
+                    state.copy = shallowCopy(state.draft, true);
+                    state.finalizing = false;
+                }
+                root = state.copy;
+            }
+
+            var onAssign = this.onAssign;
+
+            var finalizeProperty = function finalizeProperty(prop, value, parent) {
+                if (value === parent) {
+                    throw Error("Immer forbids circular references");
+                }
+
+                // The only possible draft (in the scope of a `finalizeTree` call) is the `root` object.
+                var inDraft = !!state && parent === root;
+
+                if (isDraft(value)) {
+                    value =
+                    // Patches are never generated for assigned properties.
+                    patches && inDraft && !state.assigned[prop] ? _this3.finalize(value, path.concat(prop), patches, inversePatches) // prettier-ignore
+                    : _this3.finalize(value);
+
+                    // Preserve non-enumerable properties.
+                    if (Array.isArray(parent) || isEnumerable(parent, prop)) {
+                        parent[prop] = value;
+                    } else {
+                        Object.defineProperty(parent, prop, { value: value });
+                    }
+
+                    // Unchanged drafts are never passed to the `onAssign` hook.
+                    if (inDraft && value === state.base[prop]) return;
+                }
+                // Unchanged draft properties are ignored.
+                else if (inDraft && is(value, state.base[prop])) {
+                        return;
+                    }
+                    // Search new objects for unfinalized drafts. Frozen objects should never contain drafts.
+                    else if (isDraftable(value) && !Object.isFrozen(value)) {
+                            each(value, finalizeProperty);
+                        }
+
+                if (inDraft && onAssign) {
+                    onAssign(state, prop, value);
+                }
+            };
+
+            each(root, finalizeProperty);
+            return root;
+        }
+    }]);
+    return Immer;
+}();
+
+var immer = new Immer();
+
+/**
+ * The `produce` function takes a value and a "recipe function" (whose
+ * return value often depends on the base state). The recipe function is
+ * free to mutate its first argument however it wants. All mutations are
+ * only ever applied to a __copy__ of the base state.
+ *
+ * Pass only a function to create a "curried producer" which relieves you
+ * from passing the recipe function every time.
+ *
+ * Only plain objects and arrays are made mutable. All other objects are
+ * considered uncopyable.
+ *
+ * Note: This function is __bound__ to its `Immer` instance.
+ *
+ * @param {any} base - the initial state
+ * @param {Function} producer - function that receives a proxy of the base state as first argument and which can be freely modified
+ * @param {Function} patchListener - optional function that will be called with all the patches produced here
+ * @returns {any} a new state, or the initial state if nothing was modified
+ */
+var produce = immer.produce;
+/**
+ * Pass true to automatically freeze all copies created by Immer.
+ *
+ * By default, auto-freezing is disabled in production.
+ */
+var setAutoFreeze = immer.setAutoFreeze.bind(immer);
+
+/**
+ * Pass true to use the ES2015 `Proxy` class when creating drafts, which is
+ * always faster than using ES5 proxies.
+ *
+ * By default, feature detection is used, so calling this is rarely necessary.
+ */
+var setUseProxies = immer.setUseProxies.bind(immer);
+
+/**
+ * Apply an array of Immer patches to the first argument.
+ *
+ * This function is a producer, which means copy-on-write is in effect.
+ */
+var applyPatches$1 = immer.applyPatches.bind(immer);
+
+
+/* harmony default export */ __webpack_exports__["default"] = (produce);
+//# sourceMappingURL=immer.module.js.map
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -17917,6 +19574,44 @@ if ( !noGlobal ) {
 
 return jQuery;
 } );
+
+
+/***/ }),
+
+/***/ "./node_modules/json-stringify-safe/stringify.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/json-stringify-safe/stringify.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+exports = module.exports = stringify
+exports.getSerialize = serializer
+
+function stringify(obj, replacer, spaces, cycleReplacer) {
+  return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
+}
+
+function serializer(replacer, cycleReplacer) {
+  var stack = [], keys = []
+
+  if (cycleReplacer == null) cycleReplacer = function(key, value) {
+    if (stack[0] === value) return "[Circular ~]"
+    return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
+  }
+
+  return function(key, value) {
+    if (stack.length > 0) {
+      var thisPos = stack.indexOf(this)
+      ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
+      ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
+      if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
+    }
+    else stack.push(value)
+
+    return replacer == null ? value : replacer.call(this, key, value)
+  }
+}
 
 
 /***/ }),
@@ -35582,6 +37277,295 @@ module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
+
+/***/ }),
+
+/***/ "./node_modules/pathington/es/constants.js":
+/*!*************************************************!*\
+  !*** ./node_modules/pathington/es/constants.js ***!
+  \*************************************************/
+/*! exports provided: CACHE, DOTTY_WITH_BRACKETS_SYNTAX, MAX_CACHE_SIZE, NUMBER, QUOTED_KEY, VALID_QUOTES, VALID_KEY, WHITE_SPACE */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CACHE", function() { return CACHE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DOTTY_WITH_BRACKETS_SYNTAX", function() { return DOTTY_WITH_BRACKETS_SYNTAX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAX_CACHE_SIZE", function() { return MAX_CACHE_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMBER", function() { return NUMBER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QUOTED_KEY", function() { return QUOTED_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALID_QUOTES", function() { return VALID_QUOTES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALID_KEY", function() { return VALID_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WHITE_SPACE", function() { return WHITE_SPACE; });
+/**
+ * @constant {Object} CACHE
+ *
+ * @property {function} clear clear the cache results
+ * @property {Object} results the map of path => array results
+ * @property {number} size the size of the cache
+ */
+var CACHE = {
+  clear: function clear() {
+    CACHE.results = {};
+    CACHE.size = 0;
+  },
+  results: {},
+  size: 0
+};
+/**
+ * @constant {RegExp} DOTTY_WITH_BRACKETS_SYNTAX
+ */
+
+var DOTTY_WITH_BRACKETS_SYNTAX = /"[^"]+"|`[^`]+`|'[^']+'|[^.[\]]+/g;
+/**
+ * @constant {number} MAX_CACHE_SIZE
+ */
+
+var MAX_CACHE_SIZE = 500;
+/**
+ * @constant {RegExp} NUMBER
+ */
+
+var NUMBER = /^\d+$/i;
+/**
+ * @constant {RegExp} QUOTED_KEY
+ */
+
+var QUOTED_KEY = /^"[^"]+"|`[^`]+`|'[^']+'$/;
+/**
+ * @constant {Array<string>} VALID_QUOTES
+ */
+
+var VALID_QUOTES = /^["'`]{1}$/;
+/**
+ * @constant {RegExp} VALID_KEY
+ */
+
+var VALID_KEY = /^\d+$|^[a-zA-Z_$][\w$]+$/;
+/**
+ * @constant {RegExp} WHITE_SPACE
+ */
+
+var WHITE_SPACE = /\s/;
+
+/***/ }),
+
+/***/ "./node_modules/pathington/es/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/pathington/es/index.js ***!
+  \*********************************************/
+/*! exports provided: create, parse */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./node_modules/pathington/es/constants.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./node_modules/pathington/es/utils.js");
+// constants
+ // utils
+
+
+var isArray = Array.isArray;
+/**
+ * @function create
+ *
+ * @description
+ * create a new path string based on the path and quote passed
+ *
+ * @param {Array<number|string>} path the path to convert to a string
+ * @param {string} [quote="] the quote string to use when quoting keys
+ * @returns {string} the path string
+ */
+
+var create = function create(path, quote) {
+  if (quote === void 0) {
+    quote = '"';
+  }
+
+  if (!isArray(path)) {
+    throw new ReferenceError('path passed must be an array');
+  }
+
+  if (!_constants__WEBPACK_IMPORTED_MODULE_0__["VALID_QUOTES"].test(quote)) {
+    throw new SyntaxError("quote " + quote + " passed is invalid, must be \", `, or '.");
+  }
+
+  var pathString = path.reduce(Object(_utils__WEBPACK_IMPORTED_MODULE_1__["createGetNormalizedCreateKey"])(quote), '');
+  return pathString[0] === '.' ? pathString.slice(1) : pathString;
+};
+/**
+ * @function parse
+ *
+ * @description
+ * the path parsed into a valid array of keys / indices
+ *
+ * @param {Array<number|string>|number|string} path the path to parse
+ * @returns {Array<number|string>} the parsed path
+ */
+
+var parse = function parse(path) {
+  if (typeof path === 'string') {
+    return Object(_utils__WEBPACK_IMPORTED_MODULE_1__["parseStringPath"])(path);
+  }
+
+  if (isArray(path)) {
+    return Object(_utils__WEBPACK_IMPORTED_MODULE_1__["map"])(path, _utils__WEBPACK_IMPORTED_MODULE_1__["getNormalizedParseKey"]);
+  }
+
+  var normalizedParseKey = Object(_utils__WEBPACK_IMPORTED_MODULE_1__["getNormalizedParseKey"])(path);
+  return [typeof normalizedParseKey === 'number' ? normalizedParseKey : "" + normalizedParseKey];
+};
+
+/***/ }),
+
+/***/ "./node_modules/pathington/es/utils.js":
+/*!*********************************************!*\
+  !*** ./node_modules/pathington/es/utils.js ***!
+  \*********************************************/
+/*! exports provided: isNumericKey, isQuotedKey, map, shouldBeInBrackets, shouldBeInQuotes, createGetNormalizedCreateKey, getNormalizedParseKey, parseStringPath */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isNumericKey", function() { return isNumericKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isQuotedKey", function() { return isQuotedKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "map", function() { return map; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shouldBeInBrackets", function() { return shouldBeInBrackets; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shouldBeInQuotes", function() { return shouldBeInQuotes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createGetNormalizedCreateKey", function() { return createGetNormalizedCreateKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNormalizedParseKey", function() { return getNormalizedParseKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseStringPath", function() { return parseStringPath; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./node_modules/pathington/es/constants.js");
+// constants
+
+/**
+ * @function isNumericKey
+ *
+ * @description
+ * is the key passed a numeric string
+ *
+ * @param {string} key the key to test
+ * @returns {boolean} is the key passed a numeric string
+ */
+
+var isNumericKey = function isNumericKey(key) {
+  return !!(key && key.length) && _constants__WEBPACK_IMPORTED_MODULE_0__["NUMBER"].test(key);
+};
+/**
+ * @function isQuotedKey
+ *
+ * @description
+ * is the key passed a quoted key
+ *
+ * @param {string} key the key to test
+ * @returns {boolean} is the key a quoted key
+ */
+
+var isQuotedKey = function isQuotedKey(key) {
+  return _constants__WEBPACK_IMPORTED_MODULE_0__["QUOTED_KEY"].test(key);
+};
+/**
+ * @function map
+ *
+ * @description
+ * map the array to a new array based on fn
+ *
+ * @param {Array<*>} array the array to map
+ * @param {function} fn the function to call with each iteration value
+ * @returns {Array<*>} the mapped array
+ */
+
+var map = function map(array, fn) {
+  var length = array.length;
+  var mapped = [];
+
+  for (var index = 0; index < length; index++) {
+    mapped[index] = fn(array[index]);
+  }
+
+  return mapped;
+};
+/**
+ * @function shouldBeInBrackets
+ *
+ * @description
+ * should the key passed be encased in brackets when in the path string
+ *
+ * @param {*} key the key that is being added to the path string
+ * @returns {boolean} should the key be in brackets
+ */
+
+var shouldBeInBrackets = function shouldBeInBrackets(key) {
+  return typeof key === 'number' || isNumericKey(key) || isQuotedKey(key);
+};
+/**
+ * @function shouldBeInQuotes
+ *
+ * @description
+ * should the key passed be encased in quotes when in the path string
+ *
+ * @param {*} key the key that is being added to the path string
+ * @returns {boolean} should the key be in quotes
+ */
+
+var shouldBeInQuotes = function shouldBeInQuotes(key) {
+  return _constants__WEBPACK_IMPORTED_MODULE_0__["WHITE_SPACE"].test(key) || !_constants__WEBPACK_IMPORTED_MODULE_0__["VALID_KEY"].test(key);
+};
+/**
+ * @function createGetNormalizedCreateKey
+ *
+ * @description
+ * get the normalized path string based on the quote and key passed
+ *
+ * @param {string} [quote="] the quote string to use
+ * @returns {function(string, *): string}
+ */
+
+var createGetNormalizedCreateKey = function createGetNormalizedCreateKey(quote) {
+  return function (existingString, key) {
+    var normalizedKey = shouldBeInQuotes(key) ? "" + quote + key + quote : key;
+    return existingString + (shouldBeInBrackets(normalizedKey) ? "[" + normalizedKey + "]" : "." + normalizedKey);
+  };
+};
+/**
+ * @function getNormalizedParseKey
+ *
+ * @description
+ * get the key as a number if parseable, or as a quoted string if applicable
+ *
+ * @param {string} key the key to try to parse
+ * @returns {number|string} the parsed key
+ */
+
+var getNormalizedParseKey = function getNormalizedParseKey(key) {
+  var cleanKey = isQuotedKey(key) ? key.slice(1, key.length - 1) : key;
+  return isNumericKey(cleanKey) ? +cleanKey : cleanKey;
+};
+/**
+ * @function parsePath
+ *
+ * @description
+ * parse the path, memoizing the results
+ *
+ * @param {string} path the path to parse
+ * @returns {Array<number|string>} the parsed path
+ */
+
+var parseStringPath = function parseStringPath(path) {
+  if (_constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].results[path]) {
+    return _constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].results[path];
+  }
+
+  if (_constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].size > _constants__WEBPACK_IMPORTED_MODULE_0__["MAX_CACHE_SIZE"]) {
+    _constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].clear();
+  }
+
+  _constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].results[path] = path ? map(path.match(_constants__WEBPACK_IMPORTED_MODULE_0__["DOTTY_WITH_BRACKETS_SYNTAX"]), getNormalizedParseKey) : [path];
+  _constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].size++;
+  return _constants__WEBPACK_IMPORTED_MODULE_0__["CACHE"].results[path];
+};
 
 /***/ }),
 
@@ -64095,6 +66079,699 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/redux-devtools-extension/index.js":
+/*!********************************************************!*\
+  !*** ./node_modules/redux-devtools-extension/index.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var compose = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js").compose;
+
+exports.__esModule = true;
+exports.composeWithDevTools = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :
+    function() {
+      if (arguments.length === 0) return undefined;
+      if (typeof arguments[0] === 'object') return compose;
+      return compose.apply(null, arguments);
+    }
+);
+
+exports.devToolsEnhancer = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION__ :
+    function() { return function(noop) { return noop; } }
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/redux-immutable-state-invariant/dist/index.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/redux-immutable-state-invariant/dist/index.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = immutableStateInvariantMiddleware;
+
+var _invariant = __webpack_require__(/*! invariant */ "./node_modules/invariant/browser.js");
+
+var _invariant2 = _interopRequireDefault(_invariant);
+
+var _jsonStringifySafe = __webpack_require__(/*! json-stringify-safe */ "./node_modules/json-stringify-safe/stringify.js");
+
+var _jsonStringifySafe2 = _interopRequireDefault(_jsonStringifySafe);
+
+var _isImmutable = __webpack_require__(/*! ./isImmutable */ "./node_modules/redux-immutable-state-invariant/dist/isImmutable.js");
+
+var _isImmutable2 = _interopRequireDefault(_isImmutable);
+
+var _trackForMutations = __webpack_require__(/*! ./trackForMutations */ "./node_modules/redux-immutable-state-invariant/dist/trackForMutations.js");
+
+var _trackForMutations2 = _interopRequireDefault(_trackForMutations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BETWEEN_DISPATCHES_MESSAGE = ['A state mutation was detected between dispatches, in the path `%s`.', 'This may cause incorrect behavior.', '(http://redux.js.org/docs/Troubleshooting.html#never-mutate-reducer-arguments)'].join(' ');
+
+var INSIDE_DISPATCH_MESSAGE = ['A state mutation was detected inside a dispatch, in the path: `%s`.', 'Take a look at the reducer(s) handling the action %s.', '(http://redux.js.org/docs/Troubleshooting.html#never-mutate-reducer-arguments)'].join(' ');
+
+function immutableStateInvariantMiddleware() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var _options$isImmutable = options.isImmutable,
+      isImmutable = _options$isImmutable === undefined ? _isImmutable2.default : _options$isImmutable,
+      ignore = options.ignore;
+
+  var track = _trackForMutations2.default.bind(null, isImmutable, ignore);
+
+  return function (_ref) {
+    var getState = _ref.getState;
+
+    var state = getState();
+    var tracker = track(state);
+
+    var result = void 0;
+    return function (next) {
+      return function (action) {
+        state = getState();
+
+        result = tracker.detectMutations();
+        // Track before potentially not meeting the invariant
+        tracker = track(state);
+
+        (0, _invariant2.default)(!result.wasMutated, BETWEEN_DISPATCHES_MESSAGE, (result.path || []).join('.'));
+
+        var dispatchedAction = next(action);
+        state = getState();
+
+        result = tracker.detectMutations();
+        // Track before potentially not meeting the invariant
+        tracker = track(state);
+
+        result.wasMutated && (0, _invariant2.default)(!result.wasMutated, INSIDE_DISPATCH_MESSAGE, (result.path || []).join('.'), (0, _jsonStringifySafe2.default)(action));
+
+        return dispatchedAction;
+      };
+    };
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/redux-immutable-state-invariant/dist/isImmutable.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/redux-immutable-state-invariant/dist/isImmutable.js ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.default = isImmutableDefault;
+function isImmutableDefault(value) {
+  return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== 'object' || value === null || typeof value === 'undefined';
+}
+
+/***/ }),
+
+/***/ "./node_modules/redux-immutable-state-invariant/dist/trackForMutations.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/redux-immutable-state-invariant/dist/trackForMutations.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = trackForMutations;
+function trackForMutations(isImmutable, ignore, obj) {
+  var trackedProperties = trackProperties(isImmutable, ignore, obj);
+  return {
+    detectMutations: function detectMutations() {
+      return _detectMutations(isImmutable, ignore, trackedProperties, obj);
+    }
+  };
+}
+
+function trackProperties(isImmutable) {
+  var ignore = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var obj = arguments[2];
+  var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+
+  var tracked = { value: obj };
+
+  if (!isImmutable(obj)) {
+    tracked.children = {};
+
+    for (var key in obj) {
+      var childPath = path.concat(key);
+      if (ignore.length && ignore.indexOf(childPath.join('.')) !== -1) {
+        continue;
+      }
+
+      tracked.children[key] = trackProperties(isImmutable, ignore, obj[key], childPath);
+    }
+  }
+  return tracked;
+}
+
+function _detectMutations(isImmutable) {
+  var ignore = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var trackedProperty = arguments[2];
+  var obj = arguments[3];
+  var sameParentRef = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+  var path = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : [];
+
+  var prevObj = trackedProperty ? trackedProperty.value : undefined;
+
+  var sameRef = prevObj === obj;
+
+  if (sameParentRef && !sameRef && !Number.isNaN(obj)) {
+    return { wasMutated: true, path: path };
+  }
+
+  if (isImmutable(prevObj) || isImmutable(obj)) {
+    return { wasMutated: false };
+  }
+
+  // Gather all keys from prev (tracked) and after objs
+  var keysToDetect = {};
+  Object.keys(trackedProperty.children).forEach(function (key) {
+    keysToDetect[key] = true;
+  });
+  Object.keys(obj).forEach(function (key) {
+    keysToDetect[key] = true;
+  });
+
+  var keys = Object.keys(keysToDetect);
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var childPath = path.concat(key);
+    if (ignore.length && ignore.indexOf(childPath.join('.')) !== -1) {
+      continue;
+    }
+
+    var result = _detectMutations(isImmutable, ignore, trackedProperty.children[key], obj[key], sameRef, childPath);
+
+    if (result.wasMutated) {
+      return result;
+    }
+  }
+  return { wasMutated: false };
+}
+
+/***/ }),
+
+/***/ "./node_modules/redux-starter-kit/dist/redux-starter-kit.esm.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/redux-starter-kit/dist/redux-starter-kit.esm.js ***!
+  \**********************************************************************/
+/*! exports provided: combineReducers, compose, createNextState, createSelector, configureStore, getDefaultMiddleware, createAction, getType, createReducer, createSlice, createSerializableStateInvariantMiddleware, isPlain */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "configureStore", function() { return configureStore; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDefaultMiddleware", function() { return getDefaultMiddleware; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createAction", function() { return createAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getType", function() { return getType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createReducer", function() { return createReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSlice", function() { return createSlice; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSerializableStateInvariantMiddleware", function() { return createSerializableStateInvariantMiddleware; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPlain", function() { return isPlain; });
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "compose", function() { return redux__WEBPACK_IMPORTED_MODULE_0__["compose"]; });
+
+/* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createNextState", function() { return immer__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var selectorator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! selectorator */ "./node_modules/selectorator/dist/selectorator.js");
+/* harmony import */ var selectorator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(selectorator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "createSelector", function() { return selectorator__WEBPACK_IMPORTED_MODULE_2___default.a; });
+/* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux-devtools-extension */ "./node_modules/redux-devtools-extension/index.js");
+/* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
+
+
+
+
+
+
+
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+/**
+ * Returns true if the passed value is "plain" object, i.e. an object whose
+ * protoype is the root `Object.prototype`. This includes objects created
+ * using object literals, but not for instance for class instances.
+ *
+ * @param {any} value The value to inspect.
+ * @returns {boolean} True if the argument appears to be a plain object.
+ */
+function isPlainObject(value) {
+  if (_typeof(value) !== 'object' || value === null) return false;
+  var proto = value;
+
+  while (Object.getPrototypeOf(proto) !== null) {
+    proto = Object.getPrototypeOf(proto);
+  }
+
+  return Object.getPrototypeOf(value) === proto;
+}
+
+/**
+ * Returns true if the passed value is "plain", i.e. a value that is either
+ * directly JSON-serializable (boolean, number, string, array, plain object)
+ * or `undefined`.
+ *
+ * @param val The value to check.
+ */
+function isPlain(val) {
+  return typeof val === 'undefined' || val === null || typeof val === 'string' || typeof val === 'boolean' || typeof val === 'number' || Array.isArray(val) || isPlainObject(val);
+}
+var NON_SERIALIZABLE_STATE_MESSAGE = ['A non-serializable value was detected in the state, in the path: `%s`. Value: %o', 'Take a look at the reducer(s) handling this action type: %s.', '(See https://redux.js.org/faq/organizing-state#can-i-put-functions-promises-or-other-non-serializable-items-in-my-store-state)'].join('\n');
+var NON_SERIALIZABLE_ACTION_MESSAGE = ['A non-serializable value was detected in an action, in the path: `%s`. Value: %o', 'Take a look at the logic that dispatched this action:  %o.', '(See https://redux.js.org/faq/actions#why-should-type-be-a-string-or-at-least-serializable-why-should-my-action-types-be-constants)'].join('\n');
+function findNonSerializableValue(value) {
+  var path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var isSerializable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : isPlain;
+  var foundNestedSerializable;
+
+  if (!isSerializable(value)) {
+    return {
+      keyPath: path.join('.') || '<root>',
+      value: value
+    };
+  }
+
+  if (_typeof(value) !== 'object' || value === null) {
+    return false;
+  }
+
+  var _arr = Object.keys(value);
+
+  for (var _i = 0; _i < _arr.length; _i++) {
+    var property = _arr[_i];
+    var nestedPath = path.concat(property);
+    var nestedValue = value[property];
+
+    if (!isSerializable(nestedValue)) {
+      return {
+        keyPath: nestedPath.join('.'),
+        value: nestedValue
+      };
+    }
+
+    if (_typeof(nestedValue) === 'object') {
+      foundNestedSerializable = findNonSerializableValue(nestedValue, nestedPath, isSerializable);
+
+      if (foundNestedSerializable) {
+        return foundNestedSerializable;
+      }
+    }
+  }
+
+  return false;
+}
+/**
+ * Options for `createSerializableStateInvariantMiddleware()`.
+ */
+
+/**
+ * Creates a middleware that, after every state change, checks if the new
+ * state is serializable. If a non-serializable value is found within the
+ * state, an error is printed to the console.
+ *
+ * @param options Middleware options.
+ */
+function createSerializableStateInvariantMiddleware() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var _options$isSerializab = options.isSerializable,
+      isSerializable = _options$isSerializab === void 0 ? isPlain : _options$isSerializab;
+  return function (storeAPI) {
+    return function (next) {
+      return function (action) {
+        var foundActionNonSerializableValue = findNonSerializableValue(action, [], isSerializable);
+
+        if (foundActionNonSerializableValue) {
+          var _keyPath = foundActionNonSerializableValue.keyPath,
+              _value = foundActionNonSerializableValue.value;
+          console.error(NON_SERIALIZABLE_ACTION_MESSAGE, _keyPath, _value, action);
+        }
+
+        var result = next(action);
+        var state = storeAPI.getState();
+        var foundStateNonSerializableValue = findNonSerializableValue(state);
+
+        if (foundStateNonSerializableValue) {
+          var _keyPath2 = foundStateNonSerializableValue.keyPath,
+              _value2 = foundStateNonSerializableValue.value;
+          console.error(NON_SERIALIZABLE_STATE_MESSAGE, _keyPath2, _value2, action.type);
+        }
+
+        return result;
+      };
+    };
+  };
+}
+
+var IS_PRODUCTION = "development" === 'production';
+/**
+ * Returns any array containing the default middleware installed by
+ * `configureStore()`. Useful if you want to configure your store with a custom
+ * `middleware` array but still keep the default set.
+ *
+ * @return The default middleware used by `configureStore()`.
+ */
+
+function getDefaultMiddleware() {
+  var middlewareArray = [redux_thunk__WEBPACK_IMPORTED_MODULE_4__["default"]];
+
+  if (true) {
+    var createImmutableStateInvariantMiddleware = __webpack_require__(/*! redux-immutable-state-invariant */ "./node_modules/redux-immutable-state-invariant/dist/index.js").default;
+
+    middlewareArray = [createImmutableStateInvariantMiddleware(), redux_thunk__WEBPACK_IMPORTED_MODULE_4__["default"], createSerializableStateInvariantMiddleware()];
+  }
+
+  return middlewareArray;
+}
+/**
+ * Options for `configureStore()`.
+ */
+
+/**
+ * A friendly abstraction over the standard Redux `createStore()` function.
+ *
+ * @param config The store configuration.
+ * @returns A configured Redux store.
+ */
+function configureStore(options) {
+  var _ref = options || {},
+      _ref$reducer = _ref.reducer,
+      reducer = _ref$reducer === void 0 ? undefined : _ref$reducer,
+      _ref$middleware = _ref.middleware,
+      middleware = _ref$middleware === void 0 ? getDefaultMiddleware() : _ref$middleware,
+      _ref$devTools = _ref.devTools,
+      devTools = _ref$devTools === void 0 ? true : _ref$devTools,
+      _ref$preloadedState = _ref.preloadedState,
+      preloadedState = _ref$preloadedState === void 0 ? undefined : _ref$preloadedState,
+      _ref$enhancers = _ref.enhancers,
+      enhancers = _ref$enhancers === void 0 ? [] : _ref$enhancers;
+
+  var rootReducer;
+
+  if (typeof reducer === 'function') {
+    rootReducer = reducer;
+  } else if (isPlainObject(reducer)) {
+    rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])(reducer);
+  } else {
+    throw new Error('Reducer argument must be a function or an object of functions that can be passed to combineReducers');
+  }
+
+  var middlewareEnhancer = redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"].apply(void 0, _toConsumableArray(middleware));
+  var finalCompose = redux__WEBPACK_IMPORTED_MODULE_0__["compose"];
+
+  if (devTools) {
+    finalCompose = Object(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_3__["composeWithDevTools"])({
+      // Enable capture of stack traces for dispatched Redux actions
+      // @ts-ignore redux-devtools-extension doesn't have `trace` defined in
+      // its type definition file yet:
+      //
+      // https://github.com/zalmoxisus/redux-devtools-extension/pull/624
+      trace: !IS_PRODUCTION
+    });
+  }
+
+  var storeEnhancers = [middlewareEnhancer].concat(_toConsumableArray(enhancers));
+  var composedEnhancer = finalCompose.apply(void 0, _toConsumableArray(storeEnhancers));
+  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(rootReducer, preloadedState, composedEnhancer);
+}
+
+/**
+ * An action with a string type and an associated payload. This is the
+ * type of action returned by `createAction()` action creators.
+ *
+ * @template P The type of the action's payload.
+ * @template T the type used for the action type.
+ */
+
+/**
+ * An action creator that produces actions with a `payload` attribute.
+ */
+
+/**
+ * A utility function to create an action creator for the given action type
+ * string. The action creator accepts a single argument, which will be included
+ * in the action object as a field called payload. The action creator function
+ * will also have its toString() overriden so that it returns the action type,
+ * allowing it to be used in reducer logic that is looking for that action type.
+ *
+ * @param type The action type to use for created actions.
+ */
+function createAction(type) {
+  function actionCreator(payload) {
+    return {
+      type: type,
+      payload: payload
+    };
+  }
+
+  actionCreator.toString = function () {
+    return "".concat(type);
+  };
+
+  actionCreator.type = type;
+  return actionCreator;
+}
+/**
+ * Returns the action type of the actions created by the passed
+ * `createAction()`-generated action creator (arbitrary action creators
+ * are not supported).
+ *
+ * @param action The action creator whose action type to get.
+ * @returns The action type used by the action creator.
+ */
+
+function getType(actionCreator) {
+  return "".concat(actionCreator);
+}
+
+/**
+ * A utility function that allows defining a reducer as a mapping from action
+ * type to *case reducer* functions that handle these action types. The
+ * reducer's initial state is passed as the first argument.
+ *
+ * The body of every case reducer is implicitly wrapped with a call to
+ * `produce()` from the [immer](https://github.com/mweststrate/immer) library.
+ * This means that rather than returning a new state object, you can also
+ * mutate the passed-in state object directly; these mutations will then be
+ * automatically and efficiently translated into copies, giving you both
+ * convenience and immutability.
+ *
+ * @param initialState The initial state to be returned by the reducer.
+ * @param actionsMap A mapping from action types to action-type-specific
+ *   case redeucers.
+ */
+function createReducer(initialState, actionsMap) {
+  return function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments.length > 1 ? arguments[1] : undefined;
+    // @ts-ignore createNextState() produces an Immutable<Draft<S>> rather
+    // than an Immutable<S>, and TypeScript cannot find out how to reconcile
+    // these two types.
+    return Object(immer__WEBPACK_IMPORTED_MODULE_1__["default"])(state, function (draft) {
+      var caseReducer = actionsMap[action.type];
+      return caseReducer ? caseReducer(draft, action) : undefined;
+    });
+  };
+}
+
+function createSliceSelector(slice) {
+  if (!slice) {
+    return function (state) {
+      return state;
+    };
+  }
+
+  return function (state) {
+    return state[slice];
+  };
+}
+function createSelectorName(slice) {
+  if (!slice) {
+    return 'getState';
+  }
+
+  return camelize("get ".concat(slice));
+}
+
+function camelize(str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+    return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+  }).replace(/\s+/g, '').replace(/[-_]/g, '');
+}
+
+function getType$1(slice, actionKey) {
+  return slice ? "".concat(slice, "/").concat(actionKey) : actionKey;
+}
+/**
+ * A function that accepts an initial state, an object full of reducer
+ * functions, and optionally a "slice name", and automatically generates
+ * action creators, action types, and selectors that correspond to the
+ * reducers and state.
+ *
+ * The `reducer` argument is passed to `createReducer()`.
+ */
+
+
+function createSlice(options) {
+  var _options$slice = options.slice,
+      slice = _options$slice === void 0 ? '' : _options$slice,
+      initialState = options.initialState;
+  var reducers = options.reducers || {};
+  var extraReducers = options.extraReducers || {};
+  var actionKeys = Object.keys(reducers);
+  var reducerMap = actionKeys.reduce(function (map, actionKey) {
+    map[getType$1(slice, actionKey)] = reducers[actionKey];
+    return map;
+  }, extraReducers);
+  var reducer = createReducer(initialState, reducerMap);
+  var actionMap = actionKeys.reduce(function (map, action) {
+    var type = getType$1(slice, action);
+    map[action] = createAction(type);
+    return map;
+  }, {});
+
+  var selectors = _defineProperty({}, createSelectorName(slice), createSliceSelector(slice));
+
+  return {
+    slice: slice,
+    reducer: reducer,
+    actions: actionMap,
+    selectors: selectors
+  };
+}
+
+// types using the `export { ... } from` syntax. Because it compiles
+// modules, independently, it has no way of knowing whether an identifier
+// refers to a type or value, and thus cannot strip the type re-exports
+// out of the generated JS.
+//
+// https://github.com/babel/babel/issues/8361
+//
+// As a workaround, the root of this repository contains an `index.d.ts`
+// that contains all type re-exports. Whenever adding a new public function
+// or type, remember to export it in `index.d.ts` as well.
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/redux-thunk/es/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/redux-thunk/es/index.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+/* harmony default export */ __webpack_exports__["default"] = (thunk);
+
+/***/ }),
+
 /***/ "./node_modules/redux/es/redux.js":
 /*!****************************************!*\
   !*** ./node_modules/redux/es/redux.js ***!
@@ -64748,6 +67425,142 @@ if ( true && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed
 
 
 
+
+/***/ }),
+
+/***/ "./node_modules/reselect/es/index.js":
+/*!*******************************************!*\
+  !*** ./node_modules/reselect/es/index.js ***!
+  \*******************************************/
+/*! exports provided: defaultMemoize, createSelectorCreator, createSelector, createStructuredSelector */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultMemoize", function() { return defaultMemoize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSelectorCreator", function() { return createSelectorCreator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSelector", function() { return createSelector; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createStructuredSelector", function() { return createStructuredSelector; });
+function defaultEqualityCheck(a, b) {
+  return a === b;
+}
+
+function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
+  if (prev === null || next === null || prev.length !== next.length) {
+    return false;
+  }
+
+  // Do this in a for loop (and not a `forEach` or an `every`) so we can determine equality as fast as possible.
+  var length = prev.length;
+  for (var i = 0; i < length; i++) {
+    if (!equalityCheck(prev[i], next[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function defaultMemoize(func) {
+  var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
+
+  var lastArgs = null;
+  var lastResult = null;
+  // we reference arguments instead of spreading them for performance reasons
+  return function () {
+    if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
+      // apply arguments instead of spreading for performance.
+      lastResult = func.apply(null, arguments);
+    }
+
+    lastArgs = arguments;
+    return lastResult;
+  };
+}
+
+function getDependencies(funcs) {
+  var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+  if (!dependencies.every(function (dep) {
+    return typeof dep === 'function';
+  })) {
+    var dependencyTypes = dependencies.map(function (dep) {
+      return typeof dep;
+    }).join(', ');
+    throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
+  }
+
+  return dependencies;
+}
+
+function createSelectorCreator(memoize) {
+  for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    memoizeOptions[_key - 1] = arguments[_key];
+  }
+
+  return function () {
+    for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      funcs[_key2] = arguments[_key2];
+    }
+
+    var recomputations = 0;
+    var resultFunc = funcs.pop();
+    var dependencies = getDependencies(funcs);
+
+    var memoizedResultFunc = memoize.apply(undefined, [function () {
+      recomputations++;
+      // apply arguments instead of spreading for performance.
+      return resultFunc.apply(null, arguments);
+    }].concat(memoizeOptions));
+
+    // If a selector is called with the exact same arguments we don't need to traverse our dependencies again.
+    var selector = memoize(function () {
+      var params = [];
+      var length = dependencies.length;
+
+      for (var i = 0; i < length; i++) {
+        // apply arguments instead of spreading and mutate a local list of params for performance.
+        params.push(dependencies[i].apply(null, arguments));
+      }
+
+      // apply arguments instead of spreading for performance.
+      return memoizedResultFunc.apply(null, params);
+    });
+
+    selector.resultFunc = resultFunc;
+    selector.dependencies = dependencies;
+    selector.recomputations = function () {
+      return recomputations;
+    };
+    selector.resetRecomputations = function () {
+      return recomputations = 0;
+    };
+    return selector;
+  };
+}
+
+var createSelector = createSelectorCreator(defaultMemoize);
+
+function createStructuredSelector(selectors) {
+  var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
+
+  if (typeof selectors !== 'object') {
+    throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
+  }
+  var objectKeys = Object.keys(selectors);
+  return selectorCreator(objectKeys.map(function (key) {
+    return selectors[key];
+  }), function () {
+    for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      values[_key3] = arguments[_key3];
+    }
+
+    return values.reduce(function (composition, value, index) {
+      composition[objectKeys[index]] = value;
+      return composition;
+    }, {});
+  });
+}
 
 /***/ }),
 
@@ -66018,6 +68831,214 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/selectorator/dist/selectorator.js":
+/*!********************************************************!*\
+  !*** ./node_modules/selectorator/dist/selectorator.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+   true ? factory(exports, __webpack_require__(/*! identitate */ "./node_modules/identitate/es/index.js"), __webpack_require__(/*! fast-equals */ "./node_modules/fast-equals/es/index.js"), __webpack_require__(/*! reselect */ "./node_modules/reselect/es/index.js"), __webpack_require__(/*! unchanged */ "./node_modules/unchanged/dist/unchanged.js")) :
+  undefined;
+}(this, function (exports, identitate, fastEquals, reselect, unchanged) { 'use strict';
+
+  var INVALID_ARRAY_PATHS_MESSAGE = 'You have not provided any values for paths, so no values can be retrieved from state.';
+  var INVALID_PATHS_MESSAGE = [
+      'First parameter passed must be either an array or a plain object.',
+      'If you are creating a standard selector, pass an array of either',
+      'properties on the state to retrieve, or custom selector functions.',
+      'If creating a structured selector, pass a plain object with source',
+      'and destination properties, where source is an array of properties',
+      'or custom selector functions, and destination is an array of property',
+      'names to assign the values from source to.',
+  ].join(' ');
+  var INVALID_OBJECT_PATH_MESSAGE = "\nWhen providing an object path, you must provide the following properties:\n  * path: the path to retrieve, e.g. \"foo.bar\"\n  * argIndx: the index of the argument to retrieve the path from\n".trim();
+  var INVALID_PATH_MESSAGE = "\nPath provided is of invalid type. It can be any one of the following values:\n  * Dot-bracket notation, e.g. \"foo.bar\" or \"bar[0].baz\"\n  * Number index, e.g. 0\n  * Object {path, argIndex}, e.g. {path: \"foo.bar\", argIndex: 1}\n  * Selector function\n".trim();
+
+  // external dependencies
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  /**
+   * @private
+   *
+   * @function isFunctionPath
+   *
+   * @description
+   * is the path a function
+   *
+   * @param path the path to test
+   * @param type the typeof value for the path
+   * @returns is the path a function
+   */
+  var isFunctionPath = function (path, type) { return type === 'function'; };
+  /**
+   * @private
+   *
+   * @function isObjectPath
+   *
+   * @description
+   * is the path an object
+   *
+   * @param path the path to test
+   * @param type the typeof value for the path
+   * @returns is the path an object
+   */
+  var isObjectPath = function (path, type) { return !!path && type === 'object'; };
+  /**
+   * @private
+   *
+   * @function isUnchangedPath
+   *
+   * @description
+   * is the path an unchanged path value
+   *
+   * @param path the path to test
+   * @param type the typeof value for the path
+   * @returns is the path an unchanged path value
+   */
+  var isUnchangedPath = function (path, type) {
+      return type === 'string' || type === 'number' || Array.isArray(path);
+  };
+  /**
+   * @private
+   *
+   * @function createIdentitySelector
+   *
+   * @description
+   * based on the path passed, create the identity function for it or return the function itself
+   *
+   * @param path nested path to retrieve from the state object
+   * @returns identity function to retrieve value from state for given property
+   */
+  var createIdentitySelector = function (path) {
+      var type = typeof path;
+      if (isFunctionPath(path, type)) {
+          return path;
+      }
+      if (isUnchangedPath(path, type)) {
+          return function (state) { return unchanged.get(path, state); };
+      }
+      if (isObjectPath(path, type)) {
+          if (hasOwnProperty.call(path, 'path') &&
+              hasOwnProperty.call(path, 'argIndex')) {
+              var selectorIdentity_1 = identitate.createIdentity(path.argIndex);
+              return function () {
+                  return unchanged.get(path.path, selectorIdentity_1.apply(null, arguments));
+              };
+          }
+          throw new ReferenceError(INVALID_OBJECT_PATH_MESSAGE);
+      }
+      throw new TypeError(INVALID_PATH_MESSAGE);
+  };
+  /**
+   * @private
+   *
+   * @function getSelectorCreator
+   *
+   * @description
+   * get the creator function to use when generating the selector
+   *
+   * @param deepEqual should the memoizer be based on strict equality
+   * @param isEqual the custom equality method to use when comparing values
+   * @param memoizer custom selector memoizer
+   * @param memoizerParams custom parameters to pass to the memoizer function
+   * @returns function to create selector with
+   */
+  var getSelectorCreator = function (_a) {
+      var _b = _a.deepEqual, deepEqual = _b === void 0 ? false : _b, _c = _a.isEqual, isEqual = _c === void 0 ? fastEquals.sameValueZeroEqual : _c, memoizer = _a.memoizer, _d = _a.memoizerParams, memoizerParams = _d === void 0 ? [] : _d;
+      var _e;
+      var memoizerFn = memoizer || reselect.defaultMemoize;
+      var equals = deepEqual ? fastEquals.deepEqual : isEqual;
+      return (_e = reselect.createSelectorCreator).call.apply(_e, [// fix strict mode error
+          null,
+          memoizerFn,
+          equals].concat(memoizerParams));
+  };
+  /**
+   * @private
+   *
+   * @function getStandardSelector
+   *
+   * @description
+   * get a standard selector based on the paths and getComputedValue provided
+   *
+   * @param paths paths to retrieve values from state from
+   * @param selectorCreator function to create selector with
+   * @param getComputedValue function to compute values with, receiving properties in state based
+   *   on paths and returning computed values from them (defaults to pass-through identity function)
+   * @returns selector to return computed value from state
+   */
+  var getStandardSelector = function (paths, selectorCreator, getComputedValue) {
+      return selectorCreator(paths.map(createIdentitySelector), getComputedValue);
+  };
+  /**
+   * @private
+   *
+   * @function getStructuredObject
+   *
+   * @description
+   * get the structured object based on the computed selector values
+   *
+   * @param properties properties to assign values from state to
+   * @returns object of property => selected value pairs
+   */
+  var getStructuredObject = function (properties) { return function () {
+      var values = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+          values[_i] = arguments[_i];
+      }
+      return properties.reduce(function (structuredObject, property, index) {
+          structuredObject[property] = values[index];
+          return structuredObject;
+      }, {});
+  }; };
+  /**
+   * @private
+   *
+   * @function getStructuredSelector
+   *
+   * @description
+   * get an object of property => selected value pairs bsaed on paths
+   *
+   * @param paths property => path pairs, where path is state value to retrieve and assign to property
+   * @param selectorCreator function to create selector with
+   * @returns selector to return structured values from state
+   */
+  var getStructuredSelector = function (paths, selectorCreator) {
+      var destinationKeys = Object.keys(paths);
+      var selectors = destinationKeys.map(function (key) { return createIdentitySelector(paths[key]); });
+      return selectorCreator(selectors, getStructuredObject(destinationKeys));
+  };
+
+  // external dependencies
+  function createSelector(// actual implementation - no changes
+  paths, getComputedValue, options) {
+      if (getComputedValue === void 0) { getComputedValue = identitate.identity; }
+      if (options === void 0) { options = {}; }
+      var selectorCreator = getSelectorCreator(options);
+      if (Array.isArray(paths)) {
+          if (!paths.length) {
+              throw new ReferenceError(INVALID_ARRAY_PATHS_MESSAGE);
+          }
+          return getStandardSelector(paths, selectorCreator, getComputedValue);
+      }
+      // added null check
+      if (paths && paths !== null && typeof paths === 'object') {
+          return getStructuredSelector(paths, selectorCreator);
+      }
+      throw new TypeError(INVALID_PATHS_MESSAGE);
+  }
+
+  exports.default = createSelector;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+//# sourceMappingURL=selectorator.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/symbol-observable/es/index.js":
 /*!****************************************************!*\
   !*** ./node_modules/symbol-observable/es/index.js ***!
@@ -66077,6 +69098,801 @@ function symbolObservablePonyfill(root) {
 
 	return result;
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/unchanged/dist/unchanged.js":
+/*!**************************************************!*\
+  !*** ./node_modules/unchanged/dist/unchanged.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+   true ? factory(exports, __webpack_require__(/*! curriable */ "./node_modules/curriable/dist/curriable.js"), __webpack_require__(/*! pathington */ "./node_modules/pathington/es/index.js")) :
+  undefined;
+}(this, function (exports, curriable, pathington) { 'use strict';
+
+  // external dependencies
+  var O = Object;
+  var create = O.create, getOwnPropertySymbols = O.getOwnPropertySymbols, getPrototypeOf = O.getPrototypeOf, keys = O.keys, propertyIsEnumerable = O.propertyIsEnumerable;
+  var toStringObject = O.prototype.toString;
+  var toStringFunction = Function.prototype.toString;
+  var isArray = Array.isArray;
+  /**
+   * @constant REACT_ELEMENT the symbol / number specific to react elements
+   */
+  var REACT_ELEMENT = typeof Symbol === 'function' && typeof Symbol.for === 'function'
+      ? Symbol.for('react.element')
+      : 0xeac7;
+  /**
+   * @function cloneArray
+   *
+   * @description
+   * clone an array to a new array
+   *
+   * @param array the array to clone
+   * @returns the cloned array
+   */
+  var cloneArray = function (array) {
+      // @ts-ignore
+      var cloned = new array.constructor();
+      for (var index = 0; index < array.length; index++) {
+          cloned[index] = array[index];
+      }
+      return cloned;
+  };
+  /**
+   * @function reduce
+   *
+   * @description
+   * a targeted reduce method faster than the native
+   *
+   * @param array the array to reduce
+   * @param fn the method to reduce each array value with
+   * @param initialValue the initial value of the reduction
+   * @returns the reduced value
+   */
+  var reduce = function (array, fn, initialValue) {
+      var value = initialValue;
+      for (var index = 0; index < array.length; index++) {
+          value = fn(value, array[index]);
+      }
+      return value;
+  };
+  /**
+   * @function getOwnProperties
+   *
+   * @description
+   * get the all properties (keys and symbols) of the object passed
+   *
+   * @param object the object to get the properties of
+   * @returns the keys and symbols the object has
+   */
+  var getOwnProperties = function (object) {
+      var ownSymbols = getOwnPropertySymbols(object);
+      if (!ownSymbols.length) {
+          return keys(object);
+      }
+      return keys(object).concat(reduce(ownSymbols, function (enumerableSymbols, symbol) {
+          if (propertyIsEnumerable.call(object, symbol)) {
+              enumerableSymbols.push(symbol);
+          }
+          return enumerableSymbols;
+      }, []));
+  };
+  /**
+   * @function assignFallback
+   *
+   * @description
+   * a targeted fallback if native Object.assign is unavailable
+   *
+   * @param target the object to shallowly merge into
+   * @param source the object to shallowly merge into target
+   * @returns the shallowly merged object
+   */
+  var assignFallback = function (target, source) {
+      if (!source) {
+          return target;
+      }
+      return reduce(getOwnProperties(source), function (clonedObject, property) {
+          clonedObject[property] = source[property];
+          return clonedObject;
+      }, Object(target));
+  };
+  var assign = typeof O.assign === 'function' ? O.assign : assignFallback;
+  /**
+   * @function createWithProto
+   *
+   * @description
+   * create a new object with the prototype of the object passed
+   *
+   * @param object object whose prototype will be the new object's prototype
+   * @returns object with the prototype of the one passed
+   */
+  var createWithProto = function (object) { return create(object.__proto__ || getPrototypeOf(object)); };
+  /**
+   * @function isCloneable
+   *
+   * @description
+   * is the object passed considered cloneable
+   *
+   * @param object the object that is being checked for cloneability
+   * @returns whether the object can be cloned
+   */
+  var isCloneable = function (object) {
+      if (!object ||
+          typeof object !== 'object' ||
+          object.$$typeof === REACT_ELEMENT) {
+          return false;
+      }
+      var type = toStringObject.call(object);
+      return type !== '[object Date]' && type !== '[object RegExp]';
+  };
+  /**
+   * @function isEmptyPath
+   *
+   * @description
+   * is the path passed an empty path
+   *
+   * @param path the path to check for emptiness
+   * @returns whether the path passed is considered empty
+   */
+  var isEmptyPath = function (path) {
+      return path == null || (isArray(path) && !path.length);
+  };
+  /**
+   * @function isGlobalConstructor
+   *
+   * @description
+   * is the fn passed a global constructor
+   *
+   * @param fn the fn to check if a global constructor
+   * @returns whether the fn passed is a global constructor
+   */
+  var isGlobalConstructor = function (fn) {
+      return typeof fn === 'function' &&
+          !!~toStringFunction.call(fn).indexOf('[native code]');
+  };
+  /**
+   * @function callIfFunction
+   *
+   * @description
+   * if the object passed is a function, call it and return its return, else return undefined
+   *
+   * @param object the object to call if a function
+   * @param context the context to call the function with
+   * @param parameters the parameters to call the function with
+   * @returns the result of the function call, or undefined
+   */
+  var callIfFunction = function (object, context, parameters) {
+      return typeof object === 'function' ? object.apply(context, parameters) : void 0;
+  };
+  /**
+   * @function getNewEmptyChild
+   *
+   * @description
+   * get a new empty child object based on the key passed
+   *
+   * @param key the key to base the empty child on
+   * @returns the empty object the child is built from
+   */
+  var getNewEmptyChild = function (key) {
+      return typeof key === 'number' ? [] : {};
+  };
+  /**
+   * @function getNewEmptyObject
+   *
+   * @description
+   * get a new empty object based on the object passed
+   *
+   * @param object the object to base the empty object on
+   * @returns an empty version of the object passed
+   */
+  var getNewEmptyObject = function (object) { return (isArray(object) ? [] : {}); };
+  /**
+   * @function getShallowClone
+   *
+   * @description
+   * create a shallow clone of the object passed, respecting its prototype
+   *
+   * @param object the object to clone
+   * @returns a shallow clone of the object passed
+   */
+  var getShallowClone = function (object) {
+      if (object.constructor === O) {
+          return assign({}, object);
+      }
+      if (isArray(object)) {
+          return cloneArray(object);
+      }
+      return isGlobalConstructor(object.constructor)
+          ? {}
+          : assign(createWithProto(object), object);
+  };
+  /**
+   * @function isSameValueZero
+   *
+   * @description
+   * are the values equal based on SameValueZero
+   *
+   * @param value1 the first value to test
+   * @param value2 the second value to test
+   * @returns are the two values passed equal based on SameValueZero
+   */
+  var isSameValueZero = function (value1, value2) {
+      return value1 === value2 || (value1 !== value1 && value2 !== value2);
+  };
+  /**
+   * @function cloneIfPossible
+   *
+   * @description
+   * clone the object if it can be cloned, otherwise return the object itself
+   *
+   * @param object the object to clone
+   * @returns a cloned version of the object, or the object itself if not cloneable
+   */
+  var cloneIfPossible = function (object) {
+      return isCloneable(object) ? getShallowClone(object) : object;
+  };
+  /**
+   * @function getCloneOrEmptyObject
+   *
+   * @description
+   * if the object is cloneable, get a clone of the object, else get a new
+   * empty child object based on the key
+   *
+   * @param object the object to clone
+   * @param nextKey the key to base the empty child object on
+   * @returns a clone of the object, or an empty child object
+   */
+  var getCloneOrEmptyObject = function (object, nextKey) {
+      return isCloneable(object) ? getShallowClone(object) : getNewEmptyChild(nextKey);
+  };
+  /**
+   * @function getCoalescedValue
+   *
+   * @description
+   * return the value if not undefined, otherwise return the fallback value
+   *
+   * @param value the value to coalesce if undefined
+   * @param fallbackValue the value to coalesce to
+   * @returns the coalesced value
+   */
+  var getCoalescedValue = function (value, fallbackValue) { return (value === void 0 ? fallbackValue : value); };
+  /**
+   * @function getParsedPath
+   *
+   * @description
+   * parse the path passed into an array path
+   *
+   * @param path the path to parse
+   * @returns the parsed path
+   */
+  var getParsedPath = function (path) { return (isArray(path) ? path : pathington.parse(path)); };
+  /**
+   * @function getCloneAtPath
+   *
+   * @description
+   * get a new object, cloned at the path specified while leveraging
+   * structural sharing for the rest of the properties
+   *
+   * @param path the path to clone at
+   * @param object the object with cloned children at path
+   * @param onMatch the method to call once the end of the path is reached
+   * @param index the path index
+   * @returns the object deeply cloned at the path specified
+   */
+  var getCloneAtPath = function (path, object, onMatch, index) {
+      var key = path[index];
+      var nextIndex = index + 1;
+      if (nextIndex === path.length) {
+          onMatch(object, key);
+      }
+      else {
+          object[key] = getCloneAtPath(path, getCloneOrEmptyObject(object[key], path[nextIndex]), onMatch, nextIndex);
+      }
+      return object;
+  };
+  /**
+   * @function getDeepClone
+   *
+   * @description
+   * get a clone of the object at the path specified
+   *
+   * @param path the path to clone at
+   * @param object the object to clone at the path
+   * @param onMatch once a patch match is found, the callback to fire
+   * @returns the clone of the object at path specified
+   */
+  var getDeepClone = function (path, object, onMatch) {
+      var parsedPath = getParsedPath(path);
+      var topLevelClone = getCloneOrEmptyObject(object, parsedPath[0]);
+      if (parsedPath.length === 1) {
+          onMatch(topLevelClone, parsedPath[0]);
+          return topLevelClone;
+      }
+      return getCloneAtPath(parsedPath, topLevelClone, onMatch, 0);
+  };
+  /**
+   * @function getMergedObject
+   *
+   * @description
+   * merge the source into the target, either deeply or shallowly
+   *
+   * @param target the object to merge into
+   * @param source the object being merged into the target
+   * @param isDeep is the merge a deep merge
+   * @returns the merged object
+   */
+  var getMergedObject = function (target, source, isDeep) {
+      var isObject1Array = isArray(target);
+      if (isObject1Array !== isArray(source) || !isCloneable(target)) {
+          return cloneIfPossible(source);
+      }
+      if (isObject1Array) {
+          return target.concat(source);
+      }
+      var targetClone = target.constructor === O || isGlobalConstructor(target.constructor)
+          ? {}
+          : createWithProto(target);
+      return reduce(getOwnProperties(source), function (clone, key) {
+          clone[key] =
+              isDeep && isCloneable(source[key])
+                  ? getMergedObject(target[key], source[key], isDeep)
+                  : source[key];
+          return clone;
+      }, assign(targetClone, target));
+  };
+  /**
+   * @function getValueAtPath
+   *
+   * @description
+   * get the value at the nested property, or the fallback provided
+   *
+   * @param path the path to get the value from
+   * @param object the object to get the value from at path
+   * @param noMatchValue the value returned if no match is found
+   * @returns the matching value, or the fallback provided
+   */
+  var getValueAtPath = function (path, object, noMatchValue) {
+      var parsedPath = getParsedPath(path);
+      if (parsedPath.length === 1) {
+          return object
+              ? getCoalescedValue(object[parsedPath[0]], noMatchValue)
+              : noMatchValue;
+      }
+      var ref = object;
+      var key = parsedPath[0];
+      for (var index = 0; index < parsedPath.length - 1; index++) {
+          if (!ref || !ref[key]) {
+              return noMatchValue;
+          }
+          ref = ref[key];
+          key = parsedPath[index + 1];
+      }
+      return ref ? getCoalescedValue(ref[key], noMatchValue) : noMatchValue;
+  };
+  /**
+   * @function getFullPath
+   *
+   * @description
+   * get the path to add to, based on the object and fn passed
+   *
+   * @param path the path to add to
+   * @param object the object traversed by the path
+   * @param fn the function to transform the retrieved value with
+   * @returns the full path to add to
+   */
+  var getFullPath = function (path, object, fn) {
+      var isPathEmpty = isEmptyPath(path);
+      var valueAtPath = isPathEmpty
+          ? object
+          : fn
+              ? fn(getValueAtPath(path, object))
+              : getValueAtPath(path, object);
+      return isArray(valueAtPath)
+          ? isArray(path)
+              ? path.concat([valueAtPath.length])
+              : (isPathEmpty ? '' : path) + "[" + valueAtPath.length + "]"
+          : path;
+  };
+  /**
+   * @function splice
+   *
+   * @description
+   * a faster, more targeted version of the native splice
+   *
+   * @param array the array to remove the value from
+   * @param splicedIndex the index of the value to remove
+   */
+  var splice = function (array, splicedIndex) {
+      if (array.length) {
+          var length_1 = array.length;
+          var index = splicedIndex;
+          while (index < length_1 - 1) {
+              array[index] = array[index + 1];
+              ++index;
+          }
+          --array.length;
+      }
+  };
+  /**
+   * @function throwInvalidFnError
+   *
+   * @description
+   * throw the TypeError based on the invalid handler
+   *
+   * @throws
+   */
+  var throwInvalidFnError = function () {
+      throw new TypeError('handler passed is not of type "function".');
+  };
+
+  // utils
+  var isArray$1 = Array.isArray;
+  var slice = Array.prototype.slice;
+  /**
+   * @function createCall
+   *
+   * @description
+   * create handlers for call / callWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns call / callWith
+   */
+  var createCall = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, path, parameters, object, context) {
+              if (context === void 0) { context = object; }
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 5);
+              if (isEmptyPath(path)) {
+                  return callIfFunction(fn.apply(void 0, [object].concat(extraArgs)), context, parameters);
+              }
+              var value = getValueAtPath(path, object);
+              if (value === void 0) {
+                  return;
+              }
+              var result = fn.apply(void 0, [value].concat(extraArgs));
+              return callIfFunction(result, context, parameters);
+          };
+      }
+      return function (path, parameters, object, context) {
+          if (context === void 0) { context = object; }
+          var callable = isEmptyPath(path)
+              ? object
+              : getValueAtPath(path, object);
+          return callIfFunction(callable, context, parameters);
+      };
+  };
+  /**
+   * @function createGet
+   *
+   * @description
+   * create handlers for get / getWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns get / getWith
+   */
+  var createGet = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, path, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 4);
+              if (isEmptyPath(path)) {
+                  return fn.apply(void 0, [object].concat(extraArgs));
+              }
+              var value = getValueAtPath(path, object);
+              return value === void 0 ? value : fn.apply(void 0, [value].concat(extraArgs));
+          };
+      }
+      return function (path, object) {
+          return isEmptyPath(path) ? object : getValueAtPath(path, object);
+      };
+  };
+  /**
+   * @function createGetOr
+   *
+   * @description
+   * create handlers for getOr / getWithOr
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns getOr / getWithOr
+   */
+  var createGetOr = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, noMatchValue, path, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 4);
+              if (isEmptyPath(path)) {
+                  return fn.apply(void 0, [object].concat(extraArgs));
+              }
+              var value = getValueAtPath(path, object);
+              return value === void 0 ? noMatchValue : fn.apply(void 0, [value].concat(extraArgs));
+          };
+      }
+      return function (noMatchValue, path, object) {
+          return isEmptyPath(path) ? object : getValueAtPath(path, object, noMatchValue);
+      };
+  };
+  /**
+   * @function createHas
+   *
+   * @description
+   * create handlers for has / hasWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns has / hasWith
+   */
+  var createHas = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, path, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 3);
+              if (isEmptyPath(path)) {
+                  return !!fn.apply(void 0, [object].concat(extraArgs));
+              }
+              var value = getValueAtPath(path, object);
+              return value !== void 0 && !!fn.apply(void 0, [value].concat(extraArgs));
+          };
+      }
+      return function (path, object) {
+          return isEmptyPath(path)
+              ? object != null
+              : getValueAtPath(path, object) !== void 0;
+      };
+  };
+  /**
+   * @function createIs
+   *
+   * @description
+   * create handlers for is / isWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns is / isWith
+   */
+  var createIs = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, path, value, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 4);
+              if (isEmptyPath(path)) {
+                  return isSameValueZero(fn.apply(void 0, [object].concat(extraArgs)), value);
+              }
+              return isSameValueZero(fn.apply(void 0, [getValueAtPath(path, object)].concat(extraArgs)), value);
+          };
+      }
+      return function (path, value, object) {
+          return isEmptyPath(path)
+              ? isSameValueZero(object, value)
+              : isSameValueZero(getValueAtPath(path, object), value);
+      };
+  };
+  /**
+   * @function createMerge
+   *
+   * @description
+   * create handlers for merge / mergeWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @param isDeep is the handler for a deep merge or shallow
+   * @returns merge / mergeWith
+   */
+  var createMerge = function (isWithHandler, isDeep) {
+      if (isWithHandler) {
+          return function (fn, path, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 3);
+              if (!isCloneable(object)) {
+                  return fn.apply(void 0, [object].concat(extraArgs));
+              }
+              if (isEmptyPath(path)) {
+                  var objectToMerge = fn.apply(void 0, [object].concat(extraArgs));
+                  return objectToMerge
+                      ? getMergedObject(object, objectToMerge, isDeep)
+                      : object;
+              }
+              var hasChanged = false;
+              var result = getDeepClone(path, object, function (ref, key) {
+                  var objectToMerge = fn.apply(void 0, [ref[key]].concat(extraArgs));
+                  if (objectToMerge) {
+                      ref[key] = getMergedObject(ref[key], objectToMerge, isDeep);
+                      hasChanged = true;
+                  }
+              });
+              return hasChanged ? result : object;
+          };
+      }
+      return function (path, objectToMerge, object) {
+          if (!isCloneable(object)) {
+              return objectToMerge;
+          }
+          return isEmptyPath(path)
+              ? getMergedObject(object, objectToMerge, true)
+              : getDeepClone(path, object, function (ref, key) {
+                  ref[key] = getMergedObject(ref[key], objectToMerge, isDeep);
+              });
+      };
+  };
+  /**
+   * @function createNot
+   *
+   * @description
+   * create handlers for not / notWith
+   *
+   * @param isWithHandler not the method using a with handler
+   * @returns not / notWithHandler
+   */
+  var createNot = function (isWithHandler) {
+      var is = createIs(isWithHandler);
+      return function () {
+          return !is.apply(this, arguments);
+      };
+  };
+  /**
+   * @function createRemove
+   *
+   * @description
+   * create handlers for remove / removeWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns remove / removeWith
+   */
+  var createRemove = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, path, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 3);
+              if (isEmptyPath(path)) {
+                  var emptyObject = getNewEmptyObject(object);
+                  return fn.apply(void 0, [emptyObject].concat(extraArgs)) ? emptyObject : object;
+              }
+              var value = getValueAtPath(path, object);
+              return value !== void 0 && fn.apply(void 0, [value].concat(extraArgs))
+                  ? getDeepClone(path, object, function (ref, key) {
+                      if (isArray$1(ref)) {
+                          splice(ref, key);
+                      }
+                      else {
+                          delete ref[key];
+                      }
+                  })
+                  : object;
+          };
+      }
+      return function (path, object) {
+          if (isEmptyPath(path)) {
+              return getNewEmptyObject(object);
+          }
+          return getValueAtPath(path, object) !== void 0
+              ? getDeepClone(path, object, function (ref, key) {
+                  if (isArray$1(ref)) {
+                      splice(ref, key);
+                  }
+                  else {
+                      delete ref[key];
+                  }
+              })
+              : object;
+      };
+  };
+  /**
+   * @function createSet
+   *
+   * @description
+   * create handlers for set / setWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns set / setWith
+   */
+  var createSet = function (isWithHandler) {
+      if (isWithHandler) {
+          return function (fn, path, object) {
+              if (typeof fn !== 'function') {
+                  throwInvalidFnError();
+              }
+              var extraArgs = slice.call(arguments, 3);
+              return isEmptyPath(path)
+                  ? fn.apply(void 0, [object].concat(extraArgs)) : getDeepClone(path, object, function (ref, key) {
+                  ref[key] = fn.apply(void 0, [ref[key]].concat(extraArgs));
+              });
+          };
+      }
+      return function (path, value, object) {
+          return isEmptyPath(path)
+              ? value
+              : getDeepClone(path, object, function (ref, key) {
+                  ref[key] = value;
+              });
+      };
+  };
+  /**
+   * @function createAdd
+   *
+   * @description
+   * create handlers for add / addWith
+   *
+   * @param isWithHandler is the method using a with handler
+   * @returns add / addWith
+   */
+  var createAdd = function (isWithHandler) {
+      var add = createSet(isWithHandler);
+      if (isWithHandler) {
+          return function (fn, path, object) {
+              return add.apply(this, [fn, getFullPath(path, object, fn), object].concat(slice.call(arguments, 3)));
+          };
+      }
+      return function (path, value, object) { return add(getFullPath(path, object), value, object); };
+  };
+
+  // external dependencies
+  var add = curriable.curry(createAdd(false), 3);
+  var addWith = curriable.curry(createAdd(true), 3);
+  var assign$1 = curriable.curry(createMerge(false, false), 3);
+  var assignWith = curriable.curry(createMerge(true, false), 3);
+  var call = curriable.curry(createCall(false), 3);
+  var callWith = curriable.curry(createCall(true), 4);
+  var get = curriable.curry(createGet(false), 2);
+  var getOr = curriable.curry(createGetOr(false), 3);
+  var getWith = curriable.curry(createGet(true), 3);
+  var getWithOr = curriable.curry(createGetOr(true), 4);
+  var has = curriable.curry(createHas(false), 2);
+  var hasWith = curriable.curry(createHas(true), 3);
+  var is = curriable.curry(createIs(false), 3);
+  var isWith = curriable.curry(createIs(true), 4);
+  var merge = curriable.curry(createMerge(false, true), 3);
+  var mergeWith = curriable.curry(createMerge(true, true), 3);
+  var not = curriable.curry(createNot(false), 3);
+  var notWith = curriable.curry(createNot(true), 4);
+  var remove = curriable.curry(createRemove(false), 2);
+  var removeWith = curriable.curry(createRemove(true), 3);
+  var set = curriable.curry(createSet(false), 3);
+  var setWith = curriable.curry(createSet(true), 3);
+
+  exports.__ = curriable.__;
+  exports.add = add;
+  exports.addWith = addWith;
+  exports.assign = assign$1;
+  exports.assignWith = assignWith;
+  exports.call = call;
+  exports.callWith = callWith;
+  exports.get = get;
+  exports.getOr = getOr;
+  exports.getWith = getWith;
+  exports.getWithOr = getWithOr;
+  exports.has = has;
+  exports.hasWith = hasWith;
+  exports.is = is;
+  exports.isWith = isWith;
+  exports.merge = merge;
+  exports.mergeWith = mergeWith;
+  exports.not = not;
+  exports.notWith = notWith;
+  exports.remove = remove;
+  exports.removeWith = removeWith;
+  exports.set = set;
+  exports.setWith = setWith;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+//# sourceMappingURL=unchanged.js.map
 
 
 /***/ }),
@@ -67926,9 +71742,11 @@ var UPDATE_TEAM_INFO = "UPDATE_TEAM_INFO";
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_action_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/action-types */ "./resources/js/constants/action-types.js");
+/* harmony import */ var redux_starter_kit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-starter-kit */ "./node_modules/redux-starter-kit/dist/redux-starter-kit.esm.js");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 var initialState = {
@@ -67954,22 +71772,21 @@ function rootReducer() {
   }
 
   if (action.type === _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["SAVE_SINGLE_TEAM"]) {
+    var teamState = [];
     var index = state.teams.findIndex(function (row) {
       return row.id === action.payload.team.id;
     });
-    var teamState = [];
 
     if (index === -1) {
-      var _teamState = state.teams.slice();
-
-      _teamState.splice(0, 0, action.payload.team);
+      teamState = state.teams.slice();
+      teamState.splice(0, 0, action.payload.team);
     } else {
       teamState = state.teams.map(function (item, index) {
         if (item.id !== action.payload.team.id) {
           return item;
         }
 
-        return _objectSpread({}, item, action.item);
+        return _objectSpread({}, item, action.payload.team);
       });
     }
 
