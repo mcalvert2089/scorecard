@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import { connect } from "react-redux"
 import axios from 'axios'
+import { saveAllTeams } from '../../../js/actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
 const addStyle = {
@@ -8,25 +10,23 @@ const addStyle = {
   paddingRight: '6px'
 };
 
-export default class Teams extends React.Component {
-	constructor(props) {
-		super(props)
+const mapStateToProps = state => ({
+	teams: state.teams
+})
 
-		this.state = {
-			teams: []
-		}
-	}
-
+class Teams extends React.Component {
 	componentDidMount() {
 		axios.get('/api/teams')
 	    .then((result) => {
 	      if(result.status === 200) {
-	      	this.setState({ teams: result.data })
+	      	store.dispatch( saveAllTeams({ teams: result.data }) )
 	      }
 	    })
 	}
 
 	render() {
+		const { teams } = this.props
+
 		return (
 		  <div>
 		    <h2>Teams</h2>
@@ -38,7 +38,7 @@ export default class Teams extends React.Component {
 		    		</tr>
 		    	</thead>
 		    	<tbody>
-				    { this.state.teams.map(data => {
+	 				{ teams.map(data => {
 				        const { id, name, city, state, manager } = data;
 				        return (
 				          <tr key={id}>
@@ -51,7 +51,7 @@ export default class Teams extends React.Component {
 				            </td>
 				          </tr>
 				        )
-				      })}
+				      })}			   
 			      </tbody>
 		      </table>
 
@@ -65,3 +65,5 @@ export default class Teams extends React.Component {
 		) 
 	}
 }
+
+export default connect(mapStateToProps)(Teams);

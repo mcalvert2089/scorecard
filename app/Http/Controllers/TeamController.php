@@ -30,6 +30,7 @@ class TeamController extends Controller
 
     public function update(Request $request, $id) {
         $this->model->update($request->only($this->model->getModel()->fillable), $id);
+         return Team::find($id);
     }
 
     public function destroy($id) {

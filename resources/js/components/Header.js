@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
 import { HashRouter, Route, Link } from "react-router-dom"
-import store from '../../js/store/index'
-
 
 const iconStyle = {
   fontSize: '28px',
@@ -15,7 +13,7 @@ const mapStateToProps = state => ({
 
 class Header extends Component {
 	render() {
-		const { first_name } = this.props;
+		const { first_name } = this.props
 		let loggedIn = localStorage.getItem('loggedIn')
 		return (
 			<HashRouter>

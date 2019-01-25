@@ -1,1 +1,4 @@
-export const SAVE_USER_INFO = "SAVE_USER_INFO";
+export const SAVE_USER_INFO = "SAVE_USER_INFO"
+export const SAVE_ALL_TEAMS = "SAVE_ALL_TEAMS"
+export const SAVE_SINGLE_TEAM = "SAVE_SINGLE_TEAM"
+export const UPDATE_TEAM_INFO = "UPDATE_TEAM_INFO"

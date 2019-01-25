@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import {connect} from "react-redux"
 import axios from 'axios'
+import { saveSingleTeam, updateTeamInfo } from '../../../js/actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
 const addStyle = {
@@ -8,7 +10,7 @@ const addStyle = {
   paddingRight: '6px'
 };
 
-export default class Teams extends React.Component {
+class TeamsEdit extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -26,30 +28,6 @@ export default class Teams extends React.Component {
 	    this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleChange(e){
-		this.setState({ [e.target.name]: e.target.value })
-	}
-
-	handleSubmit(event) {
-	    event.preventDefault()
-	    this.setState({ isHidden: true })
-
-	    const { name, manager, city, state } = this.state;
-
-	    axios.patch('/api/teams/' + this.state.id, { name, manager, city, state })
-	      .then((result) => {
-	        if(result.status === 200) {
-	          	this.setState({ 
-		      		name: result.data.name,
-		      		manager: result.data.manager,
-		      		city: result.data.city,
-		      		state: result.data.state 
-		      	}) 
-			    this.setState({ isHidden: false })
-	        }
-	      })
-	  }
-
 	componentDidMount() {
 		axios.get('/api/teams/' + this.state.id)
 	    .then((result) => {
@@ -63,6 +41,39 @@ export default class Teams extends React.Component {
 	      }
 	    })
 	}
+
+	handleChange(e){
+		this.setState({ [e.target.name]: e.target.value })
+	}
+
+	handleSubmit(event) {
+	    event.preventDefault()
+	    this.setState({ isHidden: true })
+
+	    const { name, manager, city, state } = this.state;
+
+	    axios.patch('/api/teams/' + this.state.id, { name, manager, city, state })
+	      .then((result) => {
+	        if(result.status === 200) {
+	      		store.dispatch( saveSingleTeam({ team: {
+	        			id: result.data.id,
+	        			name: result.data.name,
+			      		manager: result.data.manager,
+			      		city: result.data.city,
+			      		state: result.data.state 
+	        		}
+	        	}) )
+
+				this.setState({ 
+		      		name: result.data.name,
+		      		manager: result.data.manager,
+		      		city: result.data.city,
+		      		state: result.data.state,
+		      		isHidden: false
+		      	}) 
+	        }
+	      })
+	  }
 
 	render() {
 		return (
@@ -132,3 +143,5 @@ const EditedAlert = () => (
       </div>
     </div>
 )
+
+export default TeamsEdit
