@@ -15,55 +15,76 @@ const mapStateToProps = state => ({
 })
 
 class Teams extends React.Component {
+
+  constructor(props) {
+    super(props)
+	    this.state = {
+			teams: null
+		}
+	}
+
 	componentDidMount() {
 		axios.get('/api/teams')
 	    .then((result) => {
 	      if(result.status === 200) {
 	      	store.dispatch( saveAllTeams({ teams: result.data }) )
+	      	this.setState({ teams: result.data })
 	      }
 	    })
 	}
 
-	render() {
+	render() {	
 		const { teams } = this.props
 
 		return (
 		  <div>
 		    <h2>Teams</h2>
-		    <table>
-		    	<thead>
-		    		<tr>
-		    			<th>Team Name</th>
-		    			<th>Manager</th>
-		    		</tr>
-		    	</thead>
-		    	<tbody>
-	 				{ teams.map(data => {
-				        const { id, name, city, state, manager } = data;
-				        return (
-				          <tr key={id}>
-				            <td>{city} {name}</td>
-				            <td>{manager}</td>
-				            <td>
-				            	<Link to={ '/teams/edit/' +  id }>
-				            		<i className="fas fa-edit"></i>
-				            	</Link>
-				            </td>
-				          </tr>
-				        )
-				      })}			   
-			      </tbody>
-		      </table>
+
+		    { this.state.teams === null && <div>Loading Teams...</div> }
+		    { this.state.teams !== null && <TeamList teams={ teams } /> }
 
 		    <div className="mt-6">
 			    <Link to='/teams/add' className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded">
-			    	<i className="fas fa-plus" style={addStyle}></i>
+			    	<i className="fas fa-plus" style={ addStyle }></i>
 			    	Add Team
 			    </Link>
 			</div>
 		  </div>
 		) 
 	}
+}
+
+function TeamList(teams) {
+		if(teams.teams.length === 0) {
+			return ( <div>No teams yet.</div> )
+		} else {
+			return (
+				<table>
+					<thead>
+						<tr>
+							<th>Team Name</th>
+							<th>Manager</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ teams.teams.map(data => {
+					    const { id, name, city, state, manager } = data;
+					    return (
+					      <tr key={id}>
+					        <td>{city} {name}</td>
+					        <td>{manager}</td>
+					        <td>
+					        	<Link to={ '/teams/edit/' +  id }>
+					        		<i className="fas fa-edit"></i>
+					        	</Link>
+					        </td>
+					      </tr>
+					    )
+					  })}			   
+					</tbody>
+				</table>
+			)
+		}
 }
 
 export default connect(mapStateToProps)(Teams);

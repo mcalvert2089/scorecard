@@ -7,14 +7,16 @@ const mapStateToProps = state => {
   return { user: state.user }
 }
 
-export default class TeamsAdd extends React.Component {
+export default class PlayersAdd extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      name: '',
-      manager: '',
-      city: '',
-      state: '',
+      first_name: '',
+      last_name: '',
+      team_id: '',
+      user_id: '',
+      bats: '',
+      throws: '',
       isHidden: true
     }
 
@@ -29,10 +31,10 @@ export default class TeamsAdd extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     this.isHidden = true
-    const { name, manager, city, state } = this.state;
+    const { first_name, last_name, team_id, bats, throws } = this.state;
     let user_id = props.user.id
 
-    axios.post('/api/teams', { name, manager, city, state, user_id })
+    axios.post('/api/players', { first_name, last_name, team_id, user_id, bats, throws })
       .then((result) => {
         if(result.status === 200) {
           this.toggleHidden()
@@ -50,24 +52,24 @@ export default class TeamsAdd extends React.Component {
 render() {
   return (
       <div className="container mx-auto">
-        <h1>Create Team</h1>
+        <h1>Create Player</h1>
         {! this.state.isHidden && <AddedAlert />}
          <form className="w-full max-w-xs" onSubmit={this.handleSubmit}>
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-name">
-                Team Name
+              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-first-name">
+                First Name
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-name" type="text" name="name" onChange={this.handleChange}/>
+              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-first-name" type="text" name="name" onChange={this.handleChange}/>
             </div>
           </div>
 
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
               <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-manager">
-                Manager
+                Last Name
               </label>
             </div>
             <div className="md:w-2/3">
@@ -75,27 +77,6 @@ render() {
             </div>
           </div>
 
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-city">
-                City
-              </label>
-            </div>
-            <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-city" type="text" name="city" onChange={this.handleChange}/>
-            </div>
-          </div>
-
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-state">
-                State
-              </label>
-            </div>
-            <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-state" type="text" name="state" onChange={this.handleChange}/>
-            </div>
-          </div>
           <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
@@ -111,7 +92,7 @@ render() {
 const AddedAlert = () => (
     <div className="flex mb-6">
       <div className="flex-initial border-2 border-green bg-yellow-lighter text-green-dark py-2 px-4 font-semibold rounded">
-          A new team has been added
+          A new player has been added
       </div>
     </div>
 )

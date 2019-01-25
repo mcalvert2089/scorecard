@@ -1,4 +1,11 @@
 export const SAVE_USER_INFO = "SAVE_USER_INFO"
+
+// teams
 export const SAVE_ALL_TEAMS = "SAVE_ALL_TEAMS"
 export const SAVE_SINGLE_TEAM = "SAVE_SINGLE_TEAM"
 export const UPDATE_TEAM_INFO = "UPDATE_TEAM_INFO"
+
+// players
+export const SAVE_ALL_PLAYERS = "SAVE_ALL_PLAYERS"
+export const SAVE_SINGLE_PLAYER = "SAVE_SINGLE_PLAYER"
+export const UPDATE_PLAYER_INFO = "UPDATE_PLAYER_INFO"

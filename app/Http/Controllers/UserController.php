@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function me() {
-    	return User::select('id', 'first_name', 'last_name', 'email')->whereId(auth()->user()->id);
+    	return User::select('id', 'first_name', 'last_name', 'email')->whereId(auth()->user()->id)->first();
     }    
 
     public function isActivated(Request $request) {

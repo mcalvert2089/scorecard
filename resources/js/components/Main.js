@@ -12,6 +12,9 @@ import ActivateAccount from './ActivateAccount'
 import Teams from './pages/Teams'
 import TeamsAdd from './pages/TeamsAdd'
 import TeamsEdit from './pages/TeamsEdit'
+import Players from './pages/Players'
+import PlayersAdd from './pages/PlayersAdd'
+import PlayersEdit from './pages/PlayersEdit'
 import NotFound from './NotFound'
 
 window.store = store
@@ -50,6 +53,11 @@ class Main extends Component {
                 <Route exact path='/teams' component={Teams}/>
                 <Route exact path='/teams/add' component={TeamsAdd}/>
                 <Route exact path='/teams/edit/:id' component={TeamsEdit}/>
+
+                // Players
+                <Route exact path='/players' component={Players}/>
+                <Route exact path='/players/add' component={PlayersAdd}/>
+                <Route exact path='/players/edit/:id' component={PlayersEdit}/>
 
                 // 404
                 <Route path="*" component={NotFound} />

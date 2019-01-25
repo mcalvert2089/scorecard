@@ -12,7 +12,7 @@ if(localStorage.getItem('access_token')) axios.defaults.headers.common['Authoriz
 class App extends Component {
   	componentDidMount() {
 		if(localStorage.getItem('access_token')) {
-			axios.get('/api/auth/user')
+			axios.get('/api/me')
 			    .then((result) => {
 			      if(result.status === 200) {
 			      	store.dispatch( saveUserInfo({ user: result.data }) )

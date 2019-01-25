@@ -2,7 +2,10 @@ import {
 		SAVE_USER_INFO,
 		SAVE_ALL_TEAMS,
 		SAVE_SINGLE_TEAM,
-		UPDATE_TEAM_INFO
+		UPDATE_TEAM_INFO,
+		SAVE_ALL_PLAYERS,
+		SAVE_SINGLE_PLAYER,
+		UPDATE_PLAYER_INFO
 	} from "../constants/action-types"
 import { createReducer } from 'redux-starter-kit'
 
@@ -14,6 +17,8 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
 	if (action.type === SAVE_USER_INFO) { return Object.assign({}, state, { user: action.payload.user }) }
+	
+	// teams
 	if (action.type === SAVE_ALL_TEAMS) { return Object.assign({}, state, { teams: action.payload.teams }) }
 	if (action.type === SAVE_SINGLE_TEAM) { 
 		let teamState = []
@@ -31,7 +36,24 @@ function rootReducer(state = initialState, action) {
 		return Object.assign({}, state, { teams: teamState })
 	}
 
+	// players
+	if (action.type === SAVE_ALL_PLAYERS) { return Object.assign({}, state, { players: action.payload.players }) }
+	if (action.type === SAVE_SINGLE_PLAYER) { 
+		let playerState = []
+		let index = state.players.findIndex(row => row.id === action.payload.player.id)
+
+		if(index === -1) {
+			playerState = state.players.slice()
+			playerState.splice(0, 0, action.payload.player)
+		} else {
+			playerState = state.players.map((item, index) => {
+			    if (item.id !== action.payload.player.id) { return item }
+			    return { ...item, ...action.payload.player }
+			})
+		}
+		return Object.assign({}, state, { players: playerState })
+	}
  	return state;
-};
+}
 
 export default rootReducer;
