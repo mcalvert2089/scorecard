@@ -24,14 +24,8 @@ function rootReducer(state = initialState, action) {
 			teamState.splice(0, 0, action.payload.team)
 		} else {
 			teamState = state.teams.map((item, index) => {
-			    if (item.id !== action.payload.team.id) {
-			      return item
-			    }
-
-			    return {
-			      ...item,
-			      ...action.payload.team
-			    }
+			    if (item.id !== action.payload.team.id) { return item }
+			    return { ...item, ...action.payload.team }
 			})
 		}
 		return Object.assign({}, state, { teams: teamState })
