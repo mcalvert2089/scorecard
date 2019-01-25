@@ -53,7 +53,7 @@ function rootReducer(state = initialState, action) {
 		}
 		return Object.assign({}, state, { players: playerState })
 	}
- 	return state;
+ 	return state
 }
 
 export default rootReducer;

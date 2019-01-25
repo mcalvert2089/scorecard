@@ -7,9 +7,7 @@ const iconStyle = {
   color: 'white'
 };
 
-const mapStateToProps = state => ({
-  first_name: state.user.first_name
-})
+const mapStateToProps = state => ({ first_name: state.user.first_name })
 
 class Header extends Component {
 	render() {

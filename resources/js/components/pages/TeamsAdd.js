@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import axios from 'axios'
 
-const mapStateToProps = state => {
-  return { user: state.user }
-}
+const mapStateToProps = (state) => ({ user: state.user })
 
-export default class TeamsAdd extends React.Component {
+class TeamsAdd extends Component {
   constructor(props) {
-    super(props);
+    super(props)
+
     this.state = { 
-      name: '',
-      manager: '',
-      city: '',
-      state: '',
+      name: null,
+      manager: null,
+      city: null,
+      state: null,
+      user_id: props.user.id,
       isHidden: true
     }
 
@@ -29,8 +30,7 @@ export default class TeamsAdd extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     this.isHidden = true
-    const { name, manager, city, state } = this.state;
-    let user_id = props.user.id
+    const { name, manager, city, state, user_id } = this.state;
 
     axios.post('/api/teams', { name, manager, city, state, user_id })
       .then((result) => {
@@ -115,3 +115,5 @@ const AddedAlert = () => (
       </div>
     </div>
 )
+
+export default connect(mapStateToProps)(TeamsAdd)

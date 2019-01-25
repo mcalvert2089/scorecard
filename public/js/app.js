@@ -71851,14 +71851,14 @@ function TeamList(teams) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TeamsAdd; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -71884,6 +71884,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
 var mapStateToProps = function mapStateToProps(state) {
   return {
     user: state.user
@@ -71892,8 +71893,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var TeamsAdd =
 /*#__PURE__*/
-function (_React$Component) {
-  _inherits(TeamsAdd, _React$Component);
+function (_Component) {
+  _inherits(TeamsAdd, _Component);
 
   function TeamsAdd(props) {
     var _this;
@@ -71902,10 +71903,11 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TeamsAdd).call(this, props));
     _this.state = {
-      name: '',
-      manager: '',
-      city: '',
-      state: '',
+      name: null,
+      manager: null,
+      city: null,
+      state: null,
+      user_id: props.user.id,
       isHidden: true
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -71929,9 +71931,9 @@ function (_React$Component) {
           name = _this$state.name,
           manager = _this$state.manager,
           city = _this$state.city,
-          state = _this$state.state;
-      var user_id = props.user.id;
-      axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/api/teams', {
+          state = _this$state.state,
+          user_id = _this$state.user_id;
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('/api/teams', {
         name: name,
         manager: manager,
         city: city,
@@ -72035,9 +72037,7 @@ function (_React$Component) {
   }]);
 
   return TeamsAdd;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
-
-
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 var AddedAlert = function AddedAlert() {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -72046,6 +72046,8 @@ var AddedAlert = function AddedAlert() {
     className: "flex-initial border-2 border-green bg-yellow-lighter text-green-dark py-2 px-4 font-semibold rounded"
   }, "A new team has been added"));
 };
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(TeamsAdd));
 
 /***/ }),
 
