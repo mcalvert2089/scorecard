@@ -5,14 +5,16 @@ import {
 		UPDATE_TEAM_INFO,
 		SAVE_ALL_PLAYERS,
 		SAVE_SINGLE_PLAYER,
-		UPDATE_PLAYER_INFO
+		UPDATE_PLAYER_INFO,
+		SAVE_PLAYER_POSITIONS
 	} from "../constants/action-types"
 import { createReducer } from 'redux-starter-kit'
 
 const initialState = {
 	user: [],
 	teams: [],
-	players: []
+	players: [],
+	positions: []
 }
 
 function rootReducer(state = initialState, action) {
@@ -53,6 +55,9 @@ function rootReducer(state = initialState, action) {
 		}
 		return Object.assign({}, state, { players: playerState })
 	}
+
+	if (action.type === SAVE_PLAYER_POSITIONS) { return Object.assign({}, state, { positions: action.payload.positions }) }
+
  	return state
 }
 

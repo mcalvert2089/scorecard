@@ -56,7 +56,7 @@ class Main extends Component {
 
                 // Players
                 <Route exact path='/players' component={Players}/>
-                <Route exact path='/players/add' component={PlayersAdd}/>
+                <Route path='/players/add' component={PlayersAdd}/>
                 <Route exact path='/players/edit/:id' component={PlayersEdit}/>
 
                 // 404

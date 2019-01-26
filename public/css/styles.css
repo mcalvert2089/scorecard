@@ -1,11 +1,13 @@
 a {
 	color: #1B4731;
 	text-decoration: none;
+	font-weight: bold;
 }
 
 a:hover {
 	color:#aaa;
 	text-decoration: underline;
+	font-weight: bold;
 }
 
 header a {

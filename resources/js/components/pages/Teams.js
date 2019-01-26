@@ -64,6 +64,8 @@ function TeamList(teams) {
 						<tr>
 							<th>Team Name</th>
 							<th>Manager</th>
+							<th>City</th>
+							<th>State</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -71,8 +73,10 @@ function TeamList(teams) {
 					    const { id, name, city, state, manager } = data;
 					    return (
 					      <tr key={id}>
-					        <td>{city} {name}</td>
+					        <td>{name}</td>
 					        <td>{manager}</td>
+					        <td>{city}</td>
+					        <td>{state}</td>
 					        <td>
 					        	<Link to={ '/teams/edit/' +  id }>
 					        		<i className="fas fa-edit"></i>

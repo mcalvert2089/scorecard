@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Repository implements RepositoryInterface
 {
+    // TO-DO: add try/catches to handle error reporting
+    
     protected $model;
 
     public function __construct(Model $model)

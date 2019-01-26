@@ -13,10 +13,22 @@ class PositionSeeder extends Seeder
     public function run()
     {
     	Position::create([
-    		'name' => 'Pitcher',
-    		'abbreviation' => 'P',
+    		'name' => 'Starting Pitcher',
+    		'abbreviation' => 'SP',
     		'pos_number' => 1
     	]);
+
+        Position::create([
+            'name' => 'Relief Pitcher',
+            'abbreviation' => 'RP',
+            'pos_number' => 1
+        ]);
+
+        Position::create([
+            'name' => 'Closer',
+            'abbreviation' => 'CL',
+            'pos_number' => 1
+        ]);
 
     	Position::create([
     		'name' => 'Catcher',
@@ -65,5 +77,11 @@ class PositionSeeder extends Seeder
     		'abbreviation' => 'RF',
     		'pos_number' => 9
     	]);
+
+        Position::create([
+            'name' => 'Designated Hitter',
+            'abbreviation' => 'DH',
+            'pos_number' => 0
+        ]);
     }
 }

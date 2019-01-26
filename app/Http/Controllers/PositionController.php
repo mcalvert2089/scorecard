@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Player;
-use App\Team;
+use App\Position;
 use App\Repositories\Repository;
 use Illuminate\Http\Request;
 
-class PlayerController extends Controller
+class PositionController extends Controller
 {
     protected $model;
 
-    public function __construct(Player $player) {
+    public function __construct(Position $player) {
         $this->model = new Repository($player);
     }
 
     public function index() {
-        return $this->model->allByUserId(auth()->user()->id);
+        return Position::select('id', 'name', 'abbreviation')->orderBy('order')->get();
     }
 
     public function show($id) {
@@ -25,7 +24,6 @@ class PlayerController extends Controller
 
     public function store(Request $request) {
         $data = $request->only($this->model->getModel()->fillable);
-        $data['user_id'] = auth()->user()->id;
         $this->model->create($data);
     }
 

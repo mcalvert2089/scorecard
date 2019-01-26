@@ -17,7 +17,6 @@ class PlayersEdit extends React.Component {
 	      first_name: '',
 	      last_name: '',
 	      team_id: '',
-	      user_id: '',
 	      bats: '',
 	      throws: '',
 	      isHidden: true

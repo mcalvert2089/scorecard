@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use App\Team;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

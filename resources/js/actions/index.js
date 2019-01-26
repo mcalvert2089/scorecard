@@ -5,7 +5,8 @@ import {
 			UPDATE_TEAM_INFO,
 			SAVE_ALL_PLAYERS,
 			SAVE_SINGLE_PLAYER,
-			UPDATE_PLAYER_INFO
+			UPDATE_PLAYER_INFO,
+			SAVE_PLAYER_POSITIONS
 		} from "../constants/action-types"
 
 export function saveUserInfo(payload) {
@@ -37,4 +38,9 @@ export function saveSinglePlayer(payload) {
 
 export function updatePlayerInfo(payload) {
 	return { type: UPDATE_PLAYER_INFO , payload}
+}
+
+// positions
+export function saveAllPlayerPositions(payload) {
+	return { type: SAVE_PLAYER_POSITIONS , payload}
 }
