@@ -25,7 +25,10 @@ header a:hover {
 }
 
 #banner {
-	background:#222 url('img/baseball-player.jpg') 45% 56% no-repeat;
+	background-color:#222;
+	background-image: url('img/baseball-player.jpg');
+	background-position: 45% 56%;
+	background-repeat: no-repeat;
 	background-size: 1150px;
 	height:300px;
 }
@@ -33,3 +36,30 @@ header a:hover {
 h1, h2, h3, h4, h5, h6 {
 	margin:0 0 16px 0 !important;
 }
+
+@media only screen and (max-width: 768px) {
+	#banner {
+		height: 250px !important;
+		background-image: url('img/baseball-player-768.jpg');
+		background-size: auto;
+		background-position: 45% 54%;
+	}
+} 
+
+@media only screen and (max-width: 600px) {
+	#banner {
+		height: 250px !important;
+		background-image: url('img/baseball-player-600.jpg');
+		background-size: auto;
+		background-position: 45% 74%;
+	}
+} 
+
+@media only screen and (max-width: 360px) {
+	#banner {
+		height: 150px !important;
+		background-image: url('img/baseball-player-360.jpg');
+		background-size: auto;
+		background-position: 45% 58%;
+	}
+} 

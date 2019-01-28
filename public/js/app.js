@@ -79702,10 +79702,16 @@ var Header =
 function (_Component) {
   _inherits(Header, _Component);
 
-  function Header() {
+  function Header(props) {
+    var _this;
+
     _classCallCheck(this, Header);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Header).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Header).call(this, props));
+    _this.state = {
+      mobile_menu_open: false
+    };
+    return _this;
   }
 
   _createClass(Header, [{
@@ -79729,7 +79735,7 @@ function (_Component) {
       }, "Scorecard")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "block lg:hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "flex items-center px-3 py-2 border rounded hover:text-white hover:border-white"
+        className: "flex items-center px-3 py-2 border rounded text-white hover:text-white hover:border-white"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
         className: "fill-current h-3 w-3",
         viewBox: "0 0 20 20",
@@ -80128,7 +80134,7 @@ function (_Component) {
     value: function render() {
       var loggedIn = localStorage.getItem('loggedIn');
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container mx-auto"
+        className: "container mx-auto pl-3 pr-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Switch"], null, "// public routes", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
         exact: true,
         path: "/",

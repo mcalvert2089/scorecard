@@ -10,6 +10,13 @@ const iconStyle = {
 const mapStateToProps = state => ({ first_name: state.user.first_name })
 
 class Header extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			mobile_menu_open: false,
+		}
+	}
+
 	render() {
 		const { first_name } = this.props
 		let loggedIn = localStorage.getItem('loggedIn')
@@ -24,7 +31,7 @@ class Header extends Component {
 							    <span className="font-semibold text-xl tracking-tight">Scorecard</span>
 							  </div>
 							  <div className="block lg:hidden">
-							    <button className="flex items-center px-3 py-2 border rounded hover:text-white hover:border-white">
+							    <button className="flex items-center px-3 py-2 border rounded text-white hover:text-white hover:border-white">
 							      <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
 							    </button>
 							  </div>

@@ -34,7 +34,7 @@ class Main extends Component {
     let loggedIn = localStorage.getItem('loggedIn')
 
     return (
-          <div className="container mx-auto">
+          <div className="container mx-auto pl-3 pr-3">
             <HashRouter>
               <Switch>
                 // public routes
