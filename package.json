@@ -8,11 +8,10 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "test": "jest",
+        "test": "react-scripts test --env=jsdom",
         "start:tw": "postcss ./resources/css/tailwind-own.css -o ./resources/css/tailwind.css -w",
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
     },
     "devDependencies": {
@@ -41,6 +40,7 @@
         "react-router-dom": "^4.3.1",
         "react-select": "^2.3.0",
         "redux": "^4.0.1",
+        "redux-burger-menu": "^0.2.8",
         "redux-devtools": "^3.5.0",
         "redux-starter-kit": "^0.4.1"
     }

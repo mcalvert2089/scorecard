@@ -16,6 +16,6 @@ class Player extends Model
     protected $fillable = [ 'first_name', 'last_name', 'team_id', 'user_id', 'primary_position_id', 'bats', 'throws' ];
 
     public function position() {
-    	$this->hasOne('App\PlayerPosition', 'id', 'position_id');
+    	return $this->hasOne('App\Position', 'id', 'primary_position_id');
     }
 }

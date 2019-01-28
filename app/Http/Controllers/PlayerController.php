@@ -16,11 +16,13 @@ class PlayerController extends Controller
     }
 
     public function index() {
-        return $this->model->allByUserId(auth()->user()->id);
+        return Player::with('position')
+                ->whereUserId(auth()->user()->id)
+                ->get();
     }
 
     public function show($id) {
-        return $this->model->whereId($id)->get();
+        return $this->model->with('position')->whereId($id)->get();
     }
 
     public function store(Request $request) {

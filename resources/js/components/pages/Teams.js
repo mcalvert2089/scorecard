@@ -74,6 +74,7 @@ function TeamList(teams) {
 							<th>Manager</th>
 							<th>City</th>
 							<th>State</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
