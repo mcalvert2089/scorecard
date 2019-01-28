@@ -6,6 +6,7 @@ import store from '../../js/store/index'
 import { saveUserInfo } from '../../js/actions/index'
 import Main from './Main'
 import Header from './Header'
+import '../../css/tailwind.css'
 
 if(localStorage.getItem('access_token')) axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('access_token')
 
