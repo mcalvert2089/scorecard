@@ -19,18 +19,27 @@ class Players extends React.Component {
     	super(props)
 
 	    this.state = {
-			players: null
+			players: null,
+			isLoading: true
 		}
 	}
 
 	componentDidMount() {
+		this.state.isLoading = true
+
 		axios.get('/api/players')
 	    .then((result) => {
 	      if(result.status === 200) {
-	      	store.dispatch( saveAllPlayers({ players: result.data }) )
-	      	this.setState({ players: result.data })
+	      	if (this.state.isLoading) { 
+	      		store.dispatch( saveAllPlayers({ players: result.data }) )
+	      		this.setState({ players: result.data })
+	      	}
 	      }
 	    })
+	}
+
+	componentWillUnmount() {
+		this.state.isLoading = false
 	}
 
 	render() {

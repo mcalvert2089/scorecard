@@ -79754,7 +79754,8 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Players).call(this, props));
     _this.state = {
-      players: null
+      players: null,
+      isLoading: true
     };
     return _this;
   }
@@ -79764,17 +79765,25 @@ function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      this.state.isLoading = true;
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/players').then(function (result) {
         if (result.status === 200) {
-          store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveAllPlayers"])({
-            players: result.data
-          }));
+          if (_this2.state.isLoading) {
+            store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveAllPlayers"])({
+              players: result.data
+            }));
 
-          _this2.setState({
-            players: result.data
-          });
+            _this2.setState({
+              players: result.data
+            });
+          }
         }
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.state.isLoading = false;
     }
   }, {
     key: "render",
@@ -79912,7 +79921,8 @@ function (_Component) {
       primary_position_id: null,
       bats: null,
       throws: null,
-      isHidden: true
+      isHidden: true,
+      isLoading: true
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleTeamDropdownChange = _this.handleTeamDropdownChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -79928,28 +79938,38 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      this.state.isLoading = true;
       axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('/api/teams').then(function (result) {
         if (result.status === 200) {
-          store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_5__["saveAllTeams"])({
-            teams: result.data
-          }));
+          if (_this2.state.isLoading) {
+            store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_5__["saveAllTeams"])({
+              teams: result.data
+            }));
 
-          _this2.setState({
-            teams: result.data
-          });
+            _this2.setState({
+              teams: result.data
+            });
+          }
         }
       });
       axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('/api/positions').then(function (result) {
         if (result.status === 200) {
-          store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_5__["saveAllPlayerPositions"])({
-            positions: result.data
-          }));
+          if (_this2.state.isLoading) {
+            store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_5__["saveAllPlayerPositions"])({
+              positions: result.data
+            }));
 
-          _this2.setState({
-            positions: result.data
-          });
+            _this2.setState({
+              positions: result.data
+            });
+          }
         }
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.state.isLoading = false;
     }
   }, {
     key: "handleChange",
@@ -80418,7 +80438,8 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Teams).call(this, props));
     _this.state = {
-      teams: null
+      teams: null,
+      isLoading: true
     };
     return _this;
   }
@@ -80428,17 +80449,25 @@ function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      this.state.isLoading = true;
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/teams').then(function (result) {
         if (result.status === 200) {
-          store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveAllTeams"])({
-            teams: result.data
-          }));
+          if (_this2.state.isLoading) {
+            store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveAllTeams"])({
+              teams: result.data
+            }));
 
-          _this2.setState({
-            teams: result.data
-          });
+            _this2.setState({
+              teams: result.data
+            });
+          }
         }
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.state.isLoading = false;
     }
   }, {
     key: "render",

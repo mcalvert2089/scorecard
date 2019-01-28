@@ -19,20 +19,28 @@ class Teams extends React.Component {
   constructor(props) {
     super(props)
 	    this.state = {
-			teams: null
+			teams: null,
+			isLoading: true
 		}
 	}
 
 	componentDidMount() {
+		this.state.isLoading = true
 		axios.get('/api/teams')
 	    .then((result) => {
 	      if(result.status === 200) {
-	      	store.dispatch( saveAllTeams({ teams: result.data }) )
-	      	this.setState({ teams: result.data })
+	      	if (this.state.isLoading) { 
+	      		store.dispatch( saveAllTeams({ teams: result.data }) )
+	      		this.setState({ teams: result.data })
+	      	}
 	      }
 	    })
 	}
 
+	componentWillUnmount() {
+		this.state.isLoading = false
+	}
+	
 	render() {	
 		const { teams } = this.props
 

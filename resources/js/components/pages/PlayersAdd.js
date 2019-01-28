@@ -24,6 +24,7 @@ const throwsOptions = [
 ]
 
 class PlayersAdd extends Component {
+
   constructor(props) {
     super(props);
     this.state = { 
@@ -34,7 +35,8 @@ class PlayersAdd extends Component {
       primary_position_id: null,
       bats: null,
       throws: null,
-      isHidden: true
+      isHidden: true,
+      isLoading: true
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -46,23 +48,33 @@ class PlayersAdd extends Component {
   }
 
   componentDidMount() {
+    this.state.isLoading = true
+
     axios.get('/api/teams')
       .then((result) => {
         if(result.status === 200) {
-          store.dispatch( saveAllTeams({ teams: result.data }) )
-          this.setState({ teams: result.data })
+          if (this.state.isLoading) { 
+            store.dispatch( saveAllTeams({ teams: result.data }) )
+            this.setState({ teams: result.data })
+          }
         }
       })
 
       axios.get('/api/positions')
       .then((result) => {
         if(result.status === 200) {
-          store.dispatch( saveAllPlayerPositions({ positions: result.data }) )
-          this.setState({ positions: result.data })
+          if (this.state.isLoading) { 
+            store.dispatch( saveAllPlayerPositions({ positions: result.data }) )
+            this.setState({ positions: result.data })
+          }
         }
       })
   }
 
+  componentWillUnmount() {
+    this.state.isLoading = false
+  }
+  
   handleChange(e){
    this.setState({ [e.target.name]: e.target.value })
   }
