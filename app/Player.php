@@ -18,4 +18,8 @@ class Player extends Model
     public function position() {
     	return $this->hasOne('App\Position', 'id', 'primary_position_id');
     }
+
+    public function team() {
+    	return $this->hasOne('App\Team', 'id', 'team_id');
+    }
 }

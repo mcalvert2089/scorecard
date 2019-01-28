@@ -16,8 +16,9 @@ class PlayerController extends Controller
     }
 
     public function index() {
-        return Player::with('position')
+        return Player::with('position', 'team')
                 ->whereUserId(auth()->user()->id)
+                ->orderBy('last_name')
                 ->get();
     }
 

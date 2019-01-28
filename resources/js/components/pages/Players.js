@@ -72,22 +72,29 @@ function PlayerList(players) {
 					<tr>
 						<th>Last Name</th>
 						<th>First Name</th>
-						<th>Primary Position</th>
-						<th>Bats</th>
-						<th>Throws</th>
+						<th>Team</th>
+						<th>
+							<span className="hideOnMobile">Primary </span>Position
+						</th>
+						<th className="hideOnMobile">Bats</th>
+						<th className="hideOnMobile">Throws</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					{ players.players.map(data => {
-				    const { id, first_name, last_name, position, bats, throws } = data;
+				    const { id, first_name, last_name, position, team, bats, throws } = data;
 				    return (
 				      <tr key={id}>
 				      	<td>{last_name}</td>
 				        <td>{first_name}</td>
-				        <td>{position.abbreviation} - {position.name}</td>
-				        <td>{bats}</td>
-				        <td>{throws}</td>
+				        <td>
+				        	<span className="hideOnMobile">{team.city} </span>{team.name}</td>
+				        <td>
+				        	<span className="hideOnMobile">{position.name} </span>({position.abbreviation})
+				       	</td>
+				        <td className="hideOnMobile">{bats}</td>
+				        <td className="hideOnMobile">{throws}</td>
 				        <td>
 				        	<Link to={ '/players/edit/' +  id }>
 				        		<i className="fas fa-edit"></i>

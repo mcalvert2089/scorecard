@@ -80707,16 +80707,31 @@ function PlayerList(players) {
   if (players.players.length === 0) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No players yet.");
   } else {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Last Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "First Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Primary Position"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Bats"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Throws"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, players.players.map(function (data) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Last Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "First Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Team"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "hideOnMobile"
+    }, "Primary "), "Position"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+      className: "hideOnMobile"
+    }, "Bats"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+      className: "hideOnMobile"
+    }, "Throws"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, players.players.map(function (data) {
       var id = data.id,
           first_name = data.first_name,
           last_name = data.last_name,
           position = data.position,
+          team = data.team,
           bats = data.bats,
           throws = data.throws;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
         key: id
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, last_name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, first_name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, position.abbreviation, " - ", position.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, bats), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, throws), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Link"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, last_name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, first_name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "hideOnMobile"
+      }, team.city, " "), team.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "hideOnMobile"
+      }, position.name, " "), "(", position.abbreviation, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+        className: "hideOnMobile"
+      }, bats), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+        className: "hideOnMobile"
+      }, throws), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Link"], {
         to: '/players/edit/' + id
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-edit"
