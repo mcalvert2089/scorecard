@@ -7,6 +7,7 @@ $factory->define(App\Player::class, function (Faker $faker) {
         'first_name' => $faker->firstName,
     	'last_name' => $faker->lastName,
     	'team_id' => $faker->uuid,
+    	'primary_position_id' => $faker->uuid,
     	'user_id' => $faker->uuid,
     	'bats' => 'R',
     	'throws' => 'R'

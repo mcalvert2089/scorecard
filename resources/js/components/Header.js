@@ -48,7 +48,7 @@ class Header extends Component {
 							    <i className="fas w-1/4 fa-baseball-ball flex-1 mr-2" style={iconStyle}></i>
 							    <span className="font-semibold text-xl tracking-tight">Scorecard</span>
 							  </div>
-							  <div className="block lg:hidden">
+							  <div className="block lg:hidden mr-5">
 							    <MenuContainer/>
 							  </div>
 							  <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto md:hidden sm:hidden xs:hidden">

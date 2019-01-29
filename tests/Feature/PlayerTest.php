@@ -2,6 +2,7 @@
 namespace Tests\Feature;
 
 use App\Player;
+use App\Position;
 use App\Team;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,18 @@ class PlayerTest extends TestCase
     public function setUp() {
         parent::setUp();
         $this->user = $this->getUser();
+    }
+
+    /** @test */
+    public function user_can_retrieve_all_players()
+    { 
+        $players = factory(Player::class, 10)->create();
+
+        $response = $this->actingAs($this->user, 'api')
+            ->get('/api/players');
+        $response->assertStatus(200);
+
+        $this->assertCount(10, $response->json());
     }
 
     /** @test */
@@ -33,12 +46,14 @@ class PlayerTest extends TestCase
     public function user_can_create_a_player()
     {   
     	$team = factory(Team::class)->create();
+        $position = Position::first();
 
     	$data = [];
     	$data['first_name'] = 'Shoeless Joe';
     	$data['last_name'] = 'Jackson';
     	$data['team_id'] = $team->id;
     	$data['user_id'] = $this->user->id;
+        $data['primary_position_id'] = $position->id;
     	$data['bats'] = 'L';
     	$data['throws'] = 'R';
 

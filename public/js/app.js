@@ -79752,7 +79752,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "font-semibold text-xl tracking-tight"
       }, "Scorecard")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "block lg:hidden"
+        className: "block lg:hidden mr-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MenuContainer__WEBPACK_IMPORTED_MODULE_3__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "w-full block flex-grow lg:flex lg:items-center lg:w-auto md:hidden sm:hidden xs:hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
