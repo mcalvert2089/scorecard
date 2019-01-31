@@ -23,7 +23,7 @@ class PlayerController extends Controller
     }
 
     public function show($id) {
-        return $this->model->with('position')->whereId($id)->get();
+        return $this->model->with('position')->whereId($id)->first();
     }
 
     public function store(Request $request) {

@@ -80726,7 +80726,9 @@ function PlayerList(players) {
         className: "hideOnMobile"
       }, team.city, " "), team.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "hideOnMobile"
-      }, position.name, " "), "(", position.abbreviation, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+      }, position.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "mobileOnly"
+      }, position.abbreviation)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
         className: "hideOnMobile"
       }, bats), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
         className: "hideOnMobile"
@@ -80828,13 +80830,13 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(PlayersAdd).call(this, props));
     _this.state = {
-      first_name: null,
-      last_name: null,
-      team_id: null,
+      first_name: '',
+      last_name: '',
+      team_id: '',
       user_id: props.user.id,
-      primary_position_id: null,
-      bats: null,
-      throws: null,
+      primary_position_id: '',
+      bats: '',
+      throws: '',
       isHidden: true,
       isLoading: true
     };
@@ -80958,10 +80960,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$state2 = this.state,
-          selectedOption = _this$state2.selectedOption,
-          teams = _this$state2.teams,
-          positions = _this$state2.positions;
+      var selectedOption = this.state.selectedOption;
       var teamOptions = this.props.teams.map(function (row) {
         return {
           value: row.id,
@@ -81111,6 +81110,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _js_actions_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../js/actions/index */ "./resources/js/actions/index.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -81137,10 +81137,37 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    teams: state.teams,
+    user: state.user,
+    positions: state.positions
+  };
+};
+
 var addStyle = {
   fontSize: '16px',
   paddingRight: '6px'
 };
+var batsOptions = [{
+  value: 'R',
+  label: 'Right'
+}, {
+  value: 'L',
+  label: 'Left'
+}, {
+  value: 'S',
+  label: 'Switch'
+}];
+var throwsOptions = [{
+  value: 'R',
+  label: 'Right'
+}, {
+  value: 'L',
+  label: 'Left'
+}];
 
 var PlayersEdit =
 /*#__PURE__*/
@@ -81154,14 +81181,22 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(PlayersEdit).call(this, props));
     _this.state = {
+      id: props.match.params.id,
       first_name: '',
       last_name: '',
       team_id: '',
+      user_id: '',
+      primary_position_id: '',
       bats: '',
       throws: '',
-      isHidden: true
+      isHidden: true,
+      isLoading: true
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleTeamDropdownChange = _this.handleTeamDropdownChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handlePositionDropdownChange = _this.handlePositionDropdownChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleBatsDropdownChange = _this.handleBatsDropdownChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleThrowsDropdownChange = _this.handleThrowsDropdownChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
@@ -81171,21 +81206,86 @@ function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/teams/' + this.state.id).then(function (result) {
+      this.state.isLoading = true;
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/teams').then(function (result) {
         if (result.status === 200) {
-          _this2.setState({
-            name: result.data.name,
-            manager: result.data.manager,
-            city: result.data.city,
-            state: result.data.state
-          });
+          if (_this2.state.isLoading) {
+            store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveAllTeams"])({
+              teams: result.data
+            }));
+
+            _this2.setState({
+              teams: result.data
+            });
+          }
         }
       });
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/players/' + this.state.id).then(function (result) {
+        if (result.status === 200) {
+          if (_this2.state.isLoading) {
+            _this2.setState({
+              id: result.data.id ? result.data.id : '',
+              first_name: result.data.first_name ? result.data.first_name : '',
+              last_name: result.data.last_name ? result.data.last_name : '',
+              team_id: result.data.team_id ? result.data.team_id : '',
+              primary_position_id: result.data.primary_position_id ? result.data.primary_position_id : '',
+              bats: result.data.bats ? result.data.bats : '',
+              throws: result.data.throws ? result.data.throws : ''
+            });
+          }
+        }
+      });
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/positions').then(function (result) {
+        if (result.status === 200) {
+          if (_this2.state.isLoading) {
+            store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveAllPlayerPositions"])({
+              positions: result.data
+            }));
+
+            _this2.setState({
+              positions: result.data
+            });
+          }
+        }
+      });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.state.isLoading = false;
     }
   }, {
     key: "handleChange",
     value: function handleChange(e) {
       this.setState(_defineProperty({}, e.target.name, e.target.value));
+    }
+  }, {
+    key: "handleTeamDropdownChange",
+    value: function handleTeamDropdownChange(selectedOption) {
+      this.setState({
+        team_id: selectedOption.value
+      });
+    }
+  }, {
+    key: "handlePositionDropdownChange",
+    value: function handlePositionDropdownChange(selectedOption) {
+      this.setState({
+        primary_position_id: selectedOption.value
+      });
+    }
+  }, {
+    key: "handleBatsDropdownChange",
+    value: function handleBatsDropdownChange(selectedOption) {
+      this.setState({
+        bats: selectedOption.value
+      });
+    }
+  }, {
+    key: "handleThrowsDropdownChange",
+    value: function handleThrowsDropdownChange(selectedOption) {
+      this.setState({
+        throws: selectedOption.value
+      });
     }
   }, {
     key: "handleSubmit",
@@ -81197,33 +81297,38 @@ function (_React$Component) {
         isHidden: true
       });
       var _this$state = this.state,
-          name = _this$state.name,
-          manager = _this$state.manager,
-          city = _this$state.city,
-          state = _this$state.state;
+          id = _this$state.id,
+          first_name = _this$state.first_name,
+          last_name = _this$state.last_name,
+          team_id = _this$state.team_id,
+          primary_position_id = _this$state.primary_position_id,
+          bats = _this$state.bats,
+          throws = _this$state.throws;
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.patch('/api/players/' + this.state.id, {
-        name: name,
-        manager: manager,
-        city: city,
-        state: state
+        id: id,
+        first_name: first_name,
+        last_name: last_name,
+        team_id: team_id,
+        primary_position_id: primary_position_id,
+        bats: bats,
+        throws: throws
       }).then(function (result) {
         if (result.status === 200) {
+          var data = {
+            id: result.data.id ? result.data.id : '',
+            first_name: result.data.first_name ? result.data.first_name : '',
+            last_name: result.data.last_name ? result.data.last_name : '',
+            team_id: result.data.team_id ? result.data.team_id : '',
+            primary_position_id: result.data.primary_position_id ? result.data.primary_position_id : '',
+            bats: result.data.bats ? result.data.bats : '',
+            throws: result.data.throws ? result.data.throws : ''
+          };
           store.dispatch(Object(_js_actions_index__WEBPACK_IMPORTED_MODULE_4__["saveSinglePlayer"])({
-            team: {
-              id: result.data.id,
-              name: result.data.name,
-              manager: result.data.manager,
-              city: result.data.city,
-              state: result.data.state
-            }
+            team: data
           }));
 
           _this3.setState({
-            name: result.data.name,
-            manager: result.data.manager,
-            city: result.data.city,
-            state: result.data.state,
-            isHidden: false
+            data: data
           });
         }
       });
@@ -81231,6 +81336,26 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this$state2 = this.state,
+          id = _this$state2.id,
+          first_name = _this$state2.first_name,
+          last_name = _this$state2.last_name,
+          team_id = _this$state2.team_id,
+          primary_position_id = _this$state2.primary_position_id,
+          bats = _this$state2.bats,
+          throws = _this$state2.throws;
+      var teamOptions = this.props.teams.map(function (row) {
+        return {
+          value: row.id,
+          label: row.city + ' ' + row.name
+        };
+      });
+      var positionOptions = this.props.positions.map(function (row) {
+        return {
+          value: row.id,
+          label: row.abbreviation + ' - ' + row.name
+        };
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container mx-auto"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Edit Player"), !this.state.isHidden && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EditedAlert, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
@@ -81268,6 +81393,69 @@ function (_React$Component) {
         name: "last_name",
         value: this.state.last_name,
         onChange: this.handleChange
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:flex md:items-center mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-1/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
+        htmlFor: "inline-team"
+      }, "Team")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-2/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        defaultValue: team_id,
+        onChange: this.handleTeamDropdownChange,
+        options: teamOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:flex md:items-center mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-1/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
+        htmlFor: "inline-bats"
+      }, "Primary Position")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-2/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: primary_position_id,
+        onChange: this.handlePositionDropdownChange,
+        options: positionOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:flex md:items-center mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-1/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
+        htmlFor: "inline-bats"
+      }, "Bats")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-2/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: bats,
+        onChange: this.handleBatsDropdownChange,
+        options: batsOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:flex md:items-center mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-1/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
+        htmlFor: "inline-throws"
+      }, "Throws")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-2/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: throws,
+        onChange: this.handleThrowsDropdownChange,
+        options: throwsOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:flex md:items-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-1/3"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-2/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded",
+        type: "submit",
+        name: "submit",
+        value: "Submit"
       })))));
     }
   }]);
@@ -81283,7 +81471,7 @@ var EditedAlert = function EditedAlert() {
   }, "Team has been updated"));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (PlayersEdit);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(PlayersEdit));
 
 /***/ }),
 
@@ -81720,10 +81908,10 @@ function (_React$Component) {
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/api/teams/' + this.state.id).then(function (result) {
         if (result.status === 200) {
           _this2.setState({
-            name: result.data.name,
-            manager: result.data.manager,
-            city: result.data.city,
-            state: result.data.state
+            name: result.data.name ? result.data.name : '',
+            manager: result.data.manager ? result.data.manager : '',
+            city: result.data.city ? result.data.city : '',
+            state: result.data.state ? result.data.state : ''
           });
         }
       });

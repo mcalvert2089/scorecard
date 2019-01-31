@@ -24,8 +24,8 @@ class TeamsEdit extends React.Component {
       		isHidden: true
 		}
 
-		this.handleChange = this.handleChange.bind(this);
-	    this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleChange = this.handleChange.bind(this)
+	    this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
 	componentDidMount() {
@@ -33,10 +33,10 @@ class TeamsEdit extends React.Component {
 	    .then((result) => {
 	      if(result.status === 200) {
 	      	this.setState({ 
-	      		name: result.data.name,
-	      		manager: result.data.manager,
-	      		city: result.data.city,
-	      		state: result.data.state 
+	      		name: (result.data.name) ? result.data.name : '',
+	      		manager: (result.data.manager) ? result.data.manager : '',
+	      		city: (result.data.city) ? result.data.city : '',
+	      		state: (result.data.state) ? result.data.state : ''
 	      	})
 	      }
 	    })

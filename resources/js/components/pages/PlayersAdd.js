@@ -24,17 +24,16 @@ const throwsOptions = [
 ]
 
 class PlayersAdd extends Component {
-
   constructor(props) {
     super(props);
     this.state = { 
-      first_name: null,
-      last_name: null,
-      team_id: null,
+      first_name: '',
+      last_name: '',
+      team_id: '',
       user_id: props.user.id,
-      primary_position_id: null,
-      bats: null,
-      throws: null,
+      primary_position_id: '',
+      bats: '',
+      throws: '',
       isHidden: true,
       isLoading: true
     }
@@ -116,7 +115,7 @@ class PlayersAdd extends Component {
   }
 
 render() {
-  const { selectedOption, teams, positions } = this.state
+  const { selectedOption } = this.state
 
   const teamOptions = this.props.teams.map(function(row){
     return { value: row.id, label: row.city + ' ' + row.name}

@@ -43,7 +43,6 @@ function rootReducer(state = initialState, action) {
 	if (action.type === SAVE_SINGLE_PLAYER) { 
 		let playerState = []
 		let index = state.players.findIndex(row => row.id === action.payload.player.id)
-
 		if(index === -1) {
 			playerState = state.players.slice()
 			playerState.splice(0, 0, action.payload.player)
@@ -61,4 +60,4 @@ function rootReducer(state = initialState, action) {
  	return state
 }
 
-export default rootReducer;
+export default rootReducer

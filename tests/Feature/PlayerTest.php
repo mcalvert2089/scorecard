@@ -31,7 +31,7 @@ class PlayerTest extends TestCase
     }
 
     /** @test */
-    public function user_can_retrieve_a_player()
+    public function user_can_retrieve_a_single_player()
     { 
     	$player = factory(Player::class)->create();
 
@@ -61,14 +61,7 @@ class PlayerTest extends TestCase
     		->post('/api/players', $data);
     	$response->assertStatus(200);
 
-    	$player = Player::first();
-
-    	$this->assertEquals($data['first_name'], $player->first_name);
-    	$this->assertEquals($data['last_name'], $player->last_name);
-    	$this->assertEquals($data['team_id'], $player->team_id);
-    	$this->assertEquals($data['user_id'], $player->user_id);
-    	$this->assertEquals($data['bats'], $player->bats);
-    	$this->assertEquals($data['throws'], $player->throws);
+    	$this->assertDatabaseHas('players', $data);
     }
 
     /** @test */
@@ -93,12 +86,7 @@ class PlayerTest extends TestCase
 
     	$player = Player::first();
 
-    	$this->assertEquals($data['first_name'], $player->first_name);
-    	$this->assertEquals($data['last_name'], $player->last_name);
-    	$this->assertEquals($data['team_id'], $player->team_id);
-    	$this->assertEquals($data['user_id'], $player->user_id);
-    	$this->assertEquals($data['bats'], $player->bats);
-    	$this->assertEquals($data['throws'], $player->throws);
+    	$this->assertDatabaseHas('players', $data);
     }
 
     /** @test */

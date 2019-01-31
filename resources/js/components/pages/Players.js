@@ -91,7 +91,8 @@ function PlayerList(players) {
 				        <td>
 				        	<span className="hideOnMobile">{team.city} </span>{team.name}</td>
 				        <td>
-				        	<span className="hideOnMobile">{position.name} </span>({position.abbreviation})
+				        	<span className="hideOnMobile">{position.name}</span>
+				        	<span className="mobileOnly">{position.abbreviation}</span>
 				       	</td>
 				        <td className="hideOnMobile">{bats}</td>
 				        <td className="hideOnMobile">{throws}</td>
