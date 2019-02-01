@@ -4,7 +4,7 @@ import {connect} from "react-redux"
 import axios from 'axios'
 import { saveSinglePlayer, saveAllTeams, saveAllPlayerPositions, updatePlayerInfo } from '../../../js/actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
-import Select from 'react-select'
+import ScSelect from '../form-elements/ScSelect'
 
 const mapStateToProps = (state) => ({ 
   teams: state.teams,
@@ -18,12 +18,14 @@ const addStyle = {
 }
 
 const batsOptions = [
+  { value: '', label: '' },
   { value: 'R', label: 'Right' },
   { value: 'L', label: 'Left' },
   { value: 'S', label: 'Switch' }
 ]
 
 const throwsOptions = [
+	{ value: '', label: '' },
     { value: 'R', label: 'Right' },
     { value: 'L', label: 'Left' }
 ]
@@ -36,8 +38,10 @@ class PlayersEdit extends React.Component {
 			first_name: '',
 			last_name: '',
 			team_id: '',
+			team_name: '',
 			user_id: '',
 			primary_position_id: '',
+			primary_position_name: '',
 			bats: '',
 			throws: '',
 			isHidden: true,
@@ -73,9 +77,12 @@ class PlayersEdit extends React.Component {
 		      		first_name: (result.data.first_name) ? result.data.first_name : '',
 		      		last_name: (result.data.last_name) ? result.data.last_name : '',
 		      		team_id: (result.data.team_id) ? result.data.team_id : '',
+			      	team_name: (result.data.team.name) ? result.data.team.city + ' ' + result.data.team.name : '',
 		      		primary_position_id: (result.data.primary_position_id) ? result.data.primary_position_id : '',
+	      			primary_position_name: (result.data.position.abbreviation) ? result.data.position.abbreviation + ' - ' + result.data.position.name : '',
 		      		bats: (result.data.bats) ? result.data.bats : '',
 		      		throws: (result.data.throws) ? result.data.throws : ''
+		      		
 		      	})
 		    }
 	      }
@@ -188,40 +195,29 @@ class PlayersEdit extends React.Component {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select defaultValue={ team_id } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
-                </div>
-              </div>
-
-              <div className="md:flex md:items-center mb-6">
-                <div className="md:w-1/3">	
-                  <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-bats">
-                    Primary Position
-                  </label>
-                </div>
-                <div className="md:w-2/3">
-                  <Select value={ primary_position_id } onChange={ this.handlePositionDropdownChange } options={ positionOptions } />
+                  <ScSelect value={ this.state.team_id } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
                 </div>
               </div>
 
               <div className="md:flex md:items-center mb-6">
                 <div className="md:w-1/3">
-                  <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-bats">
+                  <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-team">
                     Bats
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ bats } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
+                  <ScSelect value={ this.state.bats } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
                 </div>
               </div>
 
               <div className="md:flex md:items-center mb-6">
                 <div className="md:w-1/3">
-                  <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-throws">
+                  <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-team">
                     Throws
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ throws } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
+                  <ScSelect value={ this.state.throws } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
                 </div>
               </div>
 

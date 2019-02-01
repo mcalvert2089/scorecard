@@ -80585,6 +80585,47 @@ var RegistrationSubmitted = function RegistrationSubmitted() {
 
 /***/ }),
 
+/***/ "./resources/js/components/form-elements/ScSelect.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/form-elements/ScSelect.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+var ScSelect = function ScSelect(_ref) {
+  var value = _ref.value,
+      options = _ref.options,
+      onChange = _ref.onChange;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    value: value,
+    onChange: onChange
+  }, options.map(function (row, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: i,
+      value: row.value
+    }, row.label);
+  }));
+};
+
+ScSelect.propTypes = {
+  label: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  value: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array,
+  onChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired
+};
+/* harmony default export */ __webpack_exports__["default"] = (ScSelect);
+
+/***/ }),
+
 /***/ "./resources/js/components/pages/Players.js":
 /*!**************************************************!*\
   !*** ./resources/js/components/pages/Players.js ***!
@@ -81110,7 +81151,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _js_actions_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../js/actions/index */ "./resources/js/actions/index.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
+/* harmony import */ var _form_elements_ScSelect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../form-elements/ScSelect */ "./resources/js/components/form-elements/ScSelect.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -81152,6 +81193,9 @@ var addStyle = {
   paddingRight: '6px'
 };
 var batsOptions = [{
+  value: '',
+  label: ''
+}, {
   value: 'R',
   label: 'Right'
 }, {
@@ -81162,6 +81206,9 @@ var batsOptions = [{
   label: 'Switch'
 }];
 var throwsOptions = [{
+  value: '',
+  label: ''
+}, {
   value: 'R',
   label: 'Right'
 }, {
@@ -81185,8 +81232,10 @@ function (_React$Component) {
       first_name: '',
       last_name: '',
       team_id: '',
+      team_name: '',
       user_id: '',
       primary_position_id: '',
+      primary_position_name: '',
       bats: '',
       throws: '',
       isHidden: true,
@@ -81228,7 +81277,9 @@ function (_React$Component) {
               first_name: result.data.first_name ? result.data.first_name : '',
               last_name: result.data.last_name ? result.data.last_name : '',
               team_id: result.data.team_id ? result.data.team_id : '',
+              team_name: result.data.team.name ? result.data.team.city + ' ' + result.data.team.name : '',
               primary_position_id: result.data.primary_position_id ? result.data.primary_position_id : '',
+              primary_position_name: result.data.position.abbreviation ? result.data.position.abbreviation + ' - ' + result.data.position.name : '',
               bats: result.data.bats ? result.data.bats : '',
               throws: result.data.throws ? result.data.throws : ''
             });
@@ -81402,8 +81453,8 @@ function (_React$Component) {
         htmlFor: "inline-team"
       }, "Team")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "md:w-2/3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        defaultValue: team_id,
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_elements_ScSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: this.state.team_id,
         onChange: this.handleTeamDropdownChange,
         options: teamOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -81412,24 +81463,11 @@ function (_React$Component) {
         className: "md:w-1/3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
-        htmlFor: "inline-bats"
-      }, "Primary Position")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "md:w-2/3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        value: primary_position_id,
-        onChange: this.handlePositionDropdownChange,
-        options: positionOptions
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "md:flex md:items-center mb-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "md:w-1/3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-        className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
-        htmlFor: "inline-bats"
+        htmlFor: "inline-team"
       }, "Bats")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "md:w-2/3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        value: bats,
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_elements_ScSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: this.state.bats,
         onChange: this.handleBatsDropdownChange,
         options: batsOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -81438,11 +81476,11 @@ function (_React$Component) {
         className: "md:w-1/3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
-        htmlFor: "inline-throws"
+        htmlFor: "inline-team"
       }, "Throws")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "md:w-2/3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        value: throws,
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_elements_ScSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: this.state.throws,
         onChange: this.handleThrowsDropdownChange,
         options: throwsOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
