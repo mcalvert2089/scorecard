@@ -73013,6 +73013,20 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
         htmlFor: "inline-team"
+      }, "Primary Position")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-2/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_elements_ScSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        name: "primary_position_id",
+        value: this.state.primary_position_id,
+        onChange: this.handleChange.bind(this),
+        options: positionOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:flex md:items-center mb-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md:w-1/3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "block font-bold md:text-right mb-1 md:mb-0 pr-4",
+        htmlFor: "inline-team"
       }, "Bats")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "md:w-2/3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_elements_ScSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
