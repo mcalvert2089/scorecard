@@ -68,10 +68,7 @@ class TeamTest extends TestCase
 
         $team = Team::first();
 
-        $this->assertEquals($team->name, $data['name']);
-        $this->assertEquals($team->manager, $data['manager']);
-        $this->assertEquals($team->city, $data['city']);
-        $this->assertEquals($team->state, $data['state']);
+        $this->assertDatabaseHas('teams', $data);
     }
 
     /** @test */
@@ -94,10 +91,7 @@ class TeamTest extends TestCase
 
         $updatedTeam = Team::first();
 
-        $this->assertEquals($updatedTeam->name, $newData['name']);
-        $this->assertEquals($updatedTeam->manager, $newData['manager']);
-        $this->assertEquals($updatedTeam->city, $newData['city']);
-        $this->assertEquals($updatedTeam->state, $newData['state']);
+        $this->assertDatabaseHas('teams', $newData);
     }
 
     /** @test */

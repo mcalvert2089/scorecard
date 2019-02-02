@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import axios from 'axios'
 import { saveAllTeams, saveAllPlayerPositions } from '../../../js/actions/index'
-import Select from 'react-select'
+import ScSelect from '../form-elements/ScSelect'
 
 const mapStateToProps = (state) => ({ 
   teams: state.teams,
@@ -24,17 +24,16 @@ const throwsOptions = [
 ]
 
 class PlayersAdd extends Component {
-
   constructor(props) {
     super(props);
     this.state = { 
-      first_name: null,
-      last_name: null,
-      team_id: null,
+      first_name: '',
+      last_name: '',
+      team_id: '',
       user_id: props.user.id,
-      primary_position_id: null,
-      bats: null,
-      throws: null,
+      primary_position_id: '',
+      bats: '',
+      throws: '',
       isHidden: true,
       isLoading: true
     }
@@ -116,7 +115,7 @@ class PlayersAdd extends Component {
   }
 
 render() {
-  const { selectedOption, teams, positions } = this.state
+  const { selectedOption } = this.state
 
   const teamOptions = this.props.teams.map(function(row){
     return { value: row.id, label: row.city + ' ' + row.name}
@@ -165,7 +164,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
                 </div>
               </div>
 
@@ -176,7 +175,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handlePositionDropdownChange } options={ positionOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handlePositionDropdownChange } options={ positionOptions } />
                 </div>
               </div>
 
@@ -187,7 +186,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
                 </div>
               </div>
 
@@ -198,7 +197,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
                 </div>
               </div>
 
