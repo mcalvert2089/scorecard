@@ -107,20 +107,21 @@ class PlayersEdit extends React.Component {
 		this.setState({ [e.target.name]: e.target.value })
 	}
 
-	handleTeamDropdownChange(selectedOption) {
-		this.setState({ team_id: selectedOption.value })
+	handleTeamDropdownChange(event) {
+		console.log(event.target.name)
+		this.setState({ team_id: event.target.value })
 	}
 
-	handlePositionDropdownChange(selectedOption) {
-		this.setState({ primary_position_id: selectedOption.value })
+	handlePositionDropdownChange(event) {
+		this.setState({ primary_position_id: event.target.value })
 	}
 
-	handleBatsDropdownChange(selectedOption) {
-		this.setState({ bats: selectedOption.value })
+	handleBatsDropdownChange(event) {
+		this.setState({ bats: event.target.value })
 	}
 
-	handleThrowsDropdownChange(selectedOption) {
-		this.setState({ throws: selectedOption.value })
+	handleThrowsDropdownChange(event) {
+		this.setState({ throws: event.target.value })
 	}
 
 	handleSubmit(event) {
@@ -195,7 +196,7 @@ class PlayersEdit extends React.Component {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <ScSelect value={ this.state.team_id } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
+                  <ScSelect name="team_id" value={ this.state.team_id } onChange={ this.handleChange.bind(this) } options={ teamOptions } />
                 </div>
               </div>
 
@@ -206,7 +207,7 @@ class PlayersEdit extends React.Component {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <ScSelect value={ this.state.bats } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
+                  <ScSelect name="bats" value={ this.state.bats } onChange={ this.handleChange.bind(this) } options={ batsOptions } />
                 </div>
               </div>
 
@@ -217,7 +218,7 @@ class PlayersEdit extends React.Component {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <ScSelect value={ this.state.throws } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
+                  <ScSelect name="throws" value={ this.state.throws } onChange={ this.handleChange.bind(this) } options={ throwsOptions } />
                 </div>
               </div>
 

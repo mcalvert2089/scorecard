@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import axios from 'axios'
 import { saveAllTeams, saveAllPlayerPositions } from '../../../js/actions/index'
-import Select from 'react-select'
+import ScSelect from '../form-elements/ScSelect'
 
 const mapStateToProps = (state) => ({ 
   teams: state.teams,
@@ -164,7 +164,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handleTeamDropdownChange } options={ teamOptions } />
                 </div>
               </div>
 
@@ -175,7 +175,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handlePositionDropdownChange } options={ positionOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handlePositionDropdownChange } options={ positionOptions } />
                 </div>
               </div>
 
@@ -186,7 +186,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handleBatsDropdownChange } options={ batsOptions } />
                 </div>
               </div>
 
@@ -197,7 +197,7 @@ render() {
                   </label>
                 </div>
                 <div className="md:w-2/3">
-                  <Select value={ selectedOption } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
+                  <ScSelect value={ selectedOption } onChange={ this.handleThrowsDropdownChange } options={ throwsOptions } />
                 </div>
               </div>
 
