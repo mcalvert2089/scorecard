@@ -49,10 +49,6 @@ class PlayersEdit extends React.Component {
 	    }
 
 	    this.handleChange = this.handleChange.bind(this)
-    	this.handleTeamDropdownChange = this.handleTeamDropdownChange.bind(this)
-		this.handlePositionDropdownChange = this.handlePositionDropdownChange.bind(this)
-		this.handleBatsDropdownChange = this.handleBatsDropdownChange.bind(this)
-		this.handleThrowsDropdownChange = this.handleThrowsDropdownChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 	  }
 
@@ -105,23 +101,6 @@ class PlayersEdit extends React.Component {
 
 	handleChange(e){
 		this.setState({ [e.target.name]: e.target.value })
-	}
-
-	handleTeamDropdownChange(event) {
-		console.log(event.target.name)
-		this.setState({ team_id: event.target.value })
-	}
-
-	handlePositionDropdownChange(event) {
-		this.setState({ primary_position_id: event.target.value })
-	}
-
-	handleBatsDropdownChange(event) {
-		this.setState({ bats: event.target.value })
-	}
-
-	handleThrowsDropdownChange(event) {
-		this.setState({ throws: event.target.value })
 	}
 
 	handleSubmit(event) {
