@@ -1,5 +1,6 @@
 import { 
 		SAVE_USER_INFO,
+		PAGE_LOADING,
 		SAVE_ALL_TEAMS,
 		SAVE_SINGLE_TEAM,
 		UPDATE_TEAM_INFO,
@@ -11,6 +12,7 @@ import {
 import { createReducer } from 'redux-starter-kit'
 
 const initialState = {
+	pageLoading: true,
 	user: [],
 	teams: [],
 	players: [],
@@ -19,6 +21,7 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
 	if (action.type === SAVE_USER_INFO) { return Object.assign({}, state, { user: action.payload.user }) }
+	if (action.type === PAGE_LOADING) { return Object.assign({}, state, { pageLoading: action.payload.pageLoading }) }
 	
 	// teams
 	if (action.type === SAVE_ALL_TEAMS) { return Object.assign({}, state, { teams: action.payload.teams }) }

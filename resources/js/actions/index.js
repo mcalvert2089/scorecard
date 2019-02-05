@@ -1,5 +1,6 @@
 import { 
 			SAVE_USER_INFO,
+			PAGE_LOADING, 
 			SAVE_ALL_TEAMS,
 			SAVE_SINGLE_TEAM,
 			UPDATE_TEAM_INFO,
@@ -13,6 +14,9 @@ export function saveUserInfo(payload) {
 	return { type: SAVE_USER_INFO, payload }
 }
 
+export function togglePageLoad(payload) {
+	return { type: PAGE_LOADING, payload }
+}
 
 // teams
 export function saveAllTeams(payload) {

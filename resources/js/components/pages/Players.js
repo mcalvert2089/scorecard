@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from "react-redux"
 import axios from 'axios'
-import { saveAllPlayers } from '../../../js/actions/index'
+import { togglePageLoad, saveAllPlayers } from '../../../js/actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
 const addStyle = {
@@ -27,7 +27,7 @@ class Players extends React.Component {
 	componentDidMount() {
 		this.state.isLoading = true
 
-		axios.get('/api/players')
+		const getPlayers = axios.get('/api/players')
 	    .then((result) => {
 	      if(result.status === 200) {
 	      	if (this.state.isLoading) { 
@@ -36,10 +36,15 @@ class Players extends React.Component {
 	      	}
 	      }
 	    })
+
+	    Promise.all([getPlayers]).then(
+			() =>  store.dispatch(togglePageLoad({ pageLoading: false }))
+		)
 	}
 
 	componentWillUnmount() {
 		this.state.isLoading = false
+		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	render() {

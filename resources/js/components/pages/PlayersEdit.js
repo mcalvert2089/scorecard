@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import {connect} from "react-redux"
 import axios from 'axios'
-import { saveSinglePlayer, saveAllTeams, saveAllPlayerPositions, updatePlayerInfo } from '../../../js/actions/index'
+import { togglePageLoad, saveSinglePlayer, saveAllTeams, saveAllPlayerPositions, updatePlayerInfo } from '../../../js/actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import ScSelect from '../form-elements/ScSelect'
 
@@ -32,7 +32,7 @@ const throwsOptions = [
 
 class PlayersEdit extends React.Component {
 	  constructor(props) {
-	    super(props);
+	    super(props)
 	    this.state = { 
 			id: props.match.params.id,
 			first_name: '',
@@ -54,45 +54,50 @@ class PlayersEdit extends React.Component {
 
 	componentDidMount() {
 		this.state.isLoading = true
-		 axios.get('/api/teams')
-	      .then((result) => {
-	        if(result.status === 200) {
-	          if (this.state.isLoading) { 
-	            store.dispatch( saveAllTeams({ teams: result.data }) )
-	            this.setState({ teams: result.data })
-	          }
-	        }
-	      })
 
-		axios.get('/api/players/' + this.state.id)
-	    .then((result) => {
-	      if(result.status === 200) {
-	      	if (this.state.isLoading) { 
-	      		this.setState({ 
-		      		id: (result.data.id) ? result.data.id : '',
-		      		first_name: (result.data.first_name) ? result.data.first_name : '',
-		      		last_name: (result.data.last_name) ? result.data.last_name : '',
-		      		team_id: (result.data.team_id) ? result.data.team_id : '',
-			      	team_name: (result.data.team.name) ? result.data.team.city + ' ' + result.data.team.name : '',
-		      		primary_position_id: (result.data.primary_position_id) ? result.data.primary_position_id : '',
-	      			primary_position_name: (result.data.position.abbreviation) ? result.data.position.abbreviation + ' - ' + result.data.position.name : '',
-		      		bats: (result.data.bats) ? result.data.bats : '',
-		      		throws: (result.data.throws) ? result.data.throws : ''
-		      		
-		      	})
-		    }
-	      }
-	    })
+		const getTeams = axios.get('/api/teams')
+		      .then((result) => {
+		        if(result.status === 200) {
+		          if (this.state.isLoading) { 
+		            store.dispatch( saveAllTeams({ teams: result.data }) )
+		            this.setState({ teams: result.data })
+		          }
+		        }
+		      })
 
-	    axios.get('/api/positions')
-	      .then((result) => {
-	        if(result.status === 200) {
-	          if (this.state.isLoading) { 
-	            store.dispatch( saveAllPlayerPositions({ positions: result.data }) )
-	            this.setState({ positions: result.data })
-	          }
-	        }
-	      })
+		const getPlayers = axios.get('/api/players/' + this.state.id)
+			.then((result) => {
+			  if(result.status === 200) {
+			  	if (this.state.isLoading) { 
+			  		this.setState({ 
+			      		id: (result.data.id) ? result.data.id : '',
+			      		first_name: (result.data.first_name) ? result.data.first_name : '',
+			      		last_name: (result.data.last_name) ? result.data.last_name : '',
+			      		team_id: (result.data.team_id) ? result.data.team_id : '',
+				      	team_name: (result.data.team.name) ? result.data.team.city + ' ' + result.data.team.name : '',
+			      		primary_position_id: (result.data.primary_position_id) ? result.data.primary_position_id : '',
+			  			primary_position_name: (result.data.position.abbreviation) ? result.data.position.abbreviation + ' - ' + result.data.position.name : '',
+			      		bats: (result.data.bats) ? result.data.bats : '',
+			      		throws: (result.data.throws) ? result.data.throws : ''
+			      		
+			      	})
+			    }
+			  }
+		})
+
+		const getPositions = axios.get('/api/positions')
+			.then((result) => {
+			if(result.status === 200) {
+			  if (this.state.isLoading) { 
+			    store.dispatch( saveAllPlayerPositions({ positions: result.data }) )
+			    this.setState({ positions: result.data })
+			  }
+			}
+		})
+
+		Promise.all([getTeams, getPlayers, getPositions]).then(
+			() =>  store.dispatch(togglePageLoad({ pageLoading: false }))
+		)
 	}
 
 	componentWillUnmount() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import {connect} from "react-redux"
 import axios from 'axios'
-import { saveSingleTeam, updateTeamInfo } from '../../../js/actions/index'
+import { togglePageLoad, saveSingleTeam, updateTeamInfo } from '../../../js/actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
 const addStyle = {
@@ -29,7 +29,7 @@ class TeamsEdit extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get('/api/teams/' + this.state.id)
+		const getTeams = axios.get('/api/teams/' + this.state.id)
 	    .then((result) => {
 	      if(result.status === 200) {
 	      	this.setState({ 
@@ -40,6 +40,14 @@ class TeamsEdit extends React.Component {
 	      	})
 	      }
 	    })
+
+	    Promise.all([getTeams]).then(
+			() =>  store.dispatch(togglePageLoad({ pageLoading: false }))
+		)
+	}
+
+	componentWillUnmount() {
+		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	handleChange(e){

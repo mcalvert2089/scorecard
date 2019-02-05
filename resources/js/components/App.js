@@ -23,13 +23,13 @@ class App extends Component {
 	}
 
 	render () {
-    return (
-         <Provider store={store}>
-	         <Header />
-	         <Main/>
-	     </Provider>
-    )
-  }
+		return (
+		     <Provider store={store}>
+		         <Header />
+		         <Main/>
+		     </Provider>
+		)
+	}
 }
 
 ReactDOM.render(<App />, document.getElementById('app'))
