@@ -29,7 +29,9 @@ class Logout extends React.Component {
     render () {
         return (
             <div>
-                <h2>Logging out</h2>
+                <div className="flex justify-center">
+                    <h2>Logging out</h2>
+                </div>
                 <Loading />
             </div>
         )

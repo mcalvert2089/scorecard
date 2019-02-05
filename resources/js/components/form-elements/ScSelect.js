@@ -12,6 +12,7 @@ class ScSelect extends React.Component {
         return (
           <div className="relative">
             <select name={ this.props.name } className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey" value={ this.props.value } onChange={ this.props.onChange }>
+              <option value=""></option>
             { 
               this.props.options.map((row, i) => 
                 <option key={i} value={ row.value }>{ row.label }</option>

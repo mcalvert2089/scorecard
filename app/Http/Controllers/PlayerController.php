@@ -29,7 +29,7 @@ class PlayerController extends Controller
     public function store(Request $request) {
         $data = $request->only($this->model->getModel()->fillable);
         $data['user_id'] = auth()->user()->id;
-        $this->model->create($data);
+        return $this->model->create($data);
     }
 
     public function update(Request $request, $id) {

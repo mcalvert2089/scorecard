@@ -127,7 +127,7 @@ class PlayersEdit extends React.Component {
 			      		throws: (result.data.throws) ? result.data.throws : ''
 	        		}
 
-	      		store.dispatch( saveSinglePlayer({ team: data }) )
+	      		store.dispatch( saveSinglePlayer({ player: data }) )
 
 				this.setState({ data }) 
 	        }
