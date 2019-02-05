@@ -42,6 +42,10 @@ select {
 	background: none;
 }
 
+.loading {
+	font-size:56px;
+}
+
 #login-box {
 	width: 300px;
 }

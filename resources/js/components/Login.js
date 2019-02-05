@@ -36,7 +36,9 @@ class Login extends Component {
 	}
 
 	handleSubmit(event) {
-		event.preventDefault();
+		event.preventDefault()
+		store.dispatch(togglePageLoad({ pageLoading: true }))
+		
 		const { email, password } = this.state;
 
 		axios.post('/api/auth/login', { email, password })

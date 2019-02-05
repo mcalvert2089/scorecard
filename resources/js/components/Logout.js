@@ -1,5 +1,6 @@
 import React from 'react'
 import { togglePageLoad } from '../../js/actions/index'
+import Loading from './Loading'
 
 class Logout extends React.Component {
     componentWillMount () {
@@ -24,16 +25,12 @@ class Logout extends React.Component {
     componentWillUnmount() {
         store.dispatch(togglePageLoad({ pageLoading: true }))
     }
-    
+
     render () {
         return (
             <div>
-                <div className="flex justify-center">
-                    <h2>Logging out</h2>
-                </div>
-                <div className="flex justify-center">
-                    <i className="fas fa-sync fa-spin"></i>
-                </div>
+                <h2>Logging out</h2>
+                <Loading />
             </div>
         )
     }
