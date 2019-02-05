@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { togglePageLoad } from '../../js/actions/index'
 
 const addStyle = {
   fontSize: '16px',
@@ -18,6 +19,14 @@ export default class Register extends React.Component {
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 	}
+
+    componentDidMount() {
+        store.dispatch(togglePageLoad({ pageLoading: false }))
+    }
+
+    componentWillUnmount() {
+        store.dispatch(togglePageLoad({ pageLoading: true }))
+    }
 
 	handleChange(e){
 		this.setState({ [e.target.name]: e.target.value })

@@ -1,4 +1,5 @@
 import React from 'react'
+import { togglePageLoad } from '../../js/actions/index'
 
 class Logout extends React.Component {
     componentWillMount () {
@@ -16,6 +17,14 @@ class Logout extends React.Component {
 		    })
     }
 
+    componentDidMount() {
+        store.dispatch(togglePageLoad({ pageLoading: false }))
+    }
+
+    componentWillUnmount() {
+        store.dispatch(togglePageLoad({ pageLoading: true }))
+    }
+    
     render () {
         return (
             <div>

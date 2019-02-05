@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import store from '../store/index'
 import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom'
+import { togglePageLoad } from '../../js/actions/index'
 import Header from './Header'
 
 class Login extends Component {
@@ -14,6 +15,14 @@ class Login extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	componentDidMount() {
+		store.dispatch(togglePageLoad({ pageLoading: false }))
+	}
+
+	componentWillUnmount() {
+		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	handleChange(event) {
