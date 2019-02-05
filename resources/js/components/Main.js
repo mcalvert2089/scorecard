@@ -19,50 +19,62 @@ import NotFound from './NotFound'
 
 window.store = store
 
-const mapStateToProps = state => {
-  return { is_authenticated: state.is_authenticated }
-}
-
 const RedirectIfLoggedIn =  ({ ...props }) => {
     return localStorage.getItem('loggedIn')
         ? ( <Redirect to="/" /> )
         : ( <Route {...props} /> )
 }
 
+const mapStateToProps = (state) => ({ 
+  teams: state.teams,
+  user: state.user,
+  positions: state.positions,
+  pageLoading: state.pageLoading
+})
+
 class Main extends Component {
+  constructor(props) {
+      super(props)
+  }
+
   render () {
     let loggedIn = localStorage.getItem('loggedIn')
 
     return (
           <div className="container mx-auto pl-3 pr-3">
-            <HashRouter>
-              <Switch>
-                // public routes
-                <Route exact path='/' component={Home}/>
+            <div className={ this.props.pageLoading ? 'show' : 'hidden'}>
+              Loading ...
+             </div>
+             <div className={! this.props.pageLoading ? 'show' : 'hidden'}>
+               <HashRouter>
+                <Switch>
+                  // public routes
+                  <Route exact path='/' component={Home} />
 
-                <RedirectIfLoggedIn path="/login" component={Login} />
-                <RedirectIfLoggedIn path="/register" component={Register} />
-                <RedirectIfLoggedIn path='/activate/:key' component={ActivateAccount}/>
+                  <RedirectIfLoggedIn path="/login" component={Login} />
+                  <RedirectIfLoggedIn path="/register" component={Register} />
+                  <RedirectIfLoggedIn path='/activate/:key' component={ActivateAccount} />
 
-                { ! loggedIn && <Redirect to="/login" /> }
+                  { ! loggedIn && <Redirect to="/login" /> }
 
-                // protected routes
-                <Route path='/logout' component={Logout}/>
-                
-                // Teams
-                <Route exact path='/teams' component={Teams}/>
-                <Route exact path='/teams/add' component={TeamsAdd}/>
-                <Route exact path='/teams/edit/:id' component={TeamsEdit}/>
+                  // protected routes
+                  <Route path='/logout' component={Logout} />
+                  
+                  // Teams
+                  <Route exact path='/teams' component={Teams} />
+                  <Route exact path='/teams/add' component={TeamsAdd} />
+                  <Route exact path='/teams/edit/:id' component={TeamsEdit} />
 
-                // Players
-                <Route exact path='/players' component={Players}/>
-                <Route path='/players/add' component={PlayersAdd}/>
-                <Route exact path='/players/edit/:id' component={PlayersEdit}/>
+                  // Players
+                  <Route exact path='/players' component={Players} />
+                  <Route path='/players/add' component={PlayersAdd} />
+                  <Route exact path='/players/edit/:id' component={PlayersEdit} />
 
-                // 404
-                <Route path="*" component={NotFound} />
-              </Switch>
-            </HashRouter>
+                  // 404
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </HashRouter>
+            </div>
           </div>
     )
   }

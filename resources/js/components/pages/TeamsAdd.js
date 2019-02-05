@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { togglePageLoad } from '../../../js/actions/index'
 import axios from 'axios'
 
 const mapStateToProps = (state) => ({ user: state.user })
@@ -39,6 +40,14 @@ class TeamsAdd extends Component {
         }
       })
     this.isHidden = false
+  }
+
+  componentDidMount() {
+    store.dispatch(togglePageLoad({ pageLoading: false }))
+  }
+
+  componentWillUnmount() {
+    store.dispatch(togglePageLoad({ pageLoading: true }))
   }
 
   toggleHidden () {
