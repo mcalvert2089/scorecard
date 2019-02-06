@@ -1,5 +1,7 @@
-export const SAVE_USER_INFO = "SAVE_USER_INFO"
+export const INITIAL_APP_LOADING = "INITIAL_APP_LOADING"
 export const PAGE_LOADING = "PAGE_LOADING"
+
+export const SAVE_USER_INFO = "SAVE_USER_INFO"
 
 // teams
 export const SAVE_ALL_TEAMS = "SAVE_ALL_TEAMS"

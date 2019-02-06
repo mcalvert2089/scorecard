@@ -9,8 +9,9 @@ const iconStyle = {
 };
 
 const mapStateToProps = state => ({ 
+	initialAppLoading: state.initialAppLoading,
+	pageLoading: state.pageLoading,
 	first_name: state.user.first_name,
-	pageLoading: state.pageLoading
 })
 
 class Header extends Component {
@@ -67,7 +68,7 @@ class Header extends Component {
 							      </div>
 							    )}
 
-							    { loggedIn && ! this.props.pageLoading && (
+							    { loggedIn && ! this.props.initialAppLoading && (
 							      <div>
 								      <div className="inline-block text-sm px-4 py-2 leading-none text-white mt-4 mr-1 lg:mt-0">
 								      	Welcome { first_name }
