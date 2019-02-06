@@ -18,9 +18,12 @@ class Repository implements RepositoryInterface
         return $this->model->all();
     }
 
-    public function allByUserId($id)
+    public function allByUserId($id, $orderBy = null)
     {
-        return $this->model->where('user_id', $id)->get();
+        return $this->model->where('user_id', $id)
+                ->when($orderBy, function($query, $orderBy) {
+                    return $query->orderBy($orderBy);
+                })->get();
     }
 
     public function create(array $data)
