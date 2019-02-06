@@ -15,7 +15,7 @@ class TeamController extends Controller
     }
 
     public function index() {
-        return $this->model->allByUserId(auth()->user()->id);
+        return $this->model->allByUserId(auth()->user()->id, 'name');
     }
 
     public function show($id) {
