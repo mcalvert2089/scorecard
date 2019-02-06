@@ -102,6 +102,7 @@ class PlayersEdit extends React.Component {
 
 	componentWillUnmount() {
 		this.state.isLoading = false
+		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	handleChange(e){
