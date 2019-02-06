@@ -102,6 +102,7 @@ class PlayersEdit extends React.Component {
 
 	componentWillUnmount() {
 		this.state.isLoading = false
+		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	handleChange(e){
@@ -127,7 +128,7 @@ class PlayersEdit extends React.Component {
 			      		throws: (result.data.throws) ? result.data.throws : ''
 	        		}
 
-	      		store.dispatch( saveSinglePlayer({ team: data }) )
+	      		store.dispatch( saveSinglePlayer({ player: data }) )
 
 				this.setState({ data }) 
 	        }

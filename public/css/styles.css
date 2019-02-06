@@ -35,6 +35,17 @@ table td {
 	border-bottom:1px solid #ccc;
 }
 
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: none;
+}
+
+.loading {
+	font-size:56px;
+}
+
 #login-box {
 	width: 300px;
 }

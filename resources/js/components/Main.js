@@ -16,6 +16,7 @@ import Players from './pages/Players'
 import PlayersAdd from './pages/PlayersAdd'
 import PlayersEdit from './pages/PlayersEdit'
 import NotFound from './NotFound'
+import Loading from './Loading'
 
 window.store = store
 
@@ -43,7 +44,9 @@ class Main extends Component {
     return (
           <div className="container mx-auto pl-3 pr-3">
             <div className={ this.props.pageLoading ? 'show' : 'hidden'}>
-              Loading ...
+              <div>
+               <Loading />
+              </div>
              </div>
              <div className={! this.props.pageLoading ? 'show' : 'hidden'}>
                <HashRouter>
