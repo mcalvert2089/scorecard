@@ -23,15 +23,11 @@ header {
 }
 
 .nav-link {
-	@apply .inline-block .mt-0 .mr-4;
-	color:#ff0;
-	text-decoration: none;
-	font-size:1.4em !important;
+	@apply .inline-block .text-yellow .text-xl .mt-0 .mr-4 .no-underline;
 }
 
 .nav-link:hover {
-	@apply .text-white;
-	text-decoration: underline;
+	@apply .text-white .no-underline;
 }
 
 .header-button {
