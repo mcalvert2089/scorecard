@@ -44,7 +44,7 @@ class Header extends Component {
 		return (
 			<HashRouter>
 				<div>
-					<header className="bg-green-darker">
+					<header>
 						<div className="container mx-auto">
 							<nav className="flex items-center justify-between flex-wrap p-6">
 							  <div className="flex items-center flex-no-shrink text-white mr-6">
@@ -56,15 +56,15 @@ class Header extends Component {
 							  </div>
 							  <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto md:hidden sm:hidden xs:hidden">
 							    <div className="text-sm lg:flex-grow">
-							      <Link to="/" className="nav-link block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Home</Link>
-							      <Link to="/teams" className="nav-link block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Teams</Link>
-							      <Link to="/players" className="nav-link block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Players</Link>
+							      <Link to="/" className="nav-link">Home</Link>
+							      <Link to="/teams" className="nav-link">Teams</Link>
+							      <Link to="/players" className="nav-link">Players</Link>
 							    </div>
 							    
 							    { ! loggedIn && (
 							      <div>
-							        <Link to="/login" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 mr-2 lg:mt-0">Login</Link>
-							        <Link to="/register" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Register</Link>
+							        <Link to="/login" className="header-button">Login</Link>
+							        <Link to="/register" className="header-button">Register</Link>
 							      </div>
 							    )}
 
@@ -73,8 +73,8 @@ class Header extends Component {
 								      <div className="inline-block text-sm px-4 py-2 leading-none text-white mt-4 mr-1 lg:mt-0">
 								      	Welcome { first_name }
 								      </div>
-							          <div  className="inline-block text-xs px-4 py-2 leading-none mt-4 lg:mt-0">
-							          	<Link to="/logout" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Logout</Link>
+							          <div className="inline-block px-4 py-2 leading-none mt-4 lg:mt-0">
+							          	<Link to="/logout" className="header-button">Logout</Link>
 							      	  </div>
 							      </div>
 							    )}
