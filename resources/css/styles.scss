@@ -42,6 +42,42 @@ header {
 	@apply .border-transparent .text-teal .bg-white
 }
 
+.welcome-text {
+	@apply .inline-block .text-sm .px-4 .py-2 .leading-none .text-white .mt-4 .mr-1;
+}
+
+.header-logout {
+	@apply .inline-block .px-4 .py-2 .leading-none .mt-0;
+}
+
+#banner {
+	@apply mb-8;
+}
+
+.card {
+	@apply .rounded .overflow-hidden .shadow-lg;
+}
+
+.card-container {
+	@apply .px-6 .py-4;
+}
+
+.card-title {
+	@apply .font-bold .text-xl .mb-2;
+}
+
+.card-description {
+	@apply .text-grey-darker .text-base;
+}
+
+.dark-button {
+	@apply .bg-green-darker .text-white .font-bold .py-2 .px-4 .rounded
+}
+
+.dark-button:hover {
+	@apply .bg-green;
+}
+
 table th {
 	padding:6px;
 	background:#ccc;
@@ -55,6 +91,18 @@ table td {
 
 select {
 	@apply .block .appearance-none .w-full .bg-grey-lighter .border .border-grey-lighter .text-grey-darker .py-3 .px-4 .pr-8 .rounded .leading-tight;
+}
+
+/** FORMS **/
+label {
+	@apply .block .font-bold .mb-1 .pr-4;
+}
+.text-field {
+	@apply .bg-grey-light .appearance-none .border-2 .border-grey-lighter .rounded .w-full .py-2 .px-4 .text-grey-darker .leading-tight;
+}
+
+.text-field:focus {
+	@apply .outline-none .bg-white .border-grey
 }
 
 .loading {

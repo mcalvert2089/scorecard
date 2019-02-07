@@ -64,51 +64,51 @@ render() {
          <form className="w-full max-w-xs" onSubmit={this.handleSubmit}>
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-name">
+              <label htmlFor="inline-name">
                 Team Name
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-name" type="text" name="name" onChange={this.handleChange}/>
+              <input className="text-field" id="inline-name" type="text" name="name" onChange={this.handleChange}/>
             </div>
           </div>
 
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-manager">
+              <label htmlFor="inline-manager">
                 Manager
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-manager" type="text" name="manager" onChange={this.handleChange}/>
+              <input className="text-field" id="inline-manager" type="text" name="manager" onChange={this.handleChange}/>
             </div>
           </div>
 
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-city">
+              <label htmlFor="inline-city">
                 City
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-city" type="text" name="city" onChange={this.handleChange}/>
+              <input className="text-field" id="inline-city" type="text" name="city" onChange={this.handleChange}/>
             </div>
           </div>
 
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
-              <label className="block font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-state">
+              <label htmlFor="inline-state">
                 State
               </label>
             </div>
             <div className="md:w-2/3">
-              <input className="bg-grey-light appearance-none border-2 border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-grey" id="inline-state" type="text" name="state" onChange={this.handleChange}/>
+              <input className="text-field" id="inline-state" type="text" name="state" onChange={this.handleChange}/>
             </div>
           </div>
           <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-              <input className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded" type="submit" name="submit" value="Add"/>
+              <input className="dark-button" type="submit" name="submit" value="Add"/>
             </div>
           </div>
         </form>

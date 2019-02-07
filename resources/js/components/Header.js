@@ -70,10 +70,10 @@ class Header extends Component {
 
 							    { loggedIn && ! this.props.initialAppLoading && (
 							      <div>
-								      <div className="inline-block text-sm px-4 py-2 leading-none text-white mt-4 mr-1 lg:mt-0">
+								      <div className="welcome-text">
 								      	Welcome { first_name }
 								      </div>
-							          <div className="inline-block px-4 py-2 leading-none mt-4 lg:mt-0">
+							          <div className="header-logout">
 							          	<Link to="/logout" className="header-button">Logout</Link>
 							      	  </div>
 							      </div>
@@ -82,7 +82,7 @@ class Header extends Component {
 							</nav>
 						</div>
 					</header>
-					<div id="banner" className="mb-8"></div>
+					<div id="banner"></div>
 				</div>
 			</HashRouter>
 		)
