@@ -39,7 +39,7 @@ header {
 }
 
 .header-button:hover {
-	@apply .border-transparent .text-teal .bg-white
+	@apply .border-transparent .text-black .bg-white .no-underline
 }
 
 .welcome-text {
@@ -75,7 +75,7 @@ header {
 }
 
 .dark-button:hover {
-	@apply .bg-green;
+	@apply .bg-grey .text-white .cursor-pointer .no-underline;
 }
 
 table th {

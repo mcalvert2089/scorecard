@@ -6187,8 +6187,9 @@ header {
 
 .header-button:hover {
   border-color: transparent;
-  color: #4dc0b5;
+  color: #22292f;
   background-color: #fff;
+  text-decoration: none;
 }
 
 .welcome-text {
@@ -6254,7 +6255,10 @@ header {
 }
 
 .dark-button:hover {
-  background-color: #38c172;
+  background-color: #b8c2cc;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 table th {

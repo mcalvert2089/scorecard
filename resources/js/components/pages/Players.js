@@ -57,7 +57,7 @@ class Players extends React.Component {
 		    	{ this.state.players !== null && <PlayerList players={ players } /> }
 
 			    <div className="mt-6">
-				    <Link to='/players/add' className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded">
+				    <Link to='/players/add' className="dark-button">
 				    	<i className="fas fa-plus" style={addStyle}></i>
 				    	Add Player
 				    </Link>

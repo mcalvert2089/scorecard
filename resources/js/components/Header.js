@@ -63,7 +63,7 @@ class Header extends Component {
 							    
 							    { ! loggedIn && (
 							      <div>
-							        <Link to="/login" className="header-button">Login</Link>
+							        <Link to="/login" className="header-button mr-2">Login</Link>
 							        <Link to="/register" className="header-button">Register</Link>
 							      </div>
 							    )}

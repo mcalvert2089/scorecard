@@ -57,7 +57,7 @@ class Teams extends React.Component {
 		    { this.state.teams !== null && <TeamList teams={ teams } /> }
 
 		    <div className="mt-6">
-			    <Link to='/teams/add' className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded">
+			    <Link to='/teams/add' className="dark-button">
 			    	<i className="fas fa-plus" style={ addStyle }></i>
 			    	Add Team
 			    </Link>
