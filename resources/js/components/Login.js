@@ -63,17 +63,17 @@ class Login extends Component {
 				      <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
 				        Email
 				      </label>
-				      <input className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" name="email" value={this.state.value} placeholder="Username" onChange={this.handleChange} />
+				      <input className="text-field" id="email" type="text" name="email" value={this.state.value} placeholder="Username" onChange={this.handleChange} />
 				    </div>
 				    <div className="mb-6">
 				      <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="password">
 				        Password
 				      </label>
-				      <input className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" placeholder="******************" onChange={this.handleChange} />
+				      <input className="text-field" id="password" type="password" name="password" placeholder="******************" onChange={this.handleChange} />
 				    </div>
 				    <div className="flex items-center justify-between">
-				    <input type="submit" className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded" value="Sign In" />
-				      <a className="inline-block align-baseline font-bold text-sm text-green-darker hover:text-green" href="#">
+				    <input type="submit" className="dark-button" value="Sign In" />
+				      <a href="#">
 				        Forgot Password?
 				      </a>
 				    </div>

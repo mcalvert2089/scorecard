@@ -42,7 +42,7 @@ class Main extends Component {
     let loggedIn = localStorage.getItem('loggedIn')
 
     return (
-          <div className="container mx-auto pl-3 pr-3">
+          <main className="container mx-auto pl-3 pr-3">
             <div className={ this.props.pageLoading ? 'show' : 'hidden'}>
               <div>
                <Loading />
@@ -78,7 +78,7 @@ class Main extends Component {
                 </Switch>
               </HashRouter>
             </div>
-          </div>
+          </main>
     )
   }
 }

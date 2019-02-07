@@ -1,6 +1,7 @@
 import { 
-			SAVE_USER_INFO,
+			INITIAL_APP_LOADING,
 			PAGE_LOADING, 
+			SAVE_USER_INFO,
 			SAVE_ALL_TEAMS,
 			SAVE_SINGLE_TEAM,
 			UPDATE_TEAM_INFO,
@@ -10,13 +11,19 @@ import {
 			SAVE_PLAYER_POSITIONS
 		} from "../constants/action-types"
 
-export function saveUserInfo(payload) {
-	return { type: SAVE_USER_INFO, payload }
+export function initialAppLoading(payload) {
+	return { type: INITIAL_APP_LOADING, payload }
 }
 
 export function togglePageLoad(payload) {
 	return { type: PAGE_LOADING, payload }
 }
+
+export function saveUserInfo(payload) {
+	return { type: SAVE_USER_INFO, payload }
+}
+
+
 
 // teams
 export function saveAllTeams(payload) {

@@ -74,14 +74,14 @@ export default class ActivateAccount extends React.Component {
 				  <div className="flex flex-wrap -mx-3 mb-6">
 				    <div className="w-full px-3 mb-6 md:mb-0">
 				      <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Enter a Password</label>
-				      <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="password" name="password" onChange={this.handleChange} required />
+				      <input className="text-field" type="password" name="password" onChange={this.handleChange} required />
 				    </div>
 				    <div className="w-full px-3 mb-6 md:mb-0">
 				      <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Verify Password</label>
-				      <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="password" name="verify_password" onChange={this.handleChange} required />
+				      <input className="text-field" type="password" name="verify_password" onChange={this.handleChange} required />
 				    </div>
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <input className="border-2 border-green text-green hover:border-grey hover:text-grey cursor-pointer rounded" type="submit" name="submit" value="Register"/>
+				      <input className="dark-button" type="submit" name="submit" value="Register"/>
 				    </div>
 				  </div>
 				</form>	

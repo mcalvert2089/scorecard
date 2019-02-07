@@ -57,11 +57,11 @@ export default class Register extends React.Component {
 				<form className="w-full max-w-md container mx-auto" onSubmit={this.handleSubmit}>
 				  <div className="flex flex-wrap -mx-3 mb-6">
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Email</label>
-				      <input className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="email" onChange={this.handleChange} required />
+				      <label className="text-field">Email</label>
+				      <input className="text-field" type="text" name="email" onChange={this.handleChange} required />
 				    </div>
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <input className="bg-green-darker hover:bg-green text-white font-bold py-2 px-4 rounded" type="submit" name="submit" value="Register"/>
+				      <input className="dark-button" type="submit" name="submit" value="Register"/>
 				    </div>
 				  </div>
 				</form>	

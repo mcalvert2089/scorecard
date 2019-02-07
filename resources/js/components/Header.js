@@ -4,11 +4,15 @@ import { HashRouter, Route, Link } from "react-router-dom"
 import MenuContainer from "./MenuContainer"
 
 const iconStyle = {
-  fontSize: '28px',
+  fontSize: '48px',
   color: 'white'
 };
 
-const mapStateToProps = state => ({ first_name: state.user.first_name })
+const mapStateToProps = state => ({ 
+	initialAppLoading: state.initialAppLoading,
+	pageLoading: state.pageLoading,
+	first_name: state.user.first_name,
+})
 
 class Header extends Component {
 	constructor(props, context) {
@@ -36,40 +40,41 @@ class Header extends Component {
 	render() {
 		const { first_name } = this.props
 		let loggedIn = localStorage.getItem('loggedIn')
+
 		return (
 			<HashRouter>
 				<div>
-					<header className="bg-green-darker">
+					<header>
 						<div className="container mx-auto">
 							<nav className="flex items-center justify-between flex-wrap p-6">
 							  <div className="flex items-center flex-no-shrink text-white mr-6">
 							    <i className="fas w-1/4 fa-baseball-ball flex-1 mr-2" style={iconStyle}></i>
-							    <span className="font-semibold text-xl tracking-tight">Scorecard</span>
+							    <span className="font-semibold text-xl tracking-tight text-2xl">Scorecard</span>
 							  </div>
 							  <div className="block lg:hidden">
 							    <MenuContainer/>
 							  </div>
 							  <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto md:hidden sm:hidden xs:hidden">
 							    <div className="text-sm lg:flex-grow">
-							      <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Home</Link>
-							      <Link to="/teams" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Teams</Link>
-							      <Link to="/players" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Players</Link>
+							      <Link to="/" className="nav-link">Home</Link>
+							      <Link to="/teams" className="nav-link">Teams</Link>
+							      <Link to="/players" className="nav-link">Players</Link>
 							    </div>
 							    
 							    { ! loggedIn && (
 							      <div>
-							        <Link to="/login" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 mr-2 lg:mt-0">Login</Link>
-							        <Link to="/register" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Register</Link>
+							        <Link to="/login" className="header-button mr-2">Login</Link>
+							        <Link to="/register" className="header-button">Register</Link>
 							      </div>
 							    )}
 
-							    { loggedIn && (
+							    { loggedIn && ! this.props.initialAppLoading && (
 							      <div>
-								      <div className="inline-block text-sm px-4 py-2 leading-none text-white mt-4 mr-2 lg:mt-0">
+								      <div className="welcome-text">
 								      	Welcome { first_name }
 								      </div>
-							          <div  className="inline-block text-sm px-4 py-2 leading-none mt-4 lg:mt-0">
-							          	<Link to="/logout" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0">Logout</Link>
+							          <div className="header-logout">
+							          	<Link to="/logout" className="header-button">Logout</Link>
 							      	  </div>
 							      </div>
 							    )}
@@ -77,7 +82,7 @@ class Header extends Component {
 							</nav>
 						</div>
 					</header>
-					<div id="banner" className="mb-8"></div>
+					<div id="banner"></div>
 				</div>
 			</HashRouter>
 		)

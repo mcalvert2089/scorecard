@@ -1,0 +1,213 @@
+@tailwind preflight;
+@tailwind components;
+@tailwind utilities;
+
+h1, h2, h3, h4, h5, h6 {
+	margin:0 0 16px 0 !important;
+}
+
+a {
+	color: #1B4731;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	color:#aaa;
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+header {
+	@apply .bg-green-darker;
+}
+
+.nav-link {
+	@apply .inline-block .text-yellow .text-xl .mt-0 .mr-4 .no-underline;
+}
+
+.nav-link:hover {
+	@apply .text-white .no-underline;
+}
+
+.header-button {
+	@apply .inline-block .text-sm .px-4 .py-2 .leading-none .border .rounded .text-white .border-white;
+}
+
+.header-button:hover {
+	@apply .border-transparent .text-black .bg-white .no-underline
+}
+
+.welcome-text {
+	@apply .inline-block .text-sm .px-4 .py-2 .leading-none .text-white .mt-4 .mr-1;
+}
+
+.header-logout {
+	@apply .inline-block .px-4 .py-2 .leading-none .mt-0;
+}
+
+#banner {
+	@apply mb-8;
+}
+
+.card {
+	@apply .rounded .overflow-hidden .shadow-lg;
+}
+
+.card-container {
+	@apply .px-6 .py-4;
+}
+
+.card-title {
+	@apply .font-bold .text-xl .mb-2;
+}
+
+.card-description {
+	@apply .text-grey-darker .text-base;
+}
+
+.dark-button {
+	@apply .bg-green-darker .text-white .font-bold .py-2 .px-4 .rounded
+}
+
+.dark-button:hover {
+	@apply .bg-grey .text-white .cursor-pointer .no-underline;
+}
+
+table th {
+	padding:6px;
+	background:#ccc;
+	border:#bbb solid 2px;
+}
+
+table td {
+	padding:6px;
+	border-bottom:1px solid #ccc;
+}
+
+select {
+	@apply .block .appearance-none .w-full .bg-grey-lighter .border .border-grey-lighter .text-grey-darker .py-3 .px-4 .pr-8 .rounded .leading-tight;
+}
+
+/** FORMS **/
+label {
+	@apply .block .font-bold .mb-1 .pr-4;
+}
+.text-field {
+	@apply .bg-grey-light .appearance-none .border-2 .border-grey-lighter .rounded .w-full .py-2 .px-4 .text-grey-darker .leading-tight;
+}
+
+.text-field:focus {
+	@apply .outline-none .bg-white .border-grey
+}
+
+.loading {
+	font-size:56px;
+}
+
+#login-box {
+	width: 300px;
+}
+
+#banner {
+	background-color:#222;
+	background-image: url('img/baseball-player.jpg');
+	background-position: 45% 56%;
+	background-repeat: no-repeat;
+	background-size: 1150px;
+	height:300px;
+}
+
+#theMenu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translate3d(-100vw, 0, 0);
+    width: 100vw;
+    height: 100vh;
+}  
+
+#flyoutMenu {
+  width: 100vw;
+  height: 100vh;
+  background-color: #1A4731;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform .5s cubic-bezier(0, .52, 0, 1);
+  overflow: scroll;
+  z-index: 1000;
+}
+ 
+#flyoutMenu.hide {
+  transform: translate3d(100vw, 0, 0);
+}
+ 
+#flyoutMenu.show {
+  transform: translate3d(0vw, 0, 0);
+  overflow: hidden;
+}
+ 
+#flyoutMenu h2 a {
+  color: #F2D024;
+  margin-left: 15px;
+  text-decoration: none;
+  border-bottom:#F2D024 solid 1px;
+  padding:6px;
+  text-align: center;
+}
+ 
+#flyoutMenu h2 a:hover {
+  text-decoration: underline;
+}
+
+.mobileOnly {
+	display:none;
+}
+
+@media only screen and (max-width: 768px) {
+	#banner {
+		height: 250px !important;
+		background-image: url('img/baseball-player-768.jpg');
+		background-size: auto;
+		background-position: 45% 54%;
+	}
+
+	.mobileOnly {
+		display:inline;
+	}
+} 
+
+@media only screen and (max-width: 600px) {
+	#banner {
+		height: 200px !important;
+		background-image: url('img/baseball-player-600.jpg');
+		background-size: auto;
+		background-position: 44% 59%;
+	}
+
+	.mobileOnly {
+		display:inline;
+	}
+
+	.hideOnMobile {
+		display:none;
+	}
+} 
+
+@media only screen and (max-width: 360px) {
+	#banner {
+		height: 150px !important;
+		background-image: url('img/baseball-player-360.jpg');
+		background-size: auto;
+		background-position: 45% 58%;
+	}
+
+	.mobileOnly {
+		display:inline;
+	}
+	
+	.hideOnMobile {
+		display:none;
+	}
+} 
