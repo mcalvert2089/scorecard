@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import { togglePageLoad } from '../../js/actions/index'
+import { validateEmail } from './form-elements/validation'
 
 const addStyle = {
   fontSize: '16px',
@@ -13,7 +14,8 @@ export default class Register extends React.Component {
 		super(props);
 		this.state = { 
 	  		email: '',
-	  		showForm: true
+	  		showForm: true,
+	  		emailError: ''
 		}
 
 		this.handleChange = this.handleChange.bind(this)
@@ -34,17 +36,25 @@ export default class Register extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
-		const { email } = this.state;
+		this.setState({ emailError: '' })
+		const { email } = this.state
+		let validEmail = validateEmail(email)
 
-		axios.post('/register', { email })
-		.then((result) => {
-		  if(result.status === 200) {
-		  	this.toggleHidden()
-		  } else {
-
-		  }
-		})
+		if(validEmail.inValid) {
+			this.setState({ emailError: validEmail.message })
+		} else {
+			axios.post('/register', { email })
+				.then((result) => {
+				  if(result.status === 200) {
+				  	this.toggleHidden()
+				  }
+				})
+		}
 	}
+
+	validateForm() {
+	}
+
 	toggleHidden () {
 		this.setState({
 		  showForm: ! this.state.showForm
@@ -57,10 +67,14 @@ export default class Register extends React.Component {
 				<form className="w-full max-w-md container mx-auto" onSubmit={this.handleSubmit}>
 				  <div className="flex flex-wrap -mx-3 mb-6">
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <label className="text-field">Email</label>
-				      <input className="text-field" type="text" name="email" onChange={this.handleChange} required />
+				      <label>Email</label>
+				      <input className="text-field" type="text" name="email" onChange={this.handleChange} />
 				    </div>
-				    <div className="w-full px-3 mb-6 md:mb-0">
+				    { this.state.emailError && (
+				    	<div className="error">{ this.state.emailError }</div>
+				    	)
+				    }
+				    <div className="w-full px-3 mt-4 mb-6 md:mb-0">
 				      <input className="dark-button" type="submit" name="submit" value="Register"/>
 				    </div>
 				  </div>
