@@ -44,7 +44,7 @@ class UserRegisteredSuccessfully extends Notification
             ->subject('Scorecard: Verify Address')
             ->greeting('Finish Your Registration')
             ->line('You have successfully registered. Please activate your account.')
-            ->action('Click Here', env('APP_URL') . '/activate/' . $user->activation_key)
+            ->action('Click Here', env('APP_URL') . '/#/activate/' . $user->activation_key)
             ->line('Thank you for using our application!');
     }
     /**

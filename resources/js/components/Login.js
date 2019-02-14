@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import store from '../store/index'
-import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, withRouter, Link } from 'react-router-dom'
 import { togglePageLoad } from '../../js/actions/index'
 import Header from './Header'
 
@@ -72,10 +72,11 @@ class Login extends Component {
 				      <input className="text-field" id="password" type="password" name="password" placeholder="******************" onChange={this.handleChange} />
 				    </div>
 				    <div className="flex items-center justify-between">
-				    <input type="submit" className="dark-button" value="Sign In" />
-				      <a href="#">
-				        Forgot Password?
-				      </a>
+				    	<input type="submit" className="dark-button" value="Sign In" />
+				    </div>
+				    <div className="flex items-center justify-between pt-4">
+						<Link to="/register" className="text-sm">Sign Up</Link>
+						<Link to="#" className="text-sm">Forgot Password?</Link>
 				    </div>
 				  </form>
 				</div>
