@@ -66,6 +66,7 @@ export default class Register extends React.Component {
 		  showForm: ! this.state.showForm
 		})
 	}
+
 	render() {
 		return (
 		<div>
@@ -77,7 +78,7 @@ export default class Register extends React.Component {
 				      <input className="text-field" type="text" name="email" onChange={this.handleChange} />
 				    </div>
 				    { this.state.emailError && (
-				    	<div className="error">{ this.state.emailError }</div>
+				    		<div className="error">{ this.state.emailError }</div>
 				    	)
 				    }
 				    <div className="w-full px-3 mt-4 mb-6 md:mb-0">
