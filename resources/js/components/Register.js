@@ -43,11 +43,17 @@ export default class Register extends React.Component {
 		if(validEmail.inValid) {
 			this.setState({ emailError: validEmail.message })
 		} else {
+			var self = this
+
 			axios.post('/register', { email })
 				.then((result) => {
 				  if(result.status === 200) {
 				  	this.toggleHidden()
 				  }
+				})
+				.catch(function (error) {
+					let errorMessage = (typeof error.response.data.errors.email[0] !== 'undefined') ? error.response.data.errors.email[0] : 'An error has occured'
+					self.setState({ emailError: errorMessage })
 				})
 		}
 	}
