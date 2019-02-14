@@ -15,7 +15,7 @@ export default class Register extends React.Component {
 		this.state = { 
 	  		email: '',
 	  		showForm: true,
-	  		emailError: ''
+	  		errors: []
 		}
 
 		this.handleChange = this.handleChange.bind(this)
@@ -36,12 +36,13 @@ export default class Register extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
-		this.setState({ emailError: '' })
+		this.setState({ errors: [] })
+
 		const { email } = this.state
 		let validEmail = validateEmail(email)
 
 		if(validEmail.inValid) {
-			this.setState({ emailError: validEmail.message })
+			this.setState({ errors: { email: validEmail.message } })
 		} else {
 			var self = this
 
@@ -53,12 +54,9 @@ export default class Register extends React.Component {
 				})
 				.catch(function (error) {
 					let errorMessage = (typeof error.response.data.errors.email[0] !== 'undefined') ? error.response.data.errors.email[0] : 'An error has occured'
-					self.setState({ emailError: errorMessage })
+					self.setState({ errors: { email: errorMessage } })
 				})
 		}
-	}
-
-	validateForm() {
 	}
 
 	toggleHidden () {
@@ -77,8 +75,8 @@ export default class Register extends React.Component {
 				      <label>Email</label>
 				      <input className="text-field" type="text" name="email" onChange={this.handleChange} />
 				    </div>
-				    { this.state.emailError && (
-				    		<div className="error">{ this.state.emailError }</div>
+				    { this.state.errors.email && (
+				    		<div className="error">{ this.state.errors.email }</div>
 				    	)
 				    }
 				    <div className="w-full px-3 mt-4 mb-6 md:mb-0">
