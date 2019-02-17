@@ -4722,6 +4722,17 @@ header {
   margin-left: .75rem;
 }
 
+.form-box {
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  border-radius: .25rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
 .card {
   border-radius: .25rem;
   overflow: hidden;

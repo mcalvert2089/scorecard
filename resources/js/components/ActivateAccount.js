@@ -84,12 +84,12 @@ export default class ActivateAccount extends React.Component {
 				<form className="w-full max-w-md" onSubmit={this.handleSubmit}>
 				  <div className="flex flex-wrap -mx-3 mb-6">
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Enter a Password</label>
+				      <label>Enter a Password</label>
 				      <input className="text-field" type="password" name="password" onChange={this.handleChange} />
 				    </div>
 
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Verify Password</label>
+				      <label>Verify Password</label>
 				      <input className="text-field" type="password" name="verify_password" onChange={this.handleChange} />
 				    </div>
 

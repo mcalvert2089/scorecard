@@ -17,6 +17,8 @@ import PlayersAdd from './pages/PlayersAdd'
 import PlayersEdit from './pages/PlayersEdit'
 import NotFound from './NotFound'
 import Loading from './Loading'
+import AccountReset from './AccountReset'
+import PasswordReset from './PasswordReset'
 
 window.store = store
 
@@ -57,6 +59,8 @@ class Main extends Component {
                   <RedirectIfLoggedIn path="/login" component={Login} />
                   <RedirectIfLoggedIn path="/register" component={Register} />
                   <RedirectIfLoggedIn path='/activate/:key' component={ActivateAccount} />
+                  <RedirectIfLoggedIn path='/account-reset' component={AccountReset} />
+                  <RedirectIfLoggedIn path='/password/reset/:token' component={PasswordReset} />
 
                   { ! loggedIn && <Redirect to="/login" /> }
 

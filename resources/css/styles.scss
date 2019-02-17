@@ -54,6 +54,10 @@ header {
 	@apply .bg-red-lightest .border .border-red-light .text-red-dark .px-4 .py-3 .rounded .relative mt-3 ml-3;
 }
 
+.form-box {
+	@apply bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
+}
+
 .card {
 	@apply .rounded .overflow-hidden .shadow-lg;
 }

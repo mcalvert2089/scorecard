@@ -20,3 +20,6 @@ Route::view('/{path?}', 'app')
 	->name('react');
 
 Auth::routes();
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
