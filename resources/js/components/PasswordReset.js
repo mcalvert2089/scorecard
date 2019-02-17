@@ -6,8 +6,12 @@ class PasswordReset extends Component {
 	constructor(props) {
 	    super(props)
 	    this.state = { 
+	    	token: props.match.params.token,
+	    	email: props.match.params.email,
 			password: '',
-			confirm_password: ''
+			confirm_password: '',
+			passwordReset: false,
+			validToken: false
 	    }
 
 	    this.handleChange = this.handleChange.bind(this)
@@ -16,6 +20,16 @@ class PasswordReset extends Component {
 
 	componentDidMount() {
 		store.dispatch(togglePageLoad({ pageLoading: false }))
+
+		const self = this
+
+		axios.post('/api/check-token/' + this.state.token + '/' + this.state.email)
+	    .then((result) => {
+	      if(result.status === 200) {
+      		self.setState({ validToken: result.data.valid })
+      		store.dispatch(togglePageLoad({ pageLoading: false }))
+	      }
+	    })
 	}
 
 	handleChange(e){
@@ -24,39 +38,59 @@ class PasswordReset extends Component {
 
 	handleSubmit(event) {
 	    event.preventDefault()
+	    store.dispatch(togglePageLoad({ pageLoading: true }))
+		
+		const { token, password, confirm_password } = this.state
+		const self = this
+
+		axios.post('/password/reset', { token, password })
+	    .then((result) => {
+	      if(result.status === 200) {
+      		self.setState({ passwordReset: true })
+      		store.dispatch(togglePageLoad({ pageLoading: false }))
+	      }
+	    })
 	}
 
 	render() {
 		return (
 			<div>
- 				<div className="md:flex md:items-center mb-6">
-				    <div className="md:w-1/3">
-				      <label htmlFor="inline-password">
-				        New Password
-				      </label>
-				    </div>
-				    <div className="md:w-2/3">
-				      <input className="text-field" id="inline-password" type="text" name="password" onChange={this.handleChange}/>
-				    </div>
-				  </div>
+				{ ! this.state.validToken && ( 
+					<div>Link has expired.</div>
+				)}
+ 				{ this.state.validToken && (
+ 					<form className="form-box" onSubmit={this.handleSubmit}>
+		 				<div className="md:flex md:items-center mb-6">
+						    <div className="md:w-1/3">
+						      <label htmlFor="inline-password">
+						        New Password
+						      </label>
+						    </div>
+						    <div className="md:w-2/3">
+						      <input className="text-field" id="inline-password" type="password" name="password" onChange={this.handleChange}/>
+						    </div>
+						  </div>
 
-				  <div className="md:flex md:items-center mb-6">
-				    <div className="md:w-1/3">
-				      <label htmlFor="inline-confirm-password">
-				        Confirm Password
-				      </label>
-				    </div>
-				    <div className="md:w-2/3">
-				      <input className="text-field" id="inline-confirm-password" type="text" name="confirm_password" onChange={this.handleChange}/>
-				    </div>
-				  </div>
+						  <div className="md:flex md:items-center mb-6">
+						    <div className="md:w-1/3">
+						      <label htmlFor="inline-confirm-password">
+						        Confirm Password
+						      </label>
+						    </div>
+						    <div className="md:w-2/3">
+						      <input className="text-field" id="inline-confirm-password" type="password" name="confirm_password" onChange={this.handleChange}/>
+						    </div>
+						  </div>
 
-				  <div className="md:flex md:items-center">
-	                <div className="md:w-1/3"></div>
-	                <div className="md:w-2/3">
-	                  <input className="dark-button" type="submit" name="submit" value="Submit"/>
-	                </div>
-	              </div>
+						  <div className="md:flex md:items-center">
+			                <div className="md:w-1/3"></div>
+			                <div className="md:w-2/3">
+			                  <input className="dark-button" type="submit" name="submit" value="Submit"/>
+			                </div>
+			              </div>
+			        </form>
+		        )
+		    }
 			</div>
 		)
 	}

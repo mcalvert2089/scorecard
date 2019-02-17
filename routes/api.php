@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 //USERS
 Route::post('user-check-active', 'UserController@isActivated');
+Route::post('check-token/{token}/{email}', 'UserController@checkPasswordResetToken');
 
 Route::group([ 'prefix' => 'auth' ], function () {
     Route::post('login', 'AuthController@login');

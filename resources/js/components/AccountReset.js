@@ -38,7 +38,6 @@ class AccountReset extends Component {
 		axios.post('/password/email', { email })
 	    .then((result) => {
 	      if(result.status === 200) {
-      		console.log('sent')
       		self.setState({ passwordSent: true })
       		store.dispatch(togglePageLoad({ pageLoading: false }))
 	      }
