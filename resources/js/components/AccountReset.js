@@ -35,7 +35,7 @@ class AccountReset extends Component {
 		const { email } = this.state
 		const self = this
 
-		axios.post('/password/email', { email })
+		axios.post('/password/email', { email: email })
 	    .then((result) => {
 	      if(result.status === 200) {
       		self.setState({ passwordSent: true })

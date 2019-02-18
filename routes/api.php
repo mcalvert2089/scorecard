@@ -35,6 +35,8 @@ Route::group([ 'middleware' => 'auth:api' ], function() {
     Route::resource('teams', 'TeamController');
     Route::resource('players', 'PlayerController');
     Route::resource('positions', 'PositionController');
+    Route::resource('scorecard/create', 'ScorecardController');
+    Route::resource('roster/create', 'ScorecardRosterController');
 });
 
 

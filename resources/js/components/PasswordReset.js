@@ -9,7 +9,7 @@ class PasswordReset extends Component {
 	    	token: props.match.params.token,
 	    	email: props.match.params.email,
 			password: '',
-			confirm_password: '',
+			password_confirmation: '',
 			passwordReset: false,
 			validToken: false
 	    }
@@ -40,10 +40,10 @@ class PasswordReset extends Component {
 	    event.preventDefault()
 	    store.dispatch(togglePageLoad({ pageLoading: true }))
 		
-		const { token, password, confirm_password } = this.state
+		const { token, email, password, password_confirmation } = this.state
 		const self = this
 
-		axios.post('/password/reset', { token, password })
+		axios.post('/password/reset', { token, email, password, password_confirmation })
 	    .then((result) => {
 	      if(result.status === 200) {
       		self.setState({ passwordReset: true })
@@ -55,10 +55,13 @@ class PasswordReset extends Component {
 	render() {
 		return (
 			<div>
-				{ ! this.state.validToken && ( 
+				{ ! this.state.validToken && ! this.state.passwordReset && ( 
 					<div>Link has expired.</div>
 				)}
- 				{ this.state.validToken && (
+				{ this.state.passwordReset && ( 
+					<div>Your password has been reset.</div>
+				)}
+ 				{ this.state.validToken && ! this.state.passwordReset && (
  					<form className="form-box" onSubmit={this.handleSubmit}>
 		 				<div className="md:flex md:items-center mb-6">
 						    <div className="md:w-1/3">
@@ -78,7 +81,7 @@ class PasswordReset extends Component {
 						      </label>
 						    </div>
 						    <div className="md:w-2/3">
-						      <input className="text-field" id="inline-confirm-password" type="password" name="confirm_password" onChange={this.handleChange}/>
+						      <input className="text-field" id="inline-confirm-password" type="password" name="password_confirmation" onChange={this.handleChange}/>
 						    </div>
 						  </div>
 

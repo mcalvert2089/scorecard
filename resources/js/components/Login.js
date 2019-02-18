@@ -75,7 +75,7 @@ class Login extends Component {
 				    	<input type="submit" className="dark-button" value="Sign In" />
 				    </div>
 				    <div className="flex items-center justify-between pt-4">
-						<Link to="/register" className="text-sm">Sign Up</Link>
+						<Link to="/register-new-account" className="text-sm">Sign Up</Link>
 						<Link to="/account-reset" className="text-sm">Can't Login?</Link>
 				    </div>
 				  </form>
