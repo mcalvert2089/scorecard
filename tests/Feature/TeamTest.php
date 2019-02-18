@@ -44,13 +44,7 @@ class TeamTest extends TestCase
                  ->get('/api/teams/' . $team->id);
         $response->assertStatus(200);
 
-        $retrievedTeam = Team::first();
-
-        $this->assertEquals($team->name, $retrievedTeam->name);
-        $this->assertEquals($team->manager, $retrievedTeam->manager);
-        $this->assertEquals($team->city, $retrievedTeam->city);
-        $this->assertEquals($team->state, $retrievedTeam->state);
-        $this->assertEquals($team->user_id, $retrievedTeam->user_id);
+        $this->assertDatabaseHas('teams', $response->json());
     }
 
     /** @test */

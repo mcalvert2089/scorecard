@@ -11,5 +11,5 @@ class Scorecard extends Model
 
     public $incrementing = false;
     
-    protected $fillable = [ 'home_team_id', 'visiting_team_id', 'user_id', 'game_timestamp' ];
+    protected $fillable = [ 'home_team_id', 'visiting_team_id', 'user_id', 'game_date' ];
 }

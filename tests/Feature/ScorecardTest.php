@@ -30,7 +30,7 @@ class ScorecardTest extends TestCase
         $data['home_team_id'] = $this->teams[0]->id;
         $data['visiting_team_id'] = $this->teams[1]->id;
         $data['user_id'] = $this->user->id;
-        $data['game_timestamp'] = date('Y-m-d h:i:s');
+        $data['game_date'] = date('Y-m-d');
 
         $request = $this->actingAs($this->user, 'api')
                         ->post('/api/scorecard/create', $data);
@@ -48,7 +48,7 @@ class ScorecardTest extends TestCase
             'home_team_id' => $this->teams[0]->id,
             'visiting_team_id' => $this->teams[1]->id,
             'user_id' => $this->user->id,
-            'game_timestamp' => date('Y-m-d h:i:s')
+            'game_date' => date('Y-m-d h:i:s')
         ]);
 
         $players = factory(Player::class, 9)->create();

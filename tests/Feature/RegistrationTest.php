@@ -24,7 +24,7 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', $data);
         $response->assertStatus(200);
 
-        $user = User::first();
+        $user = User::whereEmail($data['email'])->first();
 
         $this->assertNotNull($user);
         $this->assertNotNull($user->activation_key);
@@ -75,11 +75,12 @@ class RegistrationTest extends TestCase
         $user = factory(User::class)->create([
             'email_verified_at' => null
         ]);
+
         $data['activation_key'] = $user->activation_key;
 
         $response = $this->post('/api/user-check-active', $data);
-
         $response->assertStatus(200);
+
         $this->assertFalse($response->json('active'));
     }
 }
