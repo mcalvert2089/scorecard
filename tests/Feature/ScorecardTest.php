@@ -23,6 +23,20 @@ class ScorecardTest extends TestCase
     }
 
     /** @test */
+    public function user_can_retrieve_their_scorecards()
+    {
+        $scorecards = factory(Scorecard::class, 10)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->actingAs($this->user, 'api')
+                        ->get('/api/scorecard');
+        $response->assertStatus(200);
+
+        $this->assertCount(10, $response->json());
+    }
+
+    /** @test */
     public function user_can_create_a_blank_scorecard()
     {
         $data = [];
@@ -32,9 +46,9 @@ class ScorecardTest extends TestCase
         $data['user_id'] = $this->user->id;
         $data['game_date'] = date('Y-m-d');
 
-        $request = $this->actingAs($this->user, 'api')
-                        ->post('/api/scorecard/create', $data);
-        $request->assertStatus(201);
+        $response = $this->actingAs($this->user, 'api')
+                        ->post('/api/scorecard', $data);
+        $response->assertStatus(201);
 
         $this->assertDatabaseHas('scorecards', $data);
     }

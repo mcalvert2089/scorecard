@@ -19,6 +19,7 @@ import NotFound from './NotFound'
 import Loading from './Loading'
 import AccountReset from './AccountReset'
 import PasswordReset from './PasswordReset'
+import HomeScorecard from './pages/scorecard/HomeScorecard'
 import CreateScorecard from './pages/scorecard/CreateScorecard'
 
 window.store = store
@@ -79,6 +80,7 @@ class Main extends Component {
                   <Route exact path='/players/edit/:id' component={PlayersEdit} />
 
                   // Rosters
+                  <Route exact path='/scorecard' component={HomeScorecard} />
                   <Route exact path='/scorecard/create' component={CreateScorecard} />
 
                   // 404

@@ -12,4 +12,12 @@ class Scorecard extends Model
     public $incrementing = false;
 
     protected $fillable = ['home_team_id', 'visiting_team_id', 'user_id', 'game_date', 'start_time'];
+
+    public function home_team() {
+    	return $this->hasOne('App\Team', 'id', 'home_team_id');
+    }
+
+    public function visiting_team() {
+    	return $this->hasOne('App\Team', 'id', 'visiting_team_id');
+    }
 }

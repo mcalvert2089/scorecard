@@ -8,7 +8,8 @@ import {
 			SAVE_ALL_PLAYERS,
 			SAVE_SINGLE_PLAYER,
 			UPDATE_PLAYER_INFO,
-			SAVE_PLAYER_POSITIONS
+			SAVE_PLAYER_POSITIONS,
+			SAVE_SCORECARDS
 		} from "../constants/action-types"
 
 export function initialAppLoading(payload) {
@@ -22,8 +23,6 @@ export function togglePageLoad(payload) {
 export function saveUserInfo(payload) {
 	return { type: SAVE_USER_INFO, payload }
 }
-
-
 
 // teams
 export function saveAllTeams(payload) {
@@ -54,4 +53,9 @@ export function updatePlayerInfo(payload) {
 // positions
 export function saveAllPlayerPositions(payload) {
 	return { type: SAVE_PLAYER_POSITIONS , payload}
+}
+
+// scorecards
+export function saveScorecards(payload) {
+	return { type: SAVE_SCORECARDS , payload}
 }
