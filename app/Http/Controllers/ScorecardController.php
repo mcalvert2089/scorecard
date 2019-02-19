@@ -22,7 +22,7 @@ class ScorecardController extends Controller
     }
 
     public function show($id) {
-        return Scorecard::whereId($id)->first();
+        return $this->model->show($id);
     }
 
     public function store(Request $request) {
@@ -33,8 +33,8 @@ class ScorecardController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-        return Scorecard::whereId($id)->first();
+        $data = $this->model->update($request->only($this->model->getModel()->fillable), $id);
+        return $this->model->update($data, $id);
     }
 
     public function destroy($id) {

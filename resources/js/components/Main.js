@@ -19,7 +19,7 @@ import NotFound from './NotFound'
 import Loading from './Loading'
 import AccountReset from './AccountReset'
 import PasswordReset from './PasswordReset'
-import CreateScorecard from './pages/CreateScorecard'
+import CreateScorecard from './pages/scorecard/CreateScorecard'
 
 window.store = store
 
