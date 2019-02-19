@@ -27,7 +27,7 @@ class ScorecardRosterController extends Controller
 
     public function store(Request $request) {
     	$data = $request->only($this->model->getModel()->fillable);
-
+    
     	foreach($data as $d) {
     		$d['user_id'] = auth()->user()->id;
     		$this->model->create($d);

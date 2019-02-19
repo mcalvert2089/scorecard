@@ -18,8 +18,8 @@ class CreateScorecardsTable extends Migration
             $table->uuid('home_team_id');
             $table->uuid('visiting_team_id');
             $table->date('game_date');
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->char('start_time', 8)->nullable();
+            $table->char('end_time', 8)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

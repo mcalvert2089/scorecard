@@ -10,6 +10,6 @@ class Scorecard extends Model
 	use Uuids, SoftDeletes;
 
     public $incrementing = false;
-    
-    protected $fillable = [ 'home_team_id', 'visiting_team_id', 'user_id', 'game_date' ];
+
+    protected $fillable = ['home_team_id', 'visiting_team_id', 'user_id', 'game_date', 'start_time'];
 }

@@ -11,8 +11,8 @@ class ScorecardController extends Controller
 {
     protected $model;
 
-    public function __construct(Scorecard $Scorecard) {
-        $this->model = new Repository($Scorecard);
+    public function __construct(Scorecard $scorecard) {
+        $this->model = new Repository($scorecard);
     }
 
     public function index() {
@@ -27,6 +27,7 @@ class ScorecardController extends Controller
 
     public function store(Request $request) {
         $data = $request->only($this->model->getModel()->fillable);
+        $data['game_date'] = date('Y-m-d', strtotime($request->game_date));
         $data['user_id'] = auth()->user()->id;
         return $this->model->create($data);
     }
@@ -37,6 +38,6 @@ class ScorecardController extends Controller
     }
 
     public function destroy($id) {
-        $this->model->delete($id);
+        Scorecard::delete($id);
     }
 }

@@ -59,6 +59,7 @@ class Header extends Component {
 							      <Link to="/" className="nav-link">Home</Link>
 							      <Link to="/teams" className="nav-link">Teams</Link>
 							      <Link to="/players" className="nav-link">Players</Link>
+							      <Link to="/scorecard/create" className="nav-link">Scorecards</Link>
 							    </div>
 							    
 							    { ! loggedIn && (
