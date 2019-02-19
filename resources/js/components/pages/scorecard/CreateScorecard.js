@@ -25,6 +25,7 @@ class CreateScorecard extends Component {
 		  start_time_hour: '',
 		  start_time_minutes: '',
 		  start_time_meridian: '',
+		  scorecard_id: '',
 		  errors: []
 		}
 
@@ -39,11 +40,12 @@ class CreateScorecard extends Component {
 		    if(result.status === 200) {
 		        store.dispatch( saveAllTeams({ teams: result.data }) )
 		        this.setState({ teams: result.data })
+		        this.setState({ scorecard_id: result.data.id })
 		    }
 		  })
 
 	  Promise.all([getTeams]).then(
-	    () =>  store.dispatch(togglePageLoad({ pageLoading: false }))
+	    () =>  store.dispatch(togglePageLoad({ pageLoading: false })),
 	  )
 	}
 
@@ -100,8 +102,9 @@ class CreateScorecard extends Component {
 			
 			axios.post('/api/scorecard', { home_team_id, visiting_team_id, game_date, start_time })
 		      .then((result) => {
-		        if(result.status === 200) {
-		        	console.log(result)
+		        if(result.status === 201) {
+		        	console.log(this.state.scorecard_id)
+	    			this.props.history.push('/scorecard/rosters/' + result.data.id)
 		        }
 		      })
 		}

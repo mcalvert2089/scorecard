@@ -22,7 +22,7 @@ class ScorecardRosterController extends Controller
     }
 
     public function show($id) {
-        return ScorecardRoster::whereId($id)->first();
+        $records = ScorecardRoster::whereId($id)->first();
     }
 
     public function store(Request $request) {
@@ -41,5 +41,10 @@ class ScorecardRosterController extends Controller
 
     public function destroy($id) {
         $this->model->delete($id);
+    }
+
+    public function getRosters($scorecard_id) {
+        $roster = new ScorecardRoster;
+        return $roster->getRosters($scorecard_id);
     }
 }

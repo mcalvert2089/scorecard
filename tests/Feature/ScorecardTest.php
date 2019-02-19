@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Player;
 use App\Scorecard;
+use App\ScorecardRoster;
 use App\Team;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,6 +52,37 @@ class ScorecardTest extends TestCase
         $response->assertStatus(201);
 
         $this->assertDatabaseHas('scorecards', $data);
+    }
+
+    /** @test */
+    public function user_can_retrieve_scorecard_rosters()
+    {
+        
+        $teams = factory(Team::class, 2)->create();
+        $team1Id = $teams[0]->id;
+        $team2Id = $teams[1]->id;
+
+        $scorecard = factory(Scorecard::class)->create([
+            'home_team_id' => $team1Id,
+            'visiting_team_id' => $team2Id
+        ]);
+
+        $homeTeam = factory(ScorecardRoster::class, 9)->create([
+            'scorecard_id' => $scorecard->id,
+            'team_id' => $team1Id
+        ]);
+
+        $visitingTeam = factory(ScorecardRoster::class, 9)->create([
+            'scorecard_id' => $scorecard->id,
+            'team_id' => $team2Id
+        ]);
+
+        $response = $this->actingAs($this->user, 'api')
+            ->get("/api/scorecard-rosters/$scorecard->id");
+        $response->assertStatus(200);
+
+        $this->assertCount(9, $response->json('home_roster'));
+        $this->assertCount(9, $response->json('visiting_roster'));
     }
 
     /** @test */
