@@ -14,6 +14,10 @@ export function validate(data) {
 				results[ array.field_name ] = 'Email address is invalid.'
 			}
 
+			if(rule === 'number' && ! validator.isEmpty(array.value) && isNaN(array.value)) {
+				results[ array.field_name ] = array.name + ' must be a number.'
+			}
+
 			// CUSTOM VALIDATIONS
 			if(rule === 'scorecard_start_time' && (array.value.hour || array.value.minutes || array.value.meridian)) {
 				let hour = (typeof array.value.hour !== 'undefined') ? array.value.hour : null

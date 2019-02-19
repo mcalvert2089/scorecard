@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import axios from 'axios'
 import { togglePageLoad, saveAllTeams, saveAllPlayerPositions } from '../../../js/actions/index'
 import ScSelect from '../form-elements/ScSelect'
+import { validate } from '../form-elements/validation'
 
 const mapStateToProps = (state) => ({ 
   teams: state.teams,
@@ -34,6 +35,7 @@ class PlayersAdd extends Component {
       primary_position_id: '',
       bats: '',
       throws: '',
+      errors: [],
       isHidden: true,
       isLoading: true
     }
@@ -81,22 +83,47 @@ class PlayersAdd extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    this.isHidden = true
-    const { first_name, last_name, team_id, user_id, primary_position_id, bats, throws } = this.state
+    this.setState({ isHidden: true })
 
-    axios.post('/api/players', { first_name, last_name, team_id, user_id, primary_position_id, bats, throws })
-      .then((result) => {
-        if(result.status === 200) {
-          this.toggleHidden()
-        }
-      })
-    this.isHidden = false
-  }
+    let valid = validate([ { 
+        name: 'First Name',
+        field_name: 'first_name',
+        rules: 'required',
+        value: (this.state.first_name) ? this.state.first_name : ''
+      },
+      { 
+        name: 'Last Name',
+        field_name: 'last_name',
+        rules: 'required',
+        value: (this.state.last_name) ? this.state.last_name : ''
+      },
+      { 
+        name: 'Team',
+        field_name: 'team_id',
+        rules: 'required',
+        value: (this.state.team_id) ? this.state.team_id : ''
+      },
+      { 
+        name: 'Primary Position',
+        field_name: 'primary_position_id',
+        rules: 'required',
+        value: (this.state.primary_position_id) ? this.state.primary_position_id : ''
+      }
+    ])
 
-  toggleHidden () {
-    this.setState({
-      isHidden: !this.state.isHidden
-    })
+    this.setState({ errors: valid })
+    
+    if(Object.keys(valid).length === 0) {
+      const { first_name, last_name, team_id, user_id, primary_position_id, bats, throws } = this.state
+      let self = this
+      
+      const createPlayer = axios.post('/api/players', { first_name, last_name, team_id, user_id, primary_position_id, bats, throws })
+        .then((result) => {
+          if(result.status === 201) {
+            self.setState({ isHidden: false })
+          }
+        })
+    }
   }
 
 render() {
@@ -119,7 +146,7 @@ render() {
         )}
          
          { this.props.teams.length > 0 && (
-            <form className="w-full max-w-xs" onSubmit={this.handleSubmit}>
+            <form className="w-full" onSubmit={this.handleSubmit}>
               <div className="md:flex md:items-center mb-6">
                 <div className="md:w-1/3">
                   <label htmlFor="inline-first-name">
@@ -128,6 +155,7 @@ render() {
                 </div>
                 <div className="md:w-2/3">
                   <input className="text-field" id="inline-first-name" type="text" name="first_name" onChange={this.handleChange}/>
+                  { this.state.errors.first_name && ( <div className="error">{ this.state.errors.first_name }</div> ) }
                 </div>
               </div>
 
@@ -139,6 +167,7 @@ render() {
                 </div>
                 <div className="md:w-2/3">
                   <input className="text-field" id="inline-last-name" type="text" name="last_name" onChange={this.handleChange}/>
+                  { this.state.errors.last_name && ( <div className="error">{ this.state.errors.last_name }</div> ) }
                 </div>
               </div>
 
@@ -150,6 +179,7 @@ render() {
                 </div>
                 <div className="md:w-2/3">
                   <ScSelect name="team_id" value={ selectedOption } onChange={ this.handleChange.bind(this) } options={ teamOptions } />
+                  { this.state.errors.team_id && ( <div className="error">{ this.state.errors.team_id }</div> ) }
                 </div>
               </div>
 
@@ -161,6 +191,7 @@ render() {
                 </div>
                 <div className="md:w-2/3">
                   <ScSelect name="primary_position_id" value={ selectedOption } onChange={ this.handleChange.bind(this) } options={ positionOptions } />
+                  { this.state.errors.primary_position_id && ( <div className="error">{ this.state.errors.primary_position_id }</div> ) }
                 </div>
               </div>
 

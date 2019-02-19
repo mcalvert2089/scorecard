@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import { togglePageLoad } from '../../../js/actions/index'
 import axios from 'axios'
+import { validate } from '../form-elements/validation'
 
 const mapStateToProps = (state) => ({ user: state.user })
 
@@ -12,12 +13,13 @@ class TeamsAdd extends Component {
     super(props)
 
     this.state = { 
-      name: null,
-      manager: null,
-      city: null,
-      state: null,
+      name: '',
+      manager: '',
+      city: '',
+      state: '',
       user_id: props.user.id,
-      isHidden: true
+      isHidden: true,
+      errors: []
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -33,13 +35,25 @@ class TeamsAdd extends Component {
     this.isHidden = true
     const { name, manager, city, state, user_id } = this.state;
 
-    axios.post('/api/teams', { name, manager, city, state, user_id })
+    let valid = validate([ { 
+        name: 'Team Name',
+        field_name: 'name',
+        rules: 'required',
+        value: (this.state.name) ? this.state.name : ''
+      }
+    ])
+
+    this.setState({ errors: valid })
+
+    let self = this
+    if(Object.keys(valid).length === 0) {
+      const createTeam = axios.post('/api/teams', { name, manager, city, state, user_id })
       .then((result) => {
-        if(result.status === 200) {
-          this.toggleHidden()
-        }
-      })
-    this.isHidden = false
+          if(result.status === 200) {
+            self.setState({ isHidden: false })
+          }
+        })
+    }
   }
 
   componentDidMount() {
@@ -61,7 +75,7 @@ render() {
       <div className="container mx-auto">
         <h1>Create Team</h1>
         {! this.state.isHidden && <AddedAlert />}
-         <form className="w-full max-w-xs" onSubmit={this.handleSubmit}>
+         <form className="w-full" onSubmit={this.handleSubmit}>
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
               <label htmlFor="inline-name">
@@ -70,6 +84,7 @@ render() {
             </div>
             <div className="md:w-2/3">
               <input className="text-field" id="inline-name" type="text" name="name" onChange={this.handleChange}/>
+              { this.state.errors.name && ( <div className="error">{ this.state.errors.name }</div> ) }
             </div>
           </div>
 
