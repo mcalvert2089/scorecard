@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { togglePageLoad } from '../../js/actions/index'
-
+import { validate } from './form-elements/validation'
 
 class AccountReset extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			email: '',
+			errors: [],
 			passwordSent: false
 		}
 
@@ -30,18 +31,31 @@ class AccountReset extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
-		store.dispatch(togglePageLoad({ pageLoading: true }))
 		
-		const { email } = this.state
-		const self = this
-
-		axios.post('/password/email', { email: email })
-	    .then((result) => {
-	      if(result.status === 200) {
-      		self.setState({ passwordSent: true })
-      		store.dispatch(togglePageLoad({ pageLoading: false }))
+		
+		let valid = validate([ { 
+	        name: 'Email',
+	        field_name: 'email',
+	        rules: 'required|email',
+	        value: (this.state.email) ? this.state.email : ''
 	      }
-	    })
+	    ])
+
+		this.setState({ errors: valid })
+    
+    	if(Object.keys(valid).length === 0) {
+    		store.dispatch(togglePageLoad({ pageLoading: true }))
+			const { email } = this.state
+			const self = this
+
+			axios.post('/password/email', { email: email })
+		    .then((result) => {
+		      if(result.status === 200) {
+	      		self.setState({ passwordSent: true })
+	      		store.dispatch(togglePageLoad({ pageLoading: false }))
+		      }
+		    })
+		}
 	}
 
 	render() {
@@ -57,6 +71,8 @@ class AccountReset extends Component {
 								<form className="form-box" onSubmit={this.handleSubmit}>
 						    		<label>Enter Email Address</label>
 									<input className="text-field mb-3" type="text" name="email" onChange={this.handleChange} />
+				    				{ this.state.errors.email && ( <div className="error">{ this.state.errors.email }</div> ) }
+
 									<div className="flex items-center justify-between">
 						    			<input type="submit" className="dark-button" value="Submit" />
 						    		</div>

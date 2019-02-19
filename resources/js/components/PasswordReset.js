@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { togglePageLoad } from '../../js/actions/index'
 
-
 class PasswordReset extends Component {
 	constructor(props) {
 	    super(props)
