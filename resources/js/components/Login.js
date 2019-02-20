@@ -58,7 +58,7 @@ class Login extends Component {
 		return (
 			<div className="container">
 				<div id="login-box" className="mx-auto">
-				  <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={this.handleSubmit}>
+				  <form className="form-box" onSubmit={this.handleSubmit}>
 				    <div className="mb-4">
 				      <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="email">
 				        Email
@@ -75,8 +75,8 @@ class Login extends Component {
 				    	<input type="submit" className="dark-button" value="Sign In" />
 				    </div>
 				    <div className="flex items-center justify-between pt-4">
-						<Link to="/register" className="text-sm">Sign Up</Link>
-						<Link to="#" className="text-sm">Forgot Password?</Link>
+						<Link to="/register-new-account" className="text-sm">Sign Up</Link>
+						<Link to="/account-reset" className="text-sm">Can't Login?</Link>
 				    </div>
 				  </form>
 				</div>

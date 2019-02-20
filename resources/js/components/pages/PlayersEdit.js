@@ -30,7 +30,7 @@ const throwsOptions = [
     { value: 'L', label: 'Left' }
 ]
 
-class PlayersEdit extends React.Component {
+class PlayersEdit extends Component {
 	  constructor(props) {
 	    super(props)
 	    this.state = { 
@@ -79,7 +79,6 @@ class PlayersEdit extends React.Component {
 			  			primary_position_name: (result.data.position.abbreviation) ? result.data.position.abbreviation + ' - ' + result.data.position.name : '',
 			      		bats: (result.data.bats) ? result.data.bats : '',
 			      		throws: (result.data.throws) ? result.data.throws : ''
-			      		
 			      	})
 			    }
 			  }

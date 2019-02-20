@@ -21,11 +21,13 @@ class PlayerTest extends TestCase
     /** @test */
     public function user_can_retrieve_all_players()
     { 
-        $players = factory(Player::class, 10)->create();
+        $players = factory(Player::class, 10)->create([
+            'user_id' => $this->user->id
+        ]);
 
         $response = $this->actingAs($this->user, 'api')
             ->get('/api/players');
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $this->assertCount(10, $response->json());
     }
@@ -59,7 +61,7 @@ class PlayerTest extends TestCase
 
     	$response = $this->actingAs($this->user, 'api')
     		->post('/api/players', $data);
-    	$response->assertStatus(200);
+    	$response->assertStatus(201);
 
     	$this->assertDatabaseHas('players', $data);
     }

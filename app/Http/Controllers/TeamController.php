@@ -36,4 +36,14 @@ class TeamController extends Controller
     public function destroy($id) {
         $this->model->delete($id);
     }
+
+    public function getRoster($team_id) {
+        $team = new Team;
+        return $team->getRoster($team_id);
+    }
+
+    public function getScorecardRosters($scorecard_id) {
+        $team = new Team;
+        return $team->getScorecardRosters($scorecard_id);
+    }
 }

@@ -10,7 +10,7 @@ import Header from './Header'
 if(localStorage.getItem('access_token')) axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem('access_token')
 
 class App extends Component {
-  	componentDidMount() {
+  	componentWillMount() {
 		if(localStorage.getItem('access_token')) {
 			const getUserInfo = axios.get('/api/me')
 			    .then((result) => {

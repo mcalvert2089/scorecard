@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 //USERS
 Route::post('user-check-active', 'UserController@isActivated');
+Route::post('check-token/{token}/{email}', 'UserController@checkPasswordResetToken');
 
 Route::group([ 'prefix' => 'auth' ], function () {
     Route::post('login', 'AuthController@login');
@@ -34,6 +35,10 @@ Route::group([ 'middleware' => 'auth:api' ], function() {
     Route::resource('teams', 'TeamController');
     Route::resource('players', 'PlayerController');
     Route::resource('positions', 'PositionController');
+    Route::resource('scorecard', 'ScorecardController');
+    Route::resource('roster', 'ScorecardRosterController');
+    Route::get('team-rosters/{team_id}', 'TeamController@getRoster');
+    Route::get('scorecard-rosters/{scorecard_id}', 'TeamController@getScorecardRosters');
 });
 
 

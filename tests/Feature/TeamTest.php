@@ -1,6 +1,8 @@
 <?php
 namespace Tests\Feature;
 
+use App\Player;
+use App\Scorecard;
 use App\Team;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,13 +46,7 @@ class TeamTest extends TestCase
                  ->get('/api/teams/' . $team->id);
         $response->assertStatus(200);
 
-        $retrievedTeam = Team::first();
-
-        $this->assertEquals($team->name, $retrievedTeam->name);
-        $this->assertEquals($team->manager, $retrievedTeam->manager);
-        $this->assertEquals($team->city, $retrievedTeam->city);
-        $this->assertEquals($team->state, $retrievedTeam->state);
-        $this->assertEquals($team->user_id, $retrievedTeam->user_id);
+        $this->assertDatabaseHas('teams', $response->json());
     }
 
     /** @test */
@@ -106,5 +102,33 @@ class TeamTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('teams', $team->toArray());
+    }
+
+    /** @test */
+    public function user_can_retrieve_team_rosters_for_home_and_visiting()
+    {
+        $teams = factory(Team::class, 2)->create();
+        $team1Id = $teams[0]->id;
+        $team2Id = $teams[1]->id;
+
+        $scorecard = factory(Scorecard::class)->create([
+            'home_team_id' => $team1Id,
+            'visiting_team_id' => $team2Id
+        ]);
+
+        factory(Player::class, 9)->create([
+            'team_id' => $team1Id
+        ]);
+
+        factory(Player::class, 9)->create([
+            'team_id' => $team2Id
+        ]);
+
+        $response = $this->actingAs($this->user, 'api')
+            ->get("/api/scorecard-rosters/$scorecard->id");
+        $response->assertStatus(200);
+
+        $this->assertCount(9, $response->json('home_roster'));
+        $this->assertCount(9, $response->json('visiting_roster'));
     }
 }

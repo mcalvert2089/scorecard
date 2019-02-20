@@ -16,3 +16,7 @@ export const UPDATE_PLAYER_INFO = "UPDATE_PLAYER_INFO"
 // positions
 export const SAVE_PLAYER_POSITIONS = "SAVE_PLAYER_POSITIONS"
 
+// scorecards
+export const SAVE_SCORECARDS = "SAVE_SCORECARDS"
+
+

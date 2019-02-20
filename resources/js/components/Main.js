@@ -17,6 +17,12 @@ import PlayersAdd from './pages/PlayersAdd'
 import PlayersEdit from './pages/PlayersEdit'
 import NotFound from './NotFound'
 import Loading from './Loading'
+import AccountReset from './AccountReset'
+import PasswordReset from './PasswordReset'
+import HomeScorecard from './pages/scorecard/HomeScorecard'
+import Scorecard from './pages/scorecard/Scorecard'
+import CreateScorecard from './pages/scorecard/CreateScorecard'
+import CreateScorecardRosters from './pages/scorecard/CreateScorecardRosters'
 
 window.store = store
 
@@ -55,8 +61,10 @@ class Main extends Component {
                   <Route exact path='/' component={Home} />
 
                   <RedirectIfLoggedIn path="/login" component={Login} />
-                  <RedirectIfLoggedIn path="/register" component={Register} />
+                  <RedirectIfLoggedIn path="/register-new-account" component={Register} />
                   <RedirectIfLoggedIn path='/activate/:key' component={ActivateAccount} />
+                  <RedirectIfLoggedIn path='/account-reset' component={AccountReset} />
+                  <RedirectIfLoggedIn path='/password/reset/:token/:email' component={PasswordReset} />
 
                   { ! loggedIn && <Redirect to="/login" /> }
 
@@ -73,6 +81,11 @@ class Main extends Component {
                   <Route path='/players/add' component={PlayersAdd} />
                   <Route exact path='/players/edit/:id' component={PlayersEdit} />
 
+                  // Rosters
+                  <Route exact path='/scorecard' component={HomeScorecard} />
+                  <Route path='/scorecard/create' component={CreateScorecard} />
+                  <Route path='/scorecard/rosters/:id' component={CreateScorecardRosters} />
+                  <Route exact path='/scorecard/:id' component={Scorecard} />
                   // 404
                   <Route path="*" component={NotFound} />
                 </Switch>
