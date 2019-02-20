@@ -29,7 +29,7 @@ class ScorecardRosterController extends Controller
     	$data = $request->only($this->model->getModel()->fillable);
     
     	foreach($data as $d) {
-    		$d['user_id'] = auth()->user()->id;
+    		// $d['user_id'] = auth()->user()->id;
     		$this->model->create($d);
     	}
     }

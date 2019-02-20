@@ -112,7 +112,7 @@ class ScorecardTest extends TestCase
         }
 
         $response = $this->actingAs($this->user, 'api')
-             ->post('/api/roster/create', $data);
+             ->post('/api/roster', $data);
         $response->assertOk();
 
         $this->assertDatabaseHas('scorecard_rosters', $data[0]);

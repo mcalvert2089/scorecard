@@ -96,46 +96,84 @@ class CreateScorecardRosters extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
+
+		let payload = []
+		const { id, home_scorecard, visiting_scorecard } = this.state
+		home_scorecard.forEach(function(row, index){
+			let item = {}
+
+			item['scorecard_id'] = this.state.id
+			item['team_id'] = row.team_id
+			item['player_id'] = row.id
+			item['position'] = row.primary_position_id
+			item['batting_order'] = index + 1
+			item['position_order'] = 1
+
+			payload.push(item)
+		}.bind(this))
+
+		visiting_scorecard.forEach(function(row, index){
+			let item = {}
+
+			item['scorecard_id'] = this.state.id
+			item['team_id'] = row.team_id
+			item['player_id'] = row.id
+			item['position'] = row.primary_position_id
+			item['batting_order'] = index + 1
+			item['position_order'] = 1
+
+			payload.push(item)
+		}.bind(this))
+
+		axios.post('/api/roster', payload)
+	        .then((result) => {
+	          if(result.status === 201) {
+	            self.setState({ isHidden: false })
+	          }
+	        })
 	}
 
 	render() {
 		return (
 			<div>
-				<div className="md:flex md:items-center mb-6">
-					<div className="md:w-1/3">
-					  <label htmlFor="inline-home-roster">
-					    Add to Home Roster
-					  </label>
+				<form className="w-full" onSubmit={this.handleSubmit}>
+					<div className="md:flex md:items-center mb-6">
+						<div className="md:w-1/3">
+						  <label htmlFor="inline-home-roster">
+						    Add to Home Roster
+						  </label>
+						</div>
+						<div className="md:w-2/3">
+							<ScSelect name="home_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.home_dropdown } />
+				    	</div>
 					</div>
-					<div className="md:w-2/3">
-						<ScSelect name="home_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.home_dropdown } />
-			    	</div>
-				</div>
-				<div className="md:flex md:items-center mb-6">
-					{ this.state.home_scorecard.length === 0  && ( <span>No home roster yet.</span> ) }
-					{ this.state.home_scorecard.length > 0 &&  <Roster players={this.state.home_scorecard} />}
-				</div>
+					<div className="md:flex md:items-center mb-6">
+						{ this.state.home_scorecard.length === 0  && ( <span>No home roster yet.</span> ) }
+						{ this.state.home_scorecard.length > 0 &&  <Roster players={this.state.home_scorecard} />}
+					</div>
 
-				<div className="md:flex md:items-center mb-6">
-					<div className="md:w-1/3">
-					  <label htmlFor="inline-visiting-roster">
-					    Add to Visiting Roster
-					  </label>
+					<div className="md:flex md:items-center mb-6">
+						<div className="md:w-1/3">
+						  <label htmlFor="inline-visiting-roster">
+						    Add to Visiting Roster
+						  </label>
+						</div>
+						<div className="md:w-2/3">
+							<ScSelect name="visiting_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.visiting_dropdown } />
+				    	</div>
 					</div>
-					<div className="md:w-2/3">
-						<ScSelect name="visiting_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.visiting_dropdown } />
-			    	</div>
-				</div>
-				<div className="md:flex md:items-center mb-6">
-					{ this.state.visiting_scorecard.length === 0  && ( <span>No visiting roster yet.</span> ) }
-					{ this.state.visiting_scorecard.length > 0 &&  <Roster players={this.state.visiting_scorecard} />}
-				</div>
-				<div className="md:flex md:items-center">
-					<div className="md:w-1/3"></div>
-					<div className="md:w-2/3">
-						<input className="dark-button" type="submit" name="submit" value="Start Scoring!"/>
+
+					<div className="md:flex md:items-center mb-6">
+						{ this.state.visiting_scorecard.length === 0  && ( <span>No visiting roster yet.</span> ) }
+						{ this.state.visiting_scorecard.length > 0 &&  <Roster players={this.state.visiting_scorecard} />}
 					</div>
-				</div>
+					<div className="md:flex md:items-center">
+						<div className="md:w-1/3"></div>
+						<div className="md:w-2/3">
+							<input className="dark-button" type="submit" name="submit" value="Start Scoring!"/>
+						</div>
+					</div>
+				</form>
 			</div>
 		)
 	}
@@ -151,7 +189,7 @@ function Roster(players) {
 			    const { id, first_name, last_name, position } = data;
 			    return (
 			      <li key={id}>
-			      	{first_name} {last_name}
+			      	{first_name} {last_name} ({ position.abbreviation })
 			      </li>
 			    )
 			  })}			   
