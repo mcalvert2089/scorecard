@@ -127,8 +127,8 @@ class CreateScorecardRosters extends Component {
 
 		axios.post('/api/roster', payload)
 	        .then((result) => {
-	          if(result.status === 201) {
-	            self.setState({ isHidden: false })
+	          if(result.status === 200) {
+	            this.props.history.push('/scorecard/' + result.data.id)
 	          }
 	        })
 	}

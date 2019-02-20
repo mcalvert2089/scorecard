@@ -27,11 +27,14 @@ class ScorecardRosterController extends Controller
 
     public function store(Request $request) {
     	$data = $request->only($this->model->getModel()->fillable);
+        $scorecardId = (isset($data[0]) && isset($data[0]['scorecard_id'])) ? $data[0]['scorecard_id'] : '';
     
     	foreach($data as $d) {
     		// $d['user_id'] = auth()->user()->id;
     		$this->model->create($d);
     	}
+
+        return [ 'id' => $scorecardId ];
     }
 
     public function update(Request $request, $id) {
