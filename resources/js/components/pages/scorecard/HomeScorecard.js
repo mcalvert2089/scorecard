@@ -62,6 +62,7 @@ function Scorecards(scorecards) {
 						<th>Start Time</th>
 						<th>Home Team</th>
 						<th>Visiting Team</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -73,6 +74,7 @@ function Scorecards(scorecards) {
 				        <td>{start_time}</td>
 				        <td>{home_team.name}</td>
 				        <td>{visiting_team.name}</td>
+				        <td><Link to={'/scorecard/rosters/' + id}>Open</Link></td>
 				      </tr>
 				    )
 				  })}			   

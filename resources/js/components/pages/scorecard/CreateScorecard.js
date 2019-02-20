@@ -98,8 +98,8 @@ class CreateScorecard extends Component {
 
 		if(Object.keys(valid).length === 0) {
 			const { home_team_id, visiting_team_id, game_date, start_time_hour, start_time_minutes, start_time_meridian } = this.state
-			let start_time = start_time_hour + ':' + start_time_minutes + ' ' + start_time_meridian
-			
+			let start_time = (start_time_hour && start_time_minutes && start_time_meridian) ? start_time_hour + ':' + start_time_minutes + ' ' + start_time_meridian : ''
+
 			axios.post('/api/scorecard', { home_team_id, visiting_team_id, game_date, start_time })
 		      .then((result) => {
 		        if(result.status === 201) {

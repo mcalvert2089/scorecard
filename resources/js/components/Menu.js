@@ -23,7 +23,7 @@ class Menu extends Component {
             <Link to="/players" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Players</Link>
           </h2>
           <h2>
-            <Link to="/scorecard/create" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Scorecards</Link>
+            <Link to="/scorecard" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Scorecards</Link>
           </h2>
           <h2>
             <Link to="/logout" className="block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4">Logout</Link>
