@@ -4707,6 +4707,21 @@ header {
   margin-bottom: 2rem;
 }
 
+.error {
+  background-color: #fcebea;
+  border-width: 1px;
+  border-color: #ef5753;
+  color: #cc1f1a;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  border-radius: .25rem;
+  position: relative;
+  margin-top: .75rem;
+  margin-left: .75rem;
+}
+
 .card {
   border-radius: .25rem;
   overflow: hidden;
