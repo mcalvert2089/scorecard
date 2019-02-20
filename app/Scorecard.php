@@ -20,4 +20,16 @@ class Scorecard extends Model
     public function visiting_team() {
     	return $this->hasOne('App\Team', 'id', 'visiting_team_id');
     }
+
+    public function home_team_roster() {
+    	return $this->hasMany('App\Player', 'team_id', 'home_team_id');
+    }
+
+    public function visiting_team_roster() {
+    	return $this->hasMany('App\Player', 'team_id', 'visiting_team_id');
+    }
+
+    public function scorecard_roster() {
+    	return $this->hasMany('App\ScorecardRoster', 'scorecard_id', 'id');
+    }
 }

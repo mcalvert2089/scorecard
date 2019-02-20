@@ -48,6 +48,8 @@ class CreateScorecardRosters extends Component {
 								    this.setState({ 
 								    	home_roster: result.data.home_roster,
 								    	visiting_roster: result.data.visiting_roster,
+								    	home_scorecard: result.data.home_scorecard_roster,
+								    	visiting_scorecard: result.data.visiting_scorecard_roster,
 								    	home_dropdown: home_dropdown, 
 								    	visiting_dropdown: visiting_dropdown 
 								    })
