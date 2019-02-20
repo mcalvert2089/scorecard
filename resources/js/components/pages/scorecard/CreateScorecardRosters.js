@@ -31,6 +31,7 @@ class CreateScorecardRosters extends Component {
 
 	    this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.saveScorecardRoster = this.saveScorecardRoster.bind(this)
 	  }
 
 	componentDidMount() {
@@ -62,6 +63,7 @@ class CreateScorecardRosters extends Component {
 	}
 
 	componentWillUnmount() {
+		this.saveScorecardRoster(false)
 		this.state.isLoading = false
 		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
@@ -98,7 +100,10 @@ class CreateScorecardRosters extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault()
+		this.saveScorecardRoster(true)
+	}
 
+	saveScorecardRoster(redirect) {
 		let payload = []
 		const { id, home_scorecard, visiting_scorecard } = this.state
 		home_scorecard.forEach(function(row, index){
@@ -130,7 +135,7 @@ class CreateScorecardRosters extends Component {
 		axios.post('/api/roster', payload)
 	        .then((result) => {
 	          if(result.status === 200) {
-	            this.props.history.push('/scorecard/' + result.data.id)
+	            if(redirect) this.props.history.push('/scorecard/' + result.data.id)
 	          }
 	        })
 	}
