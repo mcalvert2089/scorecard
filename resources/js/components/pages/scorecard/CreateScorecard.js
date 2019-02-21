@@ -103,7 +103,6 @@ class CreateScorecard extends Component {
 			axios.post('/api/scorecard', { home_team_id, visiting_team_id, game_date, start_time })
 		      .then((result) => {
 		        if(result.status === 201) {
-		        	console.log(this.state.scorecard_id)
 	    			this.props.history.push('/scorecard/rosters/' + result.data.id)
 		        }
 		      })
@@ -112,7 +111,7 @@ class CreateScorecard extends Component {
 
   render() {
 	const teamOptions = this.props.teams.map(function(row){
-		return { value: row.id, label: row.name_display_long}
+		return { value: row.mlb_org_id, label: row.name_display_long}
 	})
 
 	const meridianOptions = [

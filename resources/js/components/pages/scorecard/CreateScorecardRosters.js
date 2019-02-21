@@ -39,11 +39,11 @@ class CreateScorecardRosters extends Component {
 							.then((result) => {
 								if(result.status === 200) {
 									let home_dropdown = result.data.home_roster.map(function(row) {
-															return { value: row.id, label: row.position.abbreviation + ' - ' + row.last_name +', ' + row.first_name }
+															return { value: row.id, label: row.name_last +', ' + row.name_use + ' - ' + row.position_txt }
 														})
 
 									let visiting_dropdown = result.data.visiting_roster.map(function(row){
-															return { value: row.id, label: row.position.abbreviation + ' - ' + row.last_name +', ' + row.first_name }
+															return { value: row.id, label: row.name_last +', ' + row.name_use  + ' - ' + row.position_txt }
 														})
 
 								    this.setState({ 
@@ -63,7 +63,7 @@ class CreateScorecardRosters extends Component {
 	}
 
 	componentWillUnmount() {
-		this.saveScorecardRoster(false)
+		// this.saveScorecardRoster(false)
 		this.state.isLoading = false
 		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
@@ -104,19 +104,21 @@ class CreateScorecardRosters extends Component {
 	}
 
 	saveScorecardRoster(redirect) {
+		let home = []
+		let visiting = []
 		let payload = []
+
 		const { id, home_scorecard, visiting_scorecard } = this.state
 		home_scorecard.forEach(function(row, index){
 			let item = {}
 
 			item['scorecard_id'] = this.state.id
 			item['team_id'] = row.team_id
-			item['player_id'] = row.id
-			item['position'] = row.primary_position_id
+			item['player_id'] = row.player_id
+			item['position'] = row.primary_position
 			item['batting_order'] = index + 1
-			item['position_order'] = 1
 
-			payload.push(item)
+			home.push(item)
 		}.bind(this))
 
 		visiting_scorecard.forEach(function(row, index){
@@ -124,15 +126,14 @@ class CreateScorecardRosters extends Component {
 
 			item['scorecard_id'] = this.state.id
 			item['team_id'] = row.team_id
-			item['player_id'] = row.id
-			item['position'] = row.primary_position_id
+			item['player_id'] = row.player_id
+			item['position'] = row.primary_position
 			item['batting_order'] = index + 1
-			item['position_order'] = 1
 
-			payload.push(item)
+			visiting.push(item)
 		}.bind(this))
 
-		axios.post('/api/roster', payload)
+		axios.post('/api/roster', { scorecard_id: this.state.id, scorecard_roster_home: home, scorecard_roster_visiting: visiting })
 	        .then((result) => {
 	          if(result.status === 200) {
 	            if(redirect) this.props.history.push('/scorecard/' + result.data.id)
@@ -193,10 +194,10 @@ function Roster(players) {
 		return (
 			<ol>
 				{ players.players.map(data => {
-			    const { id, first_name, last_name, position } = data;
+			    const { id, name_use, name_last, position_txt } = data;
 			    return (
 			      <li key={id}>
-			      	{first_name} {last_name} ({ position.abbreviation })
+			      	{name_use} {name_last} ({ position_txt })
 			      </li>
 			    )
 			  })}			   

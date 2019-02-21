@@ -75,8 +75,8 @@ function Scorecards(scorecards) {
 				        <td>{start_time}</td>
 				        <td>{home_team.name}</td>
 				        <td>{visiting_team.name}</td>
-				        <td><Link to={'/scorecard/rosters/' + id}><i class="fas fa-eye"></i></Link></td>
-				        <td><i class="far fa-edit"></i></td>
+				        <td><Link to={'/scorecard/rosters/' + id}><i className="fas fa-eye"></i></Link></td>
+				        <td><i className="far fa-edit"></i></td>
 				      </tr>
 				    )
 				  })}			   
