@@ -112,11 +112,7 @@ class CreateScorecard extends Component {
 
   render() {
 	const teamOptions = this.props.teams.map(function(row){
-		return { value: row.id, label: row.city + ' ' + row.name}
-	})
-
-	const positionOptions = this.props.positions.map(function(row){
-		return { value: row.id, label: row.abbreviation + ' - ' + row.name}
+		return { value: row.id, label: row.name_display_long}
 	})
 
 	const meridianOptions = [

@@ -63,6 +63,7 @@ function Scorecards(scorecards) {
 						<th>Home Team</th>
 						<th>Visiting Team</th>
 						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -74,7 +75,8 @@ function Scorecards(scorecards) {
 				        <td>{start_time}</td>
 				        <td>{home_team.name}</td>
 				        <td>{visiting_team.name}</td>
-				        <td><Link to={'/scorecard/rosters/' + id}>Open</Link></td>
+				        <td><Link to={'/scorecard/rosters/' + id}><i class="fas fa-eye"></i></Link></td>
+				        <td><i class="far fa-edit"></i></td>
 				      </tr>
 				    )
 				  })}			   

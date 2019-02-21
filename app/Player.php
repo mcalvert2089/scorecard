@@ -13,7 +13,7 @@ class Player extends Model
     
     public $incrementing = false;
 
-    protected $fillable = [ 'first_name', 'last_name', 'team_id', 'user_id', 'primary_position_id', 'bats', 'throws' ];
+    protected $guarded = [];
 
     public function position() {
     	return $this->hasOne('App\Position', 'id', 'primary_position_id');

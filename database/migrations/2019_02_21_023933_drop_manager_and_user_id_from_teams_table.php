@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnPrimaryPositionIdToPlayersTable extends Migration
+class DropManagerAndUserIdFromTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColumnPrimaryPositionIdToPlayersTable extends Migration
      */
     public function up()
     {
-        Schema::table('players', function (Blueprint $table) {
-            $table->uuid('primary_position_id')->after('user_id');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->dropColumn('manager');
+            $table->dropColumn('user_id');
         });
     }
 
@@ -25,8 +26,9 @@ class AddColumnPrimaryPositionIdToPlayersTable extends Migration
      */
     public function down()
     {
-        Schema::table('players', function (Blueprint $table) {
-            $table->dropColumn('primary_position_id');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->string('manager')->nullable();
+            $table->uuid('user_id')->nullable();
         });
     }
 }
