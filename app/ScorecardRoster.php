@@ -27,7 +27,7 @@ class ScorecardRoster extends Model
             $data['position'] = $r['position'];
             $data['batting_order'] = $r['batting_order'];  
 
-            $this->create($data);
+            $this->updateOrCreate($data, [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id']]);
         }
 
         foreach($request->scorecard_roster_visiting as $r) {
@@ -36,10 +36,11 @@ class ScorecardRoster extends Model
             $data['position'] = $r['position'];
             $data['batting_order'] = $r['batting_order'];  
 
-            $this->create($data);
+            $this->updateOrCreate($data, [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id']]);
         }
 
-        return [ 'id' => $scorecardId ];
+        $scorecard = new Scorecard;
+        $scorecard->where('id', $scorecardId)->update([ 'active' => $request->active ]);
     }
 
     /*** OLD FUNCTIONS ***/

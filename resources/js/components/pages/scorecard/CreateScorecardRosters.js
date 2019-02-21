@@ -26,11 +26,13 @@ class CreateScorecardRosters extends Component {
 			visiting_scorecard: [],
 			home_dropdown: [],
 			visiting_dropdown: [],
+			active: 0,
 			isHidden: true
 	    }
 
 	    this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleSaveRoster = this.handleSaveRoster.bind(this)
 		this.saveScorecardRoster = this.saveScorecardRoster.bind(this)
 	  }
 
@@ -63,7 +65,6 @@ class CreateScorecardRosters extends Component {
 	}
 
 	componentWillUnmount() {
-		// this.saveScorecardRoster(false)
 		this.state.isLoading = false
 		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
@@ -98,9 +99,15 @@ class CreateScorecardRosters extends Component {
 		this.setState({ game_date: date })
 	}
 
-	handleSubmit(event) {
+	async handleSubmit(event) {
 		event.preventDefault()
+		await this.setState({ active: 1 })
 		this.saveScorecardRoster(true)
+	}
+
+	handleSaveRoster(event) {
+		event.preventDefault()
+		this.saveScorecardRoster(false)
 	}
 
 	saveScorecardRoster(redirect) {
@@ -108,7 +115,7 @@ class CreateScorecardRosters extends Component {
 		let visiting = []
 		let payload = []
 
-		const { id, home_scorecard, visiting_scorecard } = this.state
+		const { id, home_scorecard, visiting_scorecard, active } = this.state
 		home_scorecard.forEach(function(row, index){
 			let item = {}
 
@@ -133,10 +140,10 @@ class CreateScorecardRosters extends Component {
 			visiting.push(item)
 		}.bind(this))
 
-		axios.post('/api/roster', { scorecard_id: this.state.id, scorecard_roster_home: home, scorecard_roster_visiting: visiting })
+		axios.post('/api/roster', { scorecard_id: this.state.id, active: active, scorecard_roster_home: home, scorecard_roster_visiting: visiting })
 	        .then((result) => {
 	          if(result.status === 200) {
-	            if(redirect) this.props.history.push('/scorecard/' + result.data.id)
+	            if(redirect) this.props.history.push('/scorecard/' + this.state.id)
 	          }
 	        })
 	}
@@ -178,7 +185,8 @@ class CreateScorecardRosters extends Component {
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>
 						<div className="md:w-2/3">
-							<input className="dark-button" type="submit" name="submit" value="Start Scoring!"/>
+							<input className="light-button mr-3" type="submit" name="submit" value="Save Roster" onClick={this.handleSaveRoster.bind(this)} />
+							<input className="dark-button" type="submit" name="submit" value="Start Scoring!" />
 						</div>
 					</div>
 				</form>

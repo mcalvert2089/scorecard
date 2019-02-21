@@ -82,6 +82,13 @@ header {
 	@apply .bg-grey .text-white .cursor-pointer .no-underline;
 }
 
+.light-button {
+	@apply .bg-transparent .text-green-darker .font-bold .border .border-green-darker .py-2 .px-4 .rounded;
+}
+
+.light-button:hover {
+	@apply .bg-grey .text-white .cursor-pointer .no-underline;
+}
 table th {
 	padding:6px;
 	background:#ccc;
