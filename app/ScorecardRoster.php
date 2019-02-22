@@ -17,32 +17,6 @@ class ScorecardRoster extends Model
     	return $this->hasOne('App\Scorecard', 'id', 'scorecard_id');
     } 
 
-    public function store($request) {
-        $scorecardId = $request->scorecard_id;
-
-        foreach($request->scorecard_roster_home as $r) {
-            $data['scorecard_id'] = $scorecardId;
-            $data['team_id'] = $r['team_id'];
-            $data['player_id'] = $r['player_id'];
-            $data['position'] = $r['position'];
-            $data['batting_order'] = $r['batting_order'];  
-
-            $this->updateOrCreate($data, [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id']]);
-        }
-
-        foreach($request->scorecard_roster_visiting as $r) {
-            $data['scorecard_id'] = $scorecardId;
-            $data['player_id'] = $r['player_id'];
-            $data['position'] = $r['position'];
-            $data['batting_order'] = $r['batting_order'];  
-
-            $this->updateOrCreate($data, [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id']]);
-        }
-
-        $scorecard = new Scorecard;
-        $scorecard->where('id', $scorecardId)->update([ 'active' => $request->active ]);
-    }
-
     /*** OLD FUNCTIONS ***/
     public function getRosters($scorecard_id) {
         $records = $this->with('scorecard:id,home_team_id,visiting_team_id')

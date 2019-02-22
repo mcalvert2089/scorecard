@@ -101,7 +101,12 @@ class ScorecardTest extends TestCase
 
             $visiting[] = $player;
         }
-        $data = [ 'scorecard_id' => $scorecard->id, 'scorecard_roster_home' => $home, 'scorecard_roster_visiting' => $visiting ];
+        $data = [ 
+                    'scorecard_id' => $scorecard->id, 
+                    'active' => 1, 
+                    'scorecard_roster_home' => $home, 
+                    'scorecard_roster_visiting' => $visiting 
+                ];
 
         $response = $this->actingAs($this->user, 'api')
              ->post('/api/roster', $data);
