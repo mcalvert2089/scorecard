@@ -13,75 +13,73 @@ class PositionSeeder extends Seeder
     public function run()
     {
     	Position::create([
-    		'name' => 'Starting Pitcher',
-    		'abbreviation' => 'SP',
-    		'pos_number' => 1
+    		'name' => 'Pitcher',
+    		'position_txt' => 'P',
+    		'position_id' => 1,
+            'position_order' => 10
     	]);
-
-        Position::create([
-            'name' => 'Relief Pitcher',
-            'abbreviation' => 'RP',
-            'pos_number' => 1
-        ]);
-
-        Position::create([
-            'name' => 'Closer',
-            'abbreviation' => 'CL',
-            'pos_number' => 1
-        ]);
 
     	Position::create([
     		'name' => 'Catcher',
-    		'abbreviation' => 'C',
-    		'pos_number' => 2
+    		'position_txt' => 'C',
+    		'position_id' => 2,
+            'position_order' => 1
     	]);
 
     	Position::create([
     		'name' => 'First Base',
-    		'abbreviation' => '1B',
-    		'pos_number' => 3
+    		'position_txt' => '1B',
+    		'position_id' => 3,
+            'position_order' => 2
     	]);
 
     	Position::create([
     		'name' => 'Second Base',
-    		'abbreviation' => '2B',
-    		'pos_number' => 4
+    		'position_txt' => '2B',
+    		'position_id' => 4,
+            'position_order' => 3
     	]);
 
     	Position::create([
     		'name' => 'Third Base',
-    		'abbreviation' => '3B',
-    		'pos_number' => 5
+    		'position_txt' => '3B',
+    		'position_id' => 5,
+            'position_order' => 4
     	]);
 
     	Position::create([
     		'name' => 'Shortstop',
-    		'abbreviation' => 'SS',
-    		'pos_number' => 6
+    		'position_txt' => 'SS',
+    		'position_id' => 6,
+            'position_order' => 5
     	]);
 
     	Position::create([
     		'name' => 'Left Field',
-    		'abbreviation' => 'LF',
-    		'pos_number' => 7
+    		'position_txt' => 'LF',
+    		'position_id' => 7,
+            'position_order' => 6
     	]);
 
     	Position::create([
     		'name' => 'Center Field',
-    		'abbreviation' => 'CF',
-    		'pos_number' => 8
+    		'position_txt' => 'CF',
+    		'position_id' => 8,
+            'position_order' => 7
     	]);
 
     	Position::create([
     		'name' => 'Right Field',
-    		'abbreviation' => 'RF',
-    		'pos_number' => 9
+    		'position_txt' => 'RF',
+    		'position_id' => 9,
+            'position_order' => 8
     	]);
 
         Position::create([
             'name' => 'Designated Hitter',
-            'abbreviation' => 'DH',
-            'pos_number' => 0
+            'position_txt' => 'DH',
+            'position_id' => 'D',
+            'position_order' => 9
         ]);
     }
 }

@@ -2,28 +2,38 @@
 
 use App\Scorecard;
 use App\ScorecardRoster;
+use DB;
 
 class ScorecardRosterRepository {
 	 public function store($request) {
         $scorecardId = $request->scorecard_id;
 
         foreach($request->scorecard_roster_home as $r) {
-            $data['scorecard_id'] = $scorecardId;
-            $data['team_id'] = $r['team_id'];
-            $data['player_id'] = $r['player_id'];
-            $data['position'] = $r['position'];
-            $data['batting_order'] = $r['batting_order'];  
-
-            ScorecardRoster::updateOrCreate($data, [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id']]);
+            DB::enableQueryLog();
+            ScorecardRoster::updateOrCreate(
+                [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id'] ],
+                [
+                    'scorecard_id' => $scorecardId,
+                    'team_id' => $r['team_id'],
+                    'player_id' => $r['player_id'],
+                    'position' => $r['position'],
+                    'batting_order' => $r['batting_order'] 
+                ]
+            );
+            dump(DB::getQueryLog());
         }
 
         foreach($request->scorecard_roster_visiting as $r) {
-            $data['scorecard_id'] = $scorecardId;
-            $data['player_id'] = $r['player_id'];
-            $data['position'] = $r['position'];
-            $data['batting_order'] = $r['batting_order'];  
-
-            ScorecardRoster::updateOrCreate($data, [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id']]);
+            ScorecardRoster::updateOrCreate(
+                [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id'] ],
+                [
+                    'scorecard_id' => $scorecardId,
+                    'team_id' => $r['team_id'],
+                    'player_id' => $r['player_id'],
+                    'position' => $r['position'],
+                    'batting_order' => $r['batting_order'] 
+                ]
+            );
         }
 
         $scorecard = new Scorecard;
