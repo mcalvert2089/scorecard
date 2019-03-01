@@ -31,7 +31,9 @@ class CreateScorecardRosters extends Component {
 			visiting_starting_pitcher: [],
 			home_dropdown: [],
 			visiting_dropdown: [],
-			positions_dropdown: [],
+			positions_dropdown: [],			
+			home_pitchers_dropdown: [],
+			visiting_pitchers_dropdown: [],
 			active: 0,
 			isHidden: true
 	    }
@@ -40,6 +42,7 @@ class CreateScorecardRosters extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleSaveRoster = this.handleSaveRoster.bind(this)
 		this.saveScorecardRoster = this.saveScorecardRoster.bind(this)
+		this.handlePitcherChange = this.handlePitcherChange.bind(this)
 	  }
 
 	componentDidMount() {
@@ -62,13 +65,25 @@ class CreateScorecardRosters extends Component {
 							return this.convertPlayerDataForScorecard(row, index)
 						}.bind(this))
 
+						const home_pitchers_dropdown = result.data.home_roster.map(function (row, index) {
+							return (row.primary_position === '1') ? { value: row.player_id, label: row.name_last +', ' + row.name_use } : null
+						}.bind(this)).filter(row => row)
+
+						const visiting_pitchers_dropdown = result.data.visiting_roster.map(function (row, index) {
+							return (row.primary_position === '1') ? { value: row.player_id, label: row.name_last +', ' + row.name_use } : null
+						}.bind(this)).filter(row => row)
+
 					    this.setState({ 
 					    	home_roster: result.data.home_roster,
 					    	visiting_roster: result.data.visiting_roster,
 					    	home_scorecard: home_scorecard_roster,
 					    	visiting_scorecard: visiting_scorecard_roster,
 					    	home_dropdown: home_dropdown, 
-					    	visiting_dropdown: visiting_dropdown 
+					    	visiting_dropdown: visiting_dropdown,
+					    	home_pitchers_dropdown: home_pitchers_dropdown,
+					    	visiting_pitchers_dropdown: visiting_pitchers_dropdown,
+					    	home_starting_pitcher: (typeof result.data.home_pitchers[0] != 'undefined') ? result.data.home_pitchers[0] : [],
+					    	visiting_starting_pitcher: (typeof result.data.visiting_pitchers[0] != 'undefined') ? result.data.visiting_pitchers[0] : []
 					    })
 					}
 				})
@@ -94,7 +109,7 @@ class CreateScorecardRosters extends Component {
 		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
-	handleChange(e, type){
+	handleChange(e) {
 		const roster = (e.target.name === 'home_scorecard') ? this.state.home_roster : this.state.visiting_roster
 		const index = roster.findIndex(row => row.id === e.target.value)
 		let player = { id: roster[index].id, player_info: roster[index] }
@@ -120,6 +135,16 @@ class CreateScorecardRosters extends Component {
 		    })
 		}
 	}
+
+	handlePitcherChange(e) {
+		const roster = (e.target.name === 'home_starting_pitcher') ? this.state.home_roster.slice() : this.state.visiting_roster.slice()
+		const index = roster.findIndex(row => row.id === e.target.value)
+		let pitcher = (typeof roster[index] !== 'undefined') ? roster[index] : []
+
+		if(e.target.name === 'home_starting_pitcher') this.setState({ home_starting_pitcher: pitcher })
+		if(e.target.name === 'visiting_starting_pitcher') this.setState({ visiting_starting_pitcher: pitcher })
+	}
+
 
 	updateRosterPosition(player_id, event) {
 		let homeIndex = this.state.home_scorecard.findIndex(row => row.player_id === player_id)
@@ -152,9 +177,16 @@ class CreateScorecardRosters extends Component {
 	saveScorecardRoster(redirect) {
 		document.getElementById("overlay").style.display = "block";
   
-		const { id, home_scorecard, visiting_scorecard, active } = this.state
+		const { id, home_scorecard, visiting_scorecard, home_starting_pitcher, visiting_starting_pitcher,  active } = this.state
 
-		axios.post('/api/roster', { scorecard_id: this.state.id, active: active, scorecard_roster_home: home_scorecard, scorecard_roster_visiting: visiting_scorecard })
+		axios.post('/api/roster', { 
+					scorecard_id: this.state.id, 
+					active: active, 
+					scorecard_roster_home: home_scorecard, 
+					scorecard_roster_visiting: visiting_scorecard,
+					home_starting_pitcher: home_starting_pitcher,
+					visiting_starting_pitcher: visiting_starting_pitcher 
+				})
 	        .then((result) => {
 	          if(result.status === 200) {
 	          	document.getElementById("overlay").style.display = "none";
@@ -180,36 +212,58 @@ class CreateScorecardRosters extends Component {
 		return (
 			<div>
 				<form className="w-full" onSubmit={this.handleSubmit}>
-					<div className="md:flex md:items-center mb-6">
-						<div className="md:w-1/3">
-						  <label htmlFor="inline-home-roster">
-						    Add to Home Roster
-						  </label>
-						</div>
-						<div className="md:w-2/3">
-							<ScSelect name="home_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.home_dropdown } />
-				    	</div>
-					</div>
-					<div className="md:flex md:items-center mb-6">
-						{ this.state.home_scorecard.length === 0  && ( <span>No home roster yet.</span> ) }
-						{ this.state.home_scorecard.length > 0 &&  <Roster players={ this.state.home_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) } />}
-					</div>
-
+					<h2>Home Team</h2>
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
 						  <label htmlFor="inline-visiting-roster">
-						    Add to Visiting Roster
+						    Starting Pitcher
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="visiting_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.visiting_dropdown } />
+							<ScSelect name="home_starting_pitcher" value={ this.state.home_starting_pitcher.player_id } onChange={ this.handlePitcherChange.bind(this) } options={ this.state.home_pitchers_dropdown } />
 				    	</div>
 					</div>
+					<div className="md:flex md:items-center mb-6">
+						<div className="md:w-1/3">
+						  <label htmlFor="inline-home-roster">
+						    Add to Roster
+						  </label>
+						</div>
+						<div className="md:w-2/3">
+							<ScSelect name="home_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.home_dropdown } disabled={ this.state.home_scorecard.length === 9 } />
+				    	</div>
+					</div>
+					<div className="md:flex md:items-center mb-6">
+						{ this.state.home_scorecard.length > 0 &&  <Roster players={ this.state.home_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) } />}
+					</div>
+					<h2>Visiting Team</h2>
+					<div className="md:flex md:items-center mb-6">
+						<div className="md:w-1/3">
+						  <label htmlFor="inline-visiting-roster">
+						    Starting Pitcher
+						  </label>
+						</div>
+						<div className="md:w-2/3">
+							<ScSelect name="visiting_starting_pitcher" value={ this.state.visiting_starting_pitcher.player_id } onChange={ this.handlePitcherChange.bind(this) } options={ this.state.visiting_pitchers_dropdown } />
+				    	</div>
+					</div>
+					<div className="md:flex md:items-center mb-6">
+						<div className="md:w-1/3">
+						  <label htmlFor="inline-visiting-roster">
+						    Add to Roster
+						  </label>
+						</div>
+						<div className="md:w-2/3">
+							<ScSelect name="visiting_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.visiting_dropdown }  disabled={ this.state.visiting_scorecard.length === 9 } />
+				    	</div>
+					</div>
+					
 
 					<div className="md:flex md:items-center mb-6">
-						{ this.state.visiting_scorecard.length === 0  && ( <span>No visiting roster yet.</span> ) }
 						{ this.state.visiting_scorecard.length > 0 &&  <Roster players={ this.state.visiting_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) }  />}
 					</div>
+
+					
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>
 						<div className="md:w-2/3">
@@ -219,9 +273,7 @@ class CreateScorecardRosters extends Component {
 					</div>
 				</form>
 				<div id="overlay">
-					<div id="text">
-						Saving
-						<br/>
+					<div id="overlay-saving">
 						<Loading />
 					</div>
 				</div>

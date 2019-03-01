@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateScorecardsTable extends Migration
+class CreateScorecardPitchersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateScorecardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('scorecards', function (Blueprint $table) {
+        Schema::create('scorecard_pitchers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('home_team_id');
-            $table->integer('visiting_team_id');
-            $table->date('game_date');
-            $table->char('start_time', 8)->nullable();
-            $table->char('end_time', 8)->nullable();
+            $table->uuid('scorecard_id');
+            $table->integer('player_id');
+            $table->integer('team_id');
+            $table->integer('scorecard_order');
+            $table->integer('decision')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +32,6 @@ class CreateScorecardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scorecards');
+        Schema::dropIfExists('scorecard_pitchers');
     }
 }

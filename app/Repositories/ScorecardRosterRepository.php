@@ -1,13 +1,13 @@
 <?php namespace App\Repositories;
 
 use App\Scorecard;
+use App\ScorecardPitcher;
 use App\ScorecardRoster;
 use DB;
 
 class ScorecardRosterRepository {
 	 public function store($request) {
         $scorecardId = $request->scorecard_id;
-        dump($request->scorecard_roster_home);
 
         foreach($request->scorecard_roster_home as $r) {
             ScorecardRoster::updateOrCreate(
@@ -33,6 +33,20 @@ class ScorecardRosterRepository {
                     'batting_order' => $r['batting_order'] 
                 ]
             );
+        }
+
+        if($request->home_starting_pitcher && $request->home_starting_pitcher['player_id']) {
+            ScorecardPitcher::updateOrCreate(
+                [ 'scorecard_id' => $scorecardId, 'team_id' => $request->home_starting_pitcher['team_id'] ],
+                [ 'player_id' => $request->home_starting_pitcher['player_id'], 'scorecard_order' => 1 ]
+            );
+        }
+
+        if($request->visiting_starting_pitcher && $request->visiting_starting_pitcher['player_id']) {
+            ScorecardPitcher::updateOrCreate(
+                [ 'scorecard_id' => $scorecardId, 'team_id' => $request->visiting_starting_pitcher['team_id'] ],
+                [ 'player_id' => $request->visiting_starting_pitcher['player_id'], 'scorecard_order' => 1 ]
+            );   
         }
 
         $scorecard = new Scorecard;

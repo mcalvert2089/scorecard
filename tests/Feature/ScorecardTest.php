@@ -84,6 +84,14 @@ class ScorecardTest extends TestCase
         $homePlayers = Player::whereTeamId($homeTeamId)->limit(9)->get();
         $visitingPlayers = Player::whereTeamId($visitingTeamId)->limit(9)->get();
 
+        $startingPitcherHome = Player::whereTeamId($homeTeamId)
+                                    ->wherePrimaryPosition('1')
+                                    ->first();
+
+        $startingPitcherVisiting = Player::whereTeamId($visitingTeamId)
+                                    ->wherePrimaryPosition('1')
+                                    ->first();
+
         foreach($homePlayers as $key => $p) {
             $player['scorecard_id'] = $scorecard->id;
             $player['team_id'] = $p->team_id;
@@ -103,11 +111,14 @@ class ScorecardTest extends TestCase
 
             $visiting[] = $player;
         }
+
         $data = [ 
                     'scorecard_id' => $scorecard->id, 
                     'active' => 1, 
                     'scorecard_roster_home' => $home, 
-                    'scorecard_roster_visiting' => $visiting 
+                    'scorecard_roster_visiting' => $visiting,
+                    'starting_pitcher_home' => $startingPitcherHome,
+                    'starting_pitcher_visiting' => $startingPitcherVisiting
                 ];
 
         $response = $this->actingAs($this->user, 'api')
@@ -117,5 +128,18 @@ class ScorecardTest extends TestCase
         $roster = ScorecardRoster::get();
 
         $this->assertNotNull($roster);
+        $this->assertDatabaseHas('scorecard_pitchers', [
+            'scorecard_id' => $scorecard->id,
+            'player_id' => $startingPitcherHome->player_id,
+            'team_id' => $startingPitcherHome->team_id,
+            'scorecard_order' => 1
+          ]);
+
+        $this->assertDatabaseHas('scorecard_pitchers', [
+            'scorecard_id' => $scorecard->id,
+            'player_id' => $startingPitcherVisiting->player_id,
+            'team_id' => $startingPitcherVisiting->team_id,
+            'scorecard_order' => 1
+        ]);
     }
 }
