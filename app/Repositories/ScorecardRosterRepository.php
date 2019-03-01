@@ -7,9 +7,9 @@ use DB;
 class ScorecardRosterRepository {
 	 public function store($request) {
         $scorecardId = $request->scorecard_id;
+        dump($request->scorecard_roster_home);
 
         foreach($request->scorecard_roster_home as $r) {
-            DB::enableQueryLog();
             ScorecardRoster::updateOrCreate(
                 [ 'scorecard_id' => $scorecardId, 'player_id' =>  $r['player_id'] ],
                 [
@@ -20,7 +20,6 @@ class ScorecardRosterRepository {
                     'batting_order' => $r['batting_order'] 
                 ]
             );
-            dump(DB::getQueryLog());
         }
 
         foreach($request->scorecard_roster_visiting as $r) {
