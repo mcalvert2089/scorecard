@@ -42,18 +42,40 @@ class CreateScorecardRosters extends Component {
 		const getRosters = axios.get('/api/scorecard-rosters/' + this.state.id)
 				.then((result) => {
 					if(result.status === 200) {
-						let home_dropdown = result.data.home_roster.map(function(row) {
+						const home_dropdown = result.data.home_roster.map(function(row) {
 												return { value: row.id, label: row.name_last +', ' + row.name_use + ' - ' + row.position_txt }
 											})
 
-						let visiting_dropdown = result.data.visiting_roster.map(function(row){
+						const visiting_dropdown = result.data.visiting_roster.map(function(row){
 												return { value: row.id, label: row.name_last +', ' + row.name_use  + ' - ' + row.position_txt }
 											})
+						
+						const home_scorecard_roster = result.data.home_scorecard_roster.map(function(row) {
+							return {
+								id: row.id,
+								player_id: row.player_info.player_id,
+								team_id: row.player_info.team_id,
+								name_use: row.player_info.name_use,
+								name_last: row.player_info.name_last,
+								position: (row.position) ? row.position : row.player_info.primary_position,
+								position_txt: row.player_info.position_txt							}
+						})
+						const visiting_scorecard_roster = result.data.visiting_scorecard_roster.map(function(row) {
+							return {
+								id: row.id,
+								player_id: row.player_info.player_id,
+								team_id: row.player_info.team_id,
+								name_use: row.player_info.name_use,
+								name_last: row.player_info.name_last,
+								position: (row.position) ? row.position : row.player_info.primary_position,
+								position_txt: row.player_info.position_txt							}
+						})
+
 					    this.setState({ 
 					    	home_roster: result.data.home_roster,
 					    	visiting_roster: result.data.visiting_roster,
-					    	home_scorecard: result.data.home_scorecard_roster,
-					    	visiting_scorecard: result.data.visiting_scorecard_roster,
+					    	home_scorecard: home_scorecard_roster,
+					    	visiting_scorecard: visiting_scorecard_roster,
 					    	home_dropdown: home_dropdown, 
 					    	visiting_dropdown: visiting_dropdown 
 					    })
@@ -88,6 +110,7 @@ class CreateScorecardRosters extends Component {
 
 		let index = roster.findIndex(row => row.id === e.target.value)
 		let player = roster[index]	
+		player.position = player.primary_position
 
 		// TO-DO: figure out a better way to do this (DRY)
 		if((e.target.name === 'home_scorecard')) {
@@ -115,13 +138,13 @@ class CreateScorecardRosters extends Component {
 		
 		if(homeIndex !== -1) {
 			const clone_state = this.state.home_scorecard.slice()
-			clone_state[homeIndex].primary_position = event.target.value
+			clone_state[homeIndex].position = event.target.value
 			this.setState({ home_scorecard: clone_state})
 		}
 
 		if(visitingIndex !== -1) {
 			const clone_state = this.state.visiting_scorecard.slice()
-			clone_state[visitingIndex].primary_position = event.target.value
+			clone_state[visitingIndex].position = event.target.value
 			this.setState({ visiting_scorecard: clone_state})
 		}
 	}
@@ -143,13 +166,14 @@ class CreateScorecardRosters extends Component {
 		let payload = []
 
 		const { id, home_scorecard, visiting_scorecard, active } = this.state
+		console.log(home_scorecard)
 		home_scorecard.forEach(function(row, index){
 			let item = {}
 
 			item['scorecard_id'] = this.state.id
 			item['team_id'] = row.team_id
 			item['player_id'] = row.player_id
-			item['position'] = row.primary_position
+			item['position'] = row.position
 			item['batting_order'] = index + 1
 
 			home.push(item)
@@ -161,7 +185,7 @@ class CreateScorecardRosters extends Component {
 			item['scorecard_id'] = this.state.id
 			item['team_id'] = row.team_id
 			item['player_id'] = row.player_id
-			item['position'] = row.primary_position
+			item['position'] = row.position
 			item['batting_order'] = index + 1
 
 			visiting.push(item)

@@ -15,11 +15,11 @@ class Roster extends Component {
 			return (
 				<ol>
 					{ this.props.players.map(data => {
-						const { id, name_use, name_last, player_id, primary_position, position_txt } = data;
+						const { id, name_use, name_last, player_id, position, position_txt } = data;
 						return (
 						  <li key={id}>
 						  	{name_use} {name_last} 
-							<ScSelect name="positions" onChange={ (e) => this.props.action(player_id, e) } selected={ primary_position } options={ this.props.positions_dropdown } />
+							<ScSelect name="positions" onChange={ (e) => this.props.action(player_id, e) } selected={ position } options={ this.props.positions_dropdown } />
 						  </li>
 						)
 					})}

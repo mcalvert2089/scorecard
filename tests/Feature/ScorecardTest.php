@@ -57,6 +57,8 @@ class ScorecardTest extends TestCase
     /** @test */
     public function user_can_retrieve_mlb_scorecard_rosters()
     {
+        $scorecard = factory(Scorecard::class)->create();
+        
         $response = $this->actingAs($this->user, 'api')
             ->get("/api/scorecard-rosters/$scorecard->id");
         $response->assertStatus(200);

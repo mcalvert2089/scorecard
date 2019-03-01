@@ -15,7 +15,11 @@ class ScorecardRoster extends Model
 
     public function scorecard() {
     	return $this->hasOne('App\Scorecard', 'id', 'scorecard_id');
-    } 
+    }
+
+    function player_info() {
+        return $this->hasOne('App\Player', 'player_id', 'player_id');
+    }
 
     /*** OLD FUNCTIONS ***/
     public function getRosters($scorecard_id) {

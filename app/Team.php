@@ -15,29 +15,32 @@ class Team extends Model
 
     public function getScorecardRosters($scorecard_id) {
         $scorecard = Scorecard::find($scorecard_id);
-        $scorecardRosterPlayerIds = ScorecardRoster::whereScorecardId($scorecard_id)->pluck('player_id');
+        $scorecardRosters = ScorecardRoster::with('player_info')->whereScorecardId($scorecard_id)->get();
+        $players = Player::where('team_id', $scorecard->home_team_id)->orWhere('team_id', $scorecard->visiting_team_id)->get();
 
-    	$homeRoster = Player::whereTeamId($scorecard->home_team_id)
-                        ->orderBy('name_last')
-                        ->get();
-                        
-    	$visitingRoster = Player::whereTeamId($scorecard->visiting_team_id)
-                            ->orderBy('name_last')
-                            ->get();
-
-        $homeScorecardRoster = $homeRoster->filter(function($row) use($scorecardRosterPlayerIds) {
-            return in_array($row->player_id, $scorecardRosterPlayerIds->toArray());
+        // FULL ROSTERS
+        $homeRoster = $players->filter(function($row) use($scorecard) {
+            return $row->team_id == $scorecard->home_team_id;
         });
 
-        $visitingScorecardRoster = $visitingRoster->filter(function($row) use($scorecardRosterPlayerIds) {
-            return in_array($row->player_id, $scorecardRosterPlayerIds->toArray());
+        $visitingRoster = $players->filter(function($row) use($scorecard) {
+            return $row->team_id == $scorecard->visiting_team_id;
+        });
+        
+        // SCORECARD ROSTERS
+        $scorecardRosterHome = $scorecardRosters->filter(function($row) use ($scorecard) {
+            return $row->team_id === $scorecard->home_team_id;
+        });
+
+        $scorecardRosterVisiting = $scorecardRosters->filter(function($row) use ($scorecard) {
+            return $row->team_id === $scorecard->visiting_team_id;
         });
 
     	return [ 
-            'home_roster' => $homeRoster, 
-            'visiting_roster' => $visitingRoster,
-            'home_scorecard_roster' => array_values($homeScorecardRoster->toArray()),
-            'visiting_scorecard_roster' => array_values($visitingScorecardRoster->toArray()),
+            'home_roster' => array_values($homeRoster->toArray()), 
+            'visiting_roster' => array_values($visitingRoster->toArray()),
+            'home_scorecard_roster' => array_values($scorecardRosterHome->toArray()),
+            'visiting_scorecard_roster' => array_values($scorecardRosterVisiting->toArray())
         ];
     	
     }
