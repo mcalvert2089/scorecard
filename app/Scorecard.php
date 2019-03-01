@@ -12,8 +12,7 @@ class Scorecard extends Model
     public $incrementing = false;
 
     protected $guarded = [];
-
-
+    
     /*** OLD RELATIONS ***/
     public function home_team() {
     	return $this->hasOne('App\Team', 'mlb_org_id', 'home_team_id');
