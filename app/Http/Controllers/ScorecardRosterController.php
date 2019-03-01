@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Repository;
+use App\Repositories\ScorecardRosterRepository;
 use App\ScorecardRoster;
 use App\Team;
-use App\Repositories\Repository;
 use Illuminate\Http\Request;
 
 class ScorecardRosterController extends Controller
@@ -26,15 +27,8 @@ class ScorecardRosterController extends Controller
     }
 
     public function store(Request $request) {
-    	$data = $request->only($this->model->getModel()->fillable);
-        $scorecardId = (isset($data[0]) && isset($data[0]['scorecard_id'])) ? $data[0]['scorecard_id'] : '';
-    
-    	foreach($data as $d) {
-    		// $d['user_id'] = auth()->user()->id;
-    		$this->model->create($d);
-    	}
-
-        return [ 'id' => $scorecardId ];
+        $repository = new ScorecardRosterRepository;
+        return $repository->store($request);
     }
 
     public function update(Request $request, $id) {

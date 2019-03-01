@@ -4,18 +4,18 @@ import PropTypes from 'prop-types'
 
 class ScSelect extends React.Component {
     constructor (props) {
-        super(props);
-
+        super(props)
     }
 
     render () {
         return (
           <div className="relative">
-            <select name={ this.props.name } value={ this.props.value } onChange={ this.props.onChange }>
+            <select name={ this.props.name } value={ this.props.value } defaultValue={ this.props.selected } onChange={ this.props.onChange }>
               <option value=""></option>
-            { 
-              this.props.options.map((row, i) => 
-                <option key={i} value={ row.value }>{ row.label }</option>
+              { 
+                this.props.options.map(function(row, i) {
+                  return <option key={i} value={ row.value }>{ row.label }</option>
+                }.bind(this)
               ) 
             }
           </select>

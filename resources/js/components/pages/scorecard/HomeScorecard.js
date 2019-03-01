@@ -41,48 +41,43 @@ class HomeScorecard extends Component {
 
 		return (
 			<div>
-				{ this.state.scorecards !== null && <Scorecards scorecards={ scorecards } /> }
+				{ this.state.scorecards !== null && this.state.scorecards.length > 0 && (
+					<table>
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Start Time</th>
+								<th>Home Team</th>
+								<th>Visiting Team</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{ this.state.scorecards.map(data => {
+							    const { id, game_date, start_time, home_team, visiting_team, active } = data;
+							    return (
+							      <tr key={id}>
+							      	<td>{game_date}</td>
+							        <td>{start_time}</td>
+							        <td>{home_team.name}</td>
+							        <td>{visiting_team.name}</td>
+							        { 
+							        	active 
+							        		? <td><Link to={'/scorecard/' + id}><i className="fas fa-eye"></i></Link></td>
+							        		: <td><Link to={'/scorecard/rosters/' + data.id }><i className="far fa-edit"></i></Link></td>
+							        }
+							      </tr>
+							    )
+							  })}			   
+						</tbody>
+					</table>
+				)}
 				<div className="md:flex md:items-center">
 					<Link to="/scorecard/create" className="dark-button mt-3">Create Scorecard</Link>
 				</div>
 			</div>
 		)
 	}
-}
-
-function Scorecards(scorecards) {
-	if(scorecards.scorecards.length === 0) {
-		return ( <div>No scorecards yet.</div> )
-	} else {
-		return (
-			<table>
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Start Time</th>
-						<th>Home Team</th>
-						<th>Visiting Team</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{ scorecards.scorecards.map(data => {
-				    const { id, game_date, start_time, home_team, visiting_team } = data;
-				    return (
-				      <tr key={id}>
-				      	<td>{game_date}</td>
-				        <td>{start_time}</td>
-				        <td>{home_team.name}</td>
-				        <td>{visiting_team.name}</td>
-				        <td><Link to={'/scorecard/rosters/' + id}>Open</Link></td>
-				      </tr>
-				    )
-				  })}			   
-				</tbody>
-			</table>
-		)
-	}
-		
 }
 
 export default connect(mapStateToProps)(HomeScorecard)

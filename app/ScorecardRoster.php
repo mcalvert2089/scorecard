@@ -11,12 +11,17 @@ class ScorecardRoster extends Model
 
     public $incrementing = false;
 
-    protected $fillable = [ 'scorecard_id', 'team_id', 'player_id', 'position', 'batting_order', 'position_order' ];
+    protected $guarded = [];
 
     public function scorecard() {
     	return $this->hasOne('App\Scorecard', 'id', 'scorecard_id');
-    } 
+    }
 
+    function player_info() {
+        return $this->hasOne('App\Player', 'player_id', 'player_id');
+    }
+
+    /*** OLD FUNCTIONS ***/
     public function getRosters($scorecard_id) {
         $records = $this->with('scorecard:id,home_team_id,visiting_team_id')
                     ->whereScorecardId($scorecard_id)

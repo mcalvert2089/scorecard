@@ -20,6 +20,17 @@ class TeamTest extends TestCase
     }
 
     /** @test */
+    public function user_can_retrieve_mlb_teams()
+    { 
+        $response = $this->actingAs($this->user, 'api')
+                         ->get('/api/teams');
+        $response->assertStatus(200);
+        $this->assertNotNull($response->json());
+    }
+
+
+    /***** NON - API TESTS (will need to modify these for custom entries) ****/
+    /** @test */
     public function user_can_retrieve_their_own_team_list()
     {   
         factory(Team::class, 10)->create();

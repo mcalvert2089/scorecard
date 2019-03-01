@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnPrimaryPositionIdToPlayersTable extends Migration
+class AddActiveColumnToScorecardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnPrimaryPositionIdToPlayersTable extends Migration
      */
     public function up()
     {
-        Schema::table('players', function (Blueprint $table) {
-            $table->uuid('primary_position_id')->after('user_id');
+        Schema::table('scorecards', function (Blueprint $table) {
+            $table->tinyInteger('active')->after('end_time')->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnPrimaryPositionIdToPlayersTable extends Migration
      */
     public function down()
     {
-        Schema::table('players', function (Blueprint $table) {
-            $table->dropColumn('primary_position_id');
+        Schema::table('scorecards', function (Blueprint $table) {
+            $table->dropColumn('active');
         });
     }
 }

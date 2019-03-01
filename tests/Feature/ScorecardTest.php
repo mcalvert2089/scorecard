@@ -20,7 +20,7 @@ class ScorecardTest extends TestCase
     public function setUp() {
         parent::setUp();
         $this->user = $this->getUser();
-        $this->teams = factory(Team::class, 2)->create();
+        $this->teams = Team::all();
     }
 
     /** @test */
@@ -55,28 +55,10 @@ class ScorecardTest extends TestCase
     }
 
     /** @test */
-    public function user_can_retrieve_scorecard_rosters()
+    public function user_can_retrieve_mlb_scorecard_rosters()
     {
+        $scorecard = factory(Scorecard::class)->create();
         
-        $teams = factory(Team::class, 2)->create();
-        $team1Id = $teams[0]->id;
-        $team2Id = $teams[1]->id;
-
-        $scorecard = factory(Scorecard::class)->create([
-            'home_team_id' => $team1Id,
-            'visiting_team_id' => $team2Id
-        ]);
-
-        $homeTeam = factory(ScorecardRoster::class, 9)->create([
-            'scorecard_id' => $scorecard->id,
-            'team_id' => $team1Id
-        ]);
-
-        $visitingTeam = factory(ScorecardRoster::class, 9)->create([
-            'scorecard_id' => $scorecard->id,
-            'team_id' => $team2Id
-        ]);
-
         $response = $this->actingAs($this->user, 'api')
             ->get("/api/scorecard-rosters/$scorecard->id");
         $response->assertStatus(200);
@@ -89,32 +71,51 @@ class ScorecardTest extends TestCase
     public function user_can_create_a_scorecard_roster()
     {
         $data = [];
+        $homeTeamId = $this->teams[0]->mlb_org_id;
+        $visitingTeamId = $this->teams[1]->mlb_org_id;
 
         $scorecard = factory(Scorecard::class)->create([
-            'home_team_id' => $this->teams[0]->id,
-            'visiting_team_id' => $this->teams[1]->id,
+            'home_team_id' => $homeTeamId,
+            'visiting_team_id' => $visitingTeamId,
             'user_id' => $this->user->id,
             'game_date' => date('Y-m-d h:i:s')
         ]);
 
-        $players = factory(Player::class, 9)->create();
+        $homePlayers = Player::whereTeamId($homeTeamId)->limit(9)->get();
+        $visitingPlayers = Player::whereTeamId($visitingTeamId)->limit(9)->get();
 
-        foreach($players as $p) {
-            $player = [];
+        foreach($homePlayers as $key => $p) {
             $player['scorecard_id'] = $scorecard->id;
             $player['team_id'] = $p->team_id;
             $player['player_id'] = $p->id;
-            $player['position'] = $p->primary_position_id;
-            $player['batting_order'] = 1;
-            $player['position_order'] = 1;
+            $player['position'] = $p->primary_position;
+            $player['batting_order'] = $key + 1;
 
-            $data[] = $player;
+            $home[] = $player;
         }
+
+        foreach($visitingPlayers as $key => $p) {
+            $player['scorecard_id'] = $scorecard->id;
+            $player['team_id'] = $p->team_id;
+            $player['player_id'] = $p->id;
+            $player['position'] = $p->primary_position;
+            $player['batting_order'] = $key + 1;
+
+            $visiting[] = $player;
+        }
+        $data = [ 
+                    'scorecard_id' => $scorecard->id, 
+                    'active' => 1, 
+                    'scorecard_roster_home' => $home, 
+                    'scorecard_roster_visiting' => $visiting 
+                ];
 
         $response = $this->actingAs($this->user, 'api')
              ->post('/api/roster', $data);
         $response->assertOk();
 
-        $this->assertDatabaseHas('scorecard_rosters', $data[0]);
+        $roster = ScorecardRoster::get();
+
+        $this->assertNotNull($roster);
     }
 }

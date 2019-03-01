@@ -17,6 +17,6 @@ class PositionsTest extends TestCase
 						 ->get('/api/positions');
 		$response->assertOk();
 
-		$this->assertCount(12, $response->json());
+		$this->assertCount(10, $response->json());
 	}
 }

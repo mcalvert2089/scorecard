@@ -2,54 +2,46 @@
 
 namespace App;
 
-use App\Scorecard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Team extends Model
 {
-	use Uuids, SoftDeletes;
+   	use Uuids, SoftDeletes;
+    
     public $incrementing = false;
-    protected $fillable = [ 'name', 'manager', 'city', 'state', 'user_id' ];
 
-    public function getRoster($team_id) {
-        return $this->with('players')
-                    ->whereId($team_id)
-                    ->get();
-    }
+    protected $guarded = [];
 
     public function getScorecardRosters($scorecard_id) {
         $scorecard = Scorecard::find($scorecard_id);
-        $scorecardRosterPlayerIds = ScorecardRoster::whereScorecardId($scorecard_id)->pluck('player_id');
+        $scorecardRosters = ScorecardRoster::with('player_info')->whereScorecardId($scorecard_id)->get();
+        $players = Player::where('team_id', $scorecard->home_team_id)->orWhere('team_id', $scorecard->visiting_team_id)->get();
 
-    	$homeRoster = Player::with('position')
-                        ->whereTeamId($scorecard->home_team_id)
-                        ->orderBy('last_name')
-                        ->get();
-                        
-    	$visitingRoster = Player::with('position')
-                            ->whereTeamId($scorecard->visiting_team_id)
-                            ->orderBy('last_name')
-                            ->get();
-
-        $homeScorecardRoster = $homeRoster->filter(function($row) use($scorecardRosterPlayerIds) {
-            return in_array($row->id, $scorecardRosterPlayerIds->toArray());
+        // FULL ROSTERS
+        $homeRoster = $players->filter(function($row) use($scorecard) {
+            return $row->team_id == $scorecard->home_team_id;
         });
 
-        $visitingScorecardRoster = $visitingRoster->filter(function($row) use($scorecardRosterPlayerIds) {
-            return in_array($row->id, $scorecardRosterPlayerIds->toArray());
+        $visitingRoster = $players->filter(function($row) use($scorecard) {
+            return $row->team_id == $scorecard->visiting_team_id;
+        });
+        
+        // SCORECARD ROSTERS
+        $scorecardRosterHome = $scorecardRosters->filter(function($row) use ($scorecard) {
+            return $row->team_id === $scorecard->home_team_id;
+        });
+
+        $scorecardRosterVisiting = $scorecardRosters->filter(function($row) use ($scorecard) {
+            return $row->team_id === $scorecard->visiting_team_id;
         });
 
     	return [ 
-            'home_roster' => $homeRoster, 
-            'visiting_roster' => $visitingRoster,
-            'home_scorecard_roster' => array_values($homeScorecardRoster->toArray()),
-            'visiting_scorecard_roster' => array_values($visitingScorecardRoster->toArray()),
+            'home_roster' => array_values($homeRoster->toArray()), 
+            'visiting_roster' => array_values($visitingRoster->toArray()),
+            'home_scorecard_roster' => array_values($scorecardRosterHome->toArray()),
+            'visiting_scorecard_roster' => array_values($scorecardRosterVisiting->toArray())
         ];
     	
-    }
-    
-    public function players() {
-    	return $this->hasMany('App\Players', 'id', 'team_id');
     }
 }

@@ -20,7 +20,6 @@ class CreateScorecardRostersTable extends Migration
             $table->uuid('player_id');
             $table->uuid('position');
             $table->integer('batting_order');
-            $table->integer('position_order');
             $table->timestamps();
             $table->softDeletes();
         });

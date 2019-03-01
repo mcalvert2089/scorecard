@@ -11,14 +11,16 @@ class Scorecard extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['home_team_id', 'visiting_team_id', 'user_id', 'game_date', 'start_time'];
+    protected $guarded = [];
 
+
+    /*** OLD RELATIONS ***/
     public function home_team() {
-    	return $this->hasOne('App\Team', 'id', 'home_team_id');
+    	return $this->hasOne('App\Team', 'mlb_org_id', 'home_team_id');
     }
 
     public function visiting_team() {
-    	return $this->hasOne('App\Team', 'id', 'visiting_team_id');
+    	return $this->hasOne('App\Team', 'mlb_org_id', 'visiting_team_id');
     }
 
     public function home_team_roster() {

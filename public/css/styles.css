@@ -4775,6 +4775,26 @@ header {
   text-decoration: none;
 }
 
+.light-button {
+  background-color: transparent;
+  color: #1a4731;
+  font-weight: 700;
+  border-width: 1px;
+  border-color: #1a4731;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: .25rem;
+}
+
+.light-button:hover {
+  background-color: #b8c2cc;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 table th {
   padding: 6px;
   background: #ccc;

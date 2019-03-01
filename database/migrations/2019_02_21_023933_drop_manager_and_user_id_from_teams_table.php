@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOrderColumnToPositionsTable extends Migration
+class DropManagerAndUserIdFromTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddOrderColumnToPositionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('positions', function (Blueprint $table) {
-            $table->integer('order')->after('pos_number');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->dropColumn('manager');
+            $table->dropColumn('user_id');
         });
     }
 
@@ -25,8 +26,9 @@ class AddOrderColumnToPositionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('positions', function (Blueprint $table) {
-            $table->dropColumn('order');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->string('manager')->nullable();
+            $table->uuid('user_id')->nullable();
         });
     }
 }

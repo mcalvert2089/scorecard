@@ -11,9 +11,5 @@ class Position extends Model
 
     public $incrementing = false;
 
-    protected $fillable = [  'name', 'abbreviation', 'pos_number' ];
-
-    public function getPositions() {
-    	return $this->all();
-    }
+    protected $guarded = [];
 }

@@ -14,11 +14,11 @@ class CreatePositionsTable extends Migration
     public function up()
     {
         Schema::create('positions', function (Blueprint $table) {
-            $table->primary('id');
-            $table->uuid('id');
+            $table->uuid('id')->primary();
+            $table->char('position_id', 1);
             $table->string('name');
-            $table->string('abbreviation');
-            $table->integer('pos_number');
+            $table->char('position_txt', 2);
+            $table->integer('position_order');
             $table->timestamps();
             $table->softDeletes();
         });

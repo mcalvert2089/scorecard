@@ -15,7 +15,7 @@ class PositionController extends Controller
     }
 
     public function index() {
-        return Position::select('id', 'name', 'abbreviation')->orderBy('order')->get();
+        return Position::select('id', 'name', 'position_id', 'position_txt')->orderBy('position_order')->get();
     }
 
     public function show($id) {
