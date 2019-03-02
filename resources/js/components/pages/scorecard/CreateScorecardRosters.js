@@ -138,7 +138,7 @@ class CreateScorecardRosters extends Component {
 
 	handlePitcherChange(e) {
 		const roster = (e.target.name === 'home_starting_pitcher') ? this.state.home_roster.slice() : this.state.visiting_roster.slice()
-		const index = roster.findIndex(row => row.id === e.target.value)
+		const index = roster.findIndex(row => row.player_id === e.target.value * 1)
 		let pitcher = (typeof roster[index] !== 'undefined') ? roster[index] : []
 
 		if(e.target.name === 'home_starting_pitcher') this.setState({ home_starting_pitcher: pitcher })

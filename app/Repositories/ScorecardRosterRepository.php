@@ -34,7 +34,7 @@ class ScorecardRosterRepository {
                 ]
             );
         }
-
+dump($request->toArray());
         if($request->home_starting_pitcher && $request->home_starting_pitcher['player_id']) {
             ScorecardPitcher::updateOrCreate(
                 [ 'scorecard_id' => $scorecardId, 'team_id' => $request->home_starting_pitcher['team_id'] ],
