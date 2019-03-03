@@ -19,12 +19,14 @@ export function validate(data) {
 			}
 
 			if(rule === 'no_duplicates') {
-				var valueArr = array.value.map(function(item){ return item.position });
+				var valueArr = array.value.map(item => item.position);
 				var duplicates = valueArr.map(function(item, idx){ 
 				    return (valueArr.indexOf(item) !== idx) ? array.value[idx].position_txt : ''
 				}.bind(array)).filter(row => row);
 
-				if(duplicates.length) results[ array.field_name ] = 'Duplicate entries found: ' + duplicates.join(', ')
+				duplicates = duplicates.filter((item, idx) => duplicates.indexOf(item) === idx)
+
+				if(duplicates.length) results[ array.field_name ] = array.name + ' must be unique. Found multiple entries (' + duplicates.join(', ') + ').'
 			}
 
 			// CUSTOM VALIDATIONS
