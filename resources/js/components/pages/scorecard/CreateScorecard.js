@@ -94,8 +94,7 @@ class CreateScorecard extends Component {
 					},
 				])
 
-		this.setState({ errors: valid })
-
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
 		if(Object.keys(valid).length === 0) {
 			const { home_team_id, visiting_team_id, game_date, start_time_hour, start_time_minutes, start_time_meridian } = this.state
 			let start_time = (start_time_hour && start_time_minutes && start_time_meridian) ? start_time_hour + ':' + start_time_minutes + ' ' + start_time_meridian : ''

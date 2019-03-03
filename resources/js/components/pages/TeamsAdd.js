@@ -43,8 +43,7 @@ class TeamsAdd extends Component {
       }
     ])
 
-    this.setState({ errors: valid })
-
+    if(Object.keys(valid).length > 0) this.setState({ errors: valid })
     let self = this
     if(Object.keys(valid).length === 0) {
       const createTeam = axios.post('/api/teams', { name, manager, city, state, user_id })

@@ -166,8 +166,7 @@ class CreateScorecardRosters extends Component {
 
 		event.preventDefault()
 		
-		this.setState({ errors: valid })
-
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
 		if(Object.keys(valid).length === 0) {
 			this.saveScorecardRoster(false)
 		}

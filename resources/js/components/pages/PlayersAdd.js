@@ -111,8 +111,7 @@ class PlayersAdd extends Component {
       }
     ])
 
-    this.setState({ errors: valid })
-    
+    if(Object.keys(valid).length > 0) this.setState({ errors: valid })
     if(Object.keys(valid).length === 0) {
       const { first_name, last_name, team_id, user_id, primary_position_id, bats, throws } = this.state
       let self = this

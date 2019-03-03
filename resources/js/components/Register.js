@@ -47,8 +47,7 @@ export default class Register extends React.Component {
 	      }
 	    ])
 
-		this.setState({ errors: valid })
-    
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
     	if(Object.keys(valid).length === 0) {
 	    	const { email } = this.state
 			var self = this
