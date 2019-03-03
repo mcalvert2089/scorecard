@@ -110,30 +110,25 @@ class CreateScorecardRosters extends Component {
 	}
 
 	handleChange(e) {
-		const roster = (e.target.name === 'home_scorecard') ? this.state.home_roster : this.state.visiting_roster
+		let key = ''
+		let data = []
+		const roster = (e.target.name === 'home_scorecard') ? this.state.home_roster.slice() : this.state.visiting_roster.slice()
 		const index = roster.findIndex(row => row.id === e.target.value)
-		let player = { id: roster[index].id, player_info: roster[index] }
+		const player = { id: roster[index].id, player_info: roster[index] }
 
-		player = this.convertPlayerDataForScorecard(player, this.state.home_scorecard.length);
+		if(e.target.name === 'home_scorecard') {
+			const player_scorecard = this.convertPlayerDataForScorecard(player, this.state.home_scorecard.length)
+			key = 'home_scorecard'
+			data = this.state.home_scorecard.concat(player_scorecard)
+		} 
 
-		// TO-DO: figure out a better way to do this (DRY)
-		if((e.target.name === 'home_scorecard')) {
-			this.setState((state) => {
-		      const home_scorecard = state.home_scorecard.concat(player)
-
-		      return {
-		        home_scorecard
-		      }
-		    })	
-		} else {
-			this.setState((state) => {
-		      const visiting_scorecard = state.visiting_scorecard.concat(player)
-
-		      return {
-		        visiting_scorecard
-		      }
-		    })
+		if(e.target.name === 'visiting_scorecard') {
+			const player_scorecard = this.convertPlayerDataForScorecard(player, this.state.visiting_scorecard.length)
+			key = 'visiting_scorecard'
+			data = this.state.visiting_scorecard.concat(player_scorecard)
 		}
+
+		if(key && data) this.setState({ [key]:  data })
 	}
 
 	handlePitcherChange(e) {
