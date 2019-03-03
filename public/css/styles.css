@@ -4776,6 +4776,10 @@ select:disabled {
   border-color: #e3342f;
 }
 
+select.position {
+  width: 21px;
+}
+
 .roster-dropdown {
   width: 100%;
 }

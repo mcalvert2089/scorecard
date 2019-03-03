@@ -93,6 +93,10 @@ select:disabled {
 	@apply border-red;
 }
 
+select.position {
+	width: 21px;
+}
+
 .roster-dropdown {
 	width: 100%;
 }

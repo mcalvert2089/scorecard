@@ -11,7 +11,7 @@ class ScSelect extends React.Component {
         return (
           <div className="relative">
             <select name={ this.props.name } value={ this.props.value } defaultValue={ this.props.selected } onChange={ this.props.onChange } disabled={ this.props.disabled }>
-              <option value=""></option>
+              <option value="">-</option>
               { 
                 this.props.options.map(function(row, i) {
                   return <option key={i} value={ row.value }>{ row.label }</option>

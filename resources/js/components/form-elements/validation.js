@@ -18,6 +18,14 @@ export function validate(data) {
 				results[ array.field_name ] = array.name + ' must be a number.'
 			}
 
+			if(rule === 'no_duplicates') {
+				var valueArr = array.value.map(function(item){ return item.position });
+				var duplicates = valueArr.some(function(item, idx){ 
+				    return valueArr.indexOf(item) != idx 
+				});
+				if(duplicates) results[ array.field_name ] = 'Entries for ' + array.name + ' cannot have duplicates.'
+			}
+
 			// CUSTOM VALIDATIONS
 			if(rule === 'scorecard_start_time' && (array.value.hour || array.value.minutes || array.value.meridian)) {
 				let hour = (typeof array.value.hour !== 'undefined') ? array.value.hour : null

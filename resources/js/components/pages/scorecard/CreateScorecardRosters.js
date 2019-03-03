@@ -7,7 +7,6 @@ import { togglePageLoad } from '../../../../js/actions/index'
 import ScSelect from '../../form-elements/ScSelect'
 import Roster from './Roster'
 import Loading from '../../Loading'
-
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { validate } from '../../form-elements/validation'
@@ -35,7 +34,7 @@ class CreateScorecardRosters extends Component {
 			home_pitchers_dropdown: [],
 			visiting_pitchers_dropdown: [],
 			active: 0,
-			isHidden: true
+			errors: []
 	    }
 
 	    this.handleChange = this.handleChange.bind(this)
@@ -58,11 +57,11 @@ class CreateScorecardRosters extends Component {
 											})
 						
 						const home_scorecard_roster = result.data.home_scorecard_roster.map(function(row, index) {
-							return this.convertPlayerDataForScorecard(row, index)
+							return this.convertPlayerDataForScorecard(row, 'home_scorecard', index)
 						}.bind(this))
 
 						const visiting_scorecard_roster = result.data.visiting_scorecard_roster.map(function(row, index) {
-							return this.convertPlayerDataForScorecard(row, index)
+							return this.convertPlayerDataForScorecard(row, 'visiting_scorecard', index)
 						}.bind(this))
 
 						const home_pitchers_dropdown = result.data.home_roster.map(function (row, index) {
@@ -105,28 +104,18 @@ class CreateScorecardRosters extends Component {
 	}
 
 	componentWillUnmount() {
-		this.state.isLoading = false
 		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	handleChange(e) {
-		let key = ''
+		let key = e.target.name
 		let data = []
 		const roster = (e.target.name === 'home_scorecard') ? this.state.home_roster.slice() : this.state.visiting_roster.slice()
 		const index = roster.findIndex(row => row.id === e.target.value)
 		const player = { id: roster[index].id, player_info: roster[index] }
-
-		if(e.target.name === 'home_scorecard') {
-			const player_scorecard = this.convertPlayerDataForScorecard(player, this.state.home_scorecard.length)
-			key = 'home_scorecard'
-			data = this.state.home_scorecard.concat(player_scorecard)
-		} 
-
-		if(e.target.name === 'visiting_scorecard') {
-			const player_scorecard = this.convertPlayerDataForScorecard(player, this.state.visiting_scorecard.length)
-			key = 'visiting_scorecard'
-			data = this.state.visiting_scorecard.concat(player_scorecard)
-		}
+		
+		const player_scorecard = this.convertPlayerDataForScorecard(player, key, this.state[key].length)
+		data = this.state[key].concat(player_scorecard)
 
 		if(key && data) this.setState({ [key]:  data })
 	}
@@ -141,32 +130,41 @@ class CreateScorecardRosters extends Component {
 	}
 
 
-	updateRosterPosition(player_id, event) {
-		let homeIndex = this.state.home_scorecard.findIndex(row => row.player_id === player_id)
-		let visitingIndex = this.state.visiting_scorecard.findIndex(row => row.player_id === player_id)
-		
-		if(homeIndex !== -1) {
-			let clone_state = this.state.home_scorecard.slice()
-			clone_state[homeIndex].position = event.target.value
-			this.setState({ home_scorecard: clone_state})
-		}
-
-		if(visitingIndex !== -1) {
-			let clone_state = this.state.visiting_scorecard.slice()
-			clone_state[visitingIndex].position = event.target.value
-			this.setState({ visiting_scorecard: clone_state})
-		}
+	updateRosterPosition(type, player_id, event) {
+		const index = this.state[type].findIndex(row => row.player_id === player_id)
+		let clone_state = this.state[type].slice()
+		clone_state[index].position = event.target.value
+		if(type && index !== -1) this.setState({ [type]: clone_state})
 	}
 
 	async handleSubmit(event) {
-		event.preventDefault()
 		await this.setState({ active: 1 })
 		this.saveScorecardRoster(true)
 	}
 
 	handleSaveRoster(event) {
 		event.preventDefault()
-		this.saveScorecardRoster(false)
+		let valid = validate([ { 
+						name: 'Home Team Positions',
+						field_name: 'home_team_positions',
+						rules: 'no_duplicates',
+						value: this.state.home_scorecard
+					},
+					{ 
+						name: 'Visiting Team Positions',
+						field_name: 'visiting_team_positions',
+						rules: 'no_duplicates',
+						value: this.state.visiting_scorecard
+					}
+		])
+
+		event.preventDefault()
+		
+		this.setState({ errors: valid })
+
+		if(Object.keys(valid).length === 0) {
+			this.saveScorecardRoster(false)
+		}
 	}
 
 	saveScorecardRoster(redirect) {
@@ -190,7 +188,7 @@ class CreateScorecardRosters extends Component {
 	        })
 	}
 
-	convertPlayerDataForScorecard(row, index) {
+	convertPlayerDataForScorecard(row, key, index) {
 		return {
 			id: row.id,
 			player_id: row.player_info.player_id,
@@ -225,12 +223,24 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="home_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.home_dropdown } disabled={ this.state.home_scorecard.length === 9 } />
+							<ScSelect 
+								name="home_scorecard" 
+								onChange={ this.handleChange.bind(this) } 
+								options={ this.state.home_dropdown } 
+								disabled={ this.state.home_scorecard.length === 9 }
+							 />
 				    	</div>
 					</div>
 					<div className="md:flex md:items-center mb-6">
-						{ this.state.home_scorecard.length > 0 &&  <Roster players={ this.state.home_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) } />}
+						{ this.state.home_scorecard.length > 0 &&  
+								<Roster 
+									type="home_scorecard" 
+									players={ this.state.home_scorecard } 
+									positions_dropdown={ this.state.positions_dropdown } 
+									action={ this.updateRosterPosition.bind(this) } 
+								/>}
 					</div>
+					{ this.state.errors.home_team_positions && ( <div className="error">{ this.state.errors.home_team_positions }</div> ) }
 					<h2>Visiting Team</h2>
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
@@ -239,7 +249,11 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="visiting_starting_pitcher" value={ this.state.visiting_starting_pitcher.player_id } onChange={ this.handlePitcherChange.bind(this) } options={ this.state.visiting_pitchers_dropdown } />
+							<ScSelect 
+								name="visiting_starting_pitcher" 
+								value={ this.state.visiting_starting_pitcher.player_id } 
+								onChange={ this.handlePitcherChange.bind(this) } 
+								options={ this.state.visiting_pitchers_dropdown } />
 				    	</div>
 					</div>
 					<div className="md:flex md:items-center mb-6">
@@ -249,16 +263,26 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="visiting_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.visiting_dropdown }  disabled={ this.state.visiting_scorecard.length === 9 } />
+							<ScSelect 
+								name="visiting_scorecard" 
+								onChange={ this.handleChange.bind(this) }
+								options={ this.state.visiting_dropdown } 
+								disabled={ this.state.visiting_scorecard.length === 9 } 
+							/>
 				    	</div>
 					</div>
-					
 
 					<div className="md:flex md:items-center mb-6">
-						{ this.state.visiting_scorecard.length > 0 &&  <Roster players={ this.state.visiting_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) }  />}
+						{ this.state.visiting_scorecard.length > 0 &&  
+								<Roster 
+									type="visiting_scorecard" 
+									players={ this.state.visiting_scorecard } 
+									positions_dropdown={ this.state.positions_dropdown } 
+									action={ this.updateRosterPosition.bind(this) }
+								/>}
 					</div>
+					{ this.state.errors.visiting_team_positions && ( <div className="error">{ this.state.errors.visiting_team_positions }</div> ) }
 
-					
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>
 						<div className="md:w-2/3">
