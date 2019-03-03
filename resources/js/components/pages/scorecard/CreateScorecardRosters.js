@@ -131,9 +131,14 @@ class CreateScorecardRosters extends Component {
 
 
 	updateRosterPosition(type, player_id, event) {
+		const value = event.target.value
 		const index = this.state[type].findIndex(row => row.player_id === player_id)
 		let clone_state = this.state[type].slice()
-		clone_state[index].position = event.target.value
+		const position_data = this.state.positions_dropdown.find(row => row.value === value)
+
+		clone_state[index].position = value
+		clone_state[index].position_txt = position_data.label
+
 		if(type && index !== -1) this.setState({ [type]: clone_state})
 	}
 
@@ -144,6 +149,7 @@ class CreateScorecardRosters extends Component {
 
 	handleSaveRoster(event) {
 		event.preventDefault()
+
 		let valid = validate([ { 
 						name: 'Home Team Positions',
 						field_name: 'home_team_positions',
@@ -195,8 +201,8 @@ class CreateScorecardRosters extends Component {
 			team_id: (row.team_id) ? row.team_id : row.player_info.team_id,
 			name_use: row.player_info.name_use,
 			name_last: row.player_info.name_last,
-			position: (row.position) ? row.position : row.player_info.primary_position,
-			position_txt: row.player_info.position_txt,
+			position: (typeof row.position_info !== 'undefined' && typeof row.position_info.position_id !== 'undefined') ? row.position_info.position_id : row.player_info.primary_position,
+			position_txt: (typeof row.position_info !== 'undefined' && typeof row.position_info.position_txt !== 'undefined') ? row.position_info.position_txt : row.player_info.position_txt,
 			batting_order: index + 1
 		}
 	}
@@ -213,7 +219,12 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="home_starting_pitcher" value={ this.state.home_starting_pitcher.player_id } onChange={ this.handlePitcherChange.bind(this) } options={ this.state.home_pitchers_dropdown } />
+							<ScSelect 
+								name="home_starting_pitcher" 
+								value={ this.state.home_starting_pitcher.player_id } 
+								onChange={ this.handlePitcherChange.bind(this) } 
+								options={ this.state.home_pitchers_dropdown } 
+							/>
 				    	</div>
 					</div>
 					<div className="md:flex md:items-center mb-6">
@@ -240,7 +251,7 @@ class CreateScorecardRosters extends Component {
 									action={ this.updateRosterPosition.bind(this) } 
 								/>}
 					</div>
-					{ this.state.errors.home_team_positions && ( <div className="error">{ this.state.errors.home_team_positions }</div> ) }
+					{ this.state.errors.home_team_positions && ( <div className="error mb-4">{ this.state.errors.home_team_positions }</div> ) }
 					<h2>Visiting Team</h2>
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
@@ -281,7 +292,7 @@ class CreateScorecardRosters extends Component {
 									action={ this.updateRosterPosition.bind(this) }
 								/>}
 					</div>
-					{ this.state.errors.visiting_team_positions && ( <div className="error">{ this.state.errors.visiting_team_positions }</div> ) }
+					{ this.state.errors.visiting_team_positions && ( <div className="error mb-4">{ this.state.errors.visiting_team_positions }</div> ) }
 
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>

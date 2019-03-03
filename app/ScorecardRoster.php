@@ -21,6 +21,10 @@ class ScorecardRoster extends Model
         return $this->hasOne('App\Player', 'player_id', 'player_id');
     }
 
+    function position_info() {
+        return $this->hasOne('App\Position', 'position_id', 'position');
+    }
+
     /*** OLD FUNCTIONS ***/
     public function getRosters($scorecard_id) {
         $records = $this->with('scorecard:id,home_team_id,visiting_team_id')

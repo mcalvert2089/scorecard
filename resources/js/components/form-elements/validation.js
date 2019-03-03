@@ -20,10 +20,11 @@ export function validate(data) {
 
 			if(rule === 'no_duplicates') {
 				var valueArr = array.value.map(function(item){ return item.position });
-				var duplicates = valueArr.some(function(item, idx){ 
-				    return valueArr.indexOf(item) != idx 
-				});
-				if(duplicates) results[ array.field_name ] = 'Entries for ' + array.name + ' cannot have duplicates.'
+				var duplicates = valueArr.map(function(item, idx){ 
+				    return (valueArr.indexOf(item) !== idx) ? array.value[idx].position_txt : ''
+				}.bind(array)).filter(row => row);
+
+				if(duplicates.length) results[ array.field_name ] = 'Duplicate entries found: ' + duplicates.join(', ')
 			}
 
 			// CUSTOM VALIDATIONS
