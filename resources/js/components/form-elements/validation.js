@@ -6,8 +6,9 @@ export function validate(data) {
 	data.forEach(function(array) {
 		let rules = array.rules.split('|')
 		rules.forEach(function(rule) {
-			if(rule === 'required' && validator.isEmpty(array.value)) {
-				results[ array.field_name ] = array.name + ' is required.'
+			if(rule === 'required') {
+				let required_value = (typeof array.value !== 'undefined') ? array.value : ''
+				if(validator.isEmpty(required_value.toString())) results[ array.field_name ] = array.name + ' is required.'
 			}
 
 			if(rule === 'email' && ! validator.isEmail(array.value) && ! validator.isEmpty(array.value)) {

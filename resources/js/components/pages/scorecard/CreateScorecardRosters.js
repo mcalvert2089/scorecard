@@ -157,19 +157,21 @@ class CreateScorecardRosters extends Component {
 				name: 'Home Starting Pitcher',
 				field_name: 'home_starting_pitcher',
 				rules: 'required',
-				value: (typeof this.state.home_starting_pitcher[0] !== 'undefined') ? this.state.home_starting_pitcher[0] : ''
+				value: this.state.home_starting_pitcher.player_id
 			},
 			{
 				name: 'Visiting Starting Pitcher',
 				field_name: 'visiting_starting_pitcher',
 				rules: 'required',
-				value: (typeof this.state.visiting_starting_pitcher[0] !== 'undefined') ? this.state.visiting_starting_pitcher[0] : ''
+				value: this.state.visiting_starting_pitcher.player_id
 			}
 		])
 
 		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
-		await this.setState({ active: 1 })
-		if(Object.keys(valid).length === 0) this.saveScorecardRoster(true)
+		if(Object.keys(valid).length === 0) {
+			await this.setState({ active: 1 })
+			this.saveScorecardRoster(true)
+		}
 	}
 
 	handleSaveRoster(event) {
