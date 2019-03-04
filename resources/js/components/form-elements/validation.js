@@ -48,8 +48,11 @@ export function validate(data) {
 				}
 			}
 
-			if(rule === 'rosters_must_be_full' && (array.value[0].length !== 9 || array.value[1].length !== 9)) {
-				console.log(array.field_name)
+			if(rule === 'rosters_must_be_full' 
+					&& typeof array.value[0] !== 'undefined' 
+					&& typeof array.value[1] !== 'undefined' 
+					&& (array.value[0].length !== 9 || array.value[1].length !== 9)) 
+			{
 				results[ array.field_name ] = 'Both rosters must have 9 players.'
 			}
 		})

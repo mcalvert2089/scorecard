@@ -43,8 +43,6 @@ class TeamsAdd extends Component {
         value: (this.state.name) ? this.state.name : ''
       }
     ])
-
-
     
     if(Object.keys(valid).length > 0) this.setState({ errors: valid })
     if(Object.keys(valid).length === 0) {

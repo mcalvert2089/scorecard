@@ -154,13 +154,13 @@ class CreateScorecardRosters extends Component {
 				value: [ this.state.home_scorecard, this.state.visiting_scorecard ]
 			},
 			{
-				name: 'Starting Pitcher',
+				name: 'Home Starting Pitcher',
 				field_name: 'home_starting_pitcher',
 				rules: 'required',
 				value: (typeof this.state.home_starting_pitcher[0] !== 'undefined') ? this.state.home_starting_pitcher[0] : ''
 			},
 			{
-				name: 'Starting Pitcher',
+				name: 'Visiting Starting Pitcher',
 				field_name: 'visiting_starting_pitcher',
 				rules: 'required',
 				value: (typeof this.state.visiting_starting_pitcher[0] !== 'undefined') ? this.state.visiting_starting_pitcher[0] : ''
@@ -251,7 +251,6 @@ class CreateScorecardRosters extends Component {
 							/>
 				    	</div>
 					</div>
-					{ this.state.errors.home_starting_pitcher && ( <div className="error">{ this.state.errors.home_starting_pitcher }</div> ) }
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
 						  <label htmlFor="inline-home-roster">
@@ -293,7 +292,6 @@ class CreateScorecardRosters extends Component {
 								options={ this.state.visiting_pitchers_dropdown } />
 				    	</div>
 					</div>
-					{ this.state.errors.visiting_starting_pitcher && ( <div className="error">{ this.state.errors.visiting_starting_pitcher }</div> ) }
 
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
@@ -324,6 +322,9 @@ class CreateScorecardRosters extends Component {
 					{ this.state.errors.visiting_team_positions && ( <div className="error">{ this.state.errors.visiting_team_positions }</div> ) }
 
 					{ this.state.errors.full_rosters && <div className="error">{ this.state.errors.full_rosters }</div>}
+					{ this.state.errors.home_starting_pitcher && ( <div className="error">{ this.state.errors.home_starting_pitcher }</div> ) }
+					{ this.state.errors.visiting_starting_pitcher && ( <div className="error">{ this.state.errors.visiting_starting_pitcher }</div> ) }
+					
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>
 						<div className="md:w-2/3">

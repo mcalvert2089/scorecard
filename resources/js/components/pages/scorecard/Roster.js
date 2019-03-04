@@ -11,7 +11,7 @@ class Roster extends Component {
 	  }
 
 	  render() {
-		if(this.props.players && this.props.positions_dropdown) {
+		if(this.props.players.length && this.props.positions_dropdown.length) {
 			return (
 				<ol className="roster-dropdown">
 					{ this.props.players.map(data => {
