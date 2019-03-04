@@ -10,7 +10,8 @@ class Login extends Component {
 		super(props);
 		this.state = {
 			email: '',
-			password: ''
+			password: '',
+			error: ''
 		}
 
 		this.handleChange = this.handleChange.bind(this);
@@ -42,16 +43,20 @@ class Login extends Component {
 		const { email, password } = this.state;
 
 		axios.post('/api/auth/login', { email, password })
-	    .then((result) => {
-	      if(result.status === 200) {
-	      	if( typeof result.data.access_token !== 'undefined' ) {
-        		localStorage.setItem('loggedIn', true)
-		      	localStorage.setItem('access_token', result.data.access_token);
+		.then((result) => {
+			if(result.status === 200) {
+				if( typeof result.data.access_token !== 'undefined' ) {
+					localStorage.setItem('loggedIn', true)
+				  	localStorage.setItem('access_token', result.data.access_token);
 
-		      	window.location.reload()
-	      	}
-	      }
-	    })
+				  	window.location.reload()
+				}
+			} 
+		}).catch(function (error) {
+			const message = (error.response.status === 401) ? 'Cannot Login. Email or password is invalid.' : 'There was a problem logging in.'
+			this.setState({ error: message })
+			store.dispatch(togglePageLoad({ pageLoading: false }))
+		}.bind(this))
 	}
 
 	render () {
@@ -71,6 +76,7 @@ class Login extends Component {
 				      </label>
 				      <input className="text-field" id="password" type="password" name="password" placeholder="******************" onChange={this.handleChange} />
 				    </div>
+				    { this.state.error && <div className="error"> { this.state.error }</div> }
 				    <div className="flex items-center justify-between">
 				    	<input type="submit" className="dark-button" value="Sign In" />
 				    </div>

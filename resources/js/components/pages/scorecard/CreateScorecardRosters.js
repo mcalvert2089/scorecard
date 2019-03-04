@@ -153,7 +153,7 @@ class CreateScorecardRosters extends Component {
 	handleSaveRoster(event) {
 		event.preventDefault()
 		this.setState({ errors: [] })
-		
+
 		let valid = validate([ { 
 						name: 'Home team positions',
 						field_name: 'home_team_positions',
@@ -253,7 +253,7 @@ class CreateScorecardRosters extends Component {
 									action={ this.updateRosterPosition.bind(this) } 
 								/>}
 					</div>
-					{ this.state.errors.home_team_positions && ( <div className="error mb-4">{ this.state.errors.home_team_positions }</div> ) }
+					{ this.state.errors.home_team_positions && ( <div className="error">{ this.state.errors.home_team_positions }</div> ) }
 					<h2>Visiting Team</h2>
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
@@ -319,7 +319,7 @@ function RosterFullAlert() {
 		return ( <div className="md:flex md:items-center mb-6">
 					<div className="md:w-1/3"></div>
 					<div className="md:w-2/3 text-red text-sm">
-						Roster is full.
+						Cannot add more players. Roster is full.
 					</div>
 				</div> 
 			)
