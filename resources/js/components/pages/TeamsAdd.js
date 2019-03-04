@@ -32,6 +32,7 @@ class TeamsAdd extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
+    let self = this
     this.isHidden = true
     const { name, manager, city, state, user_id } = this.state;
 
@@ -43,8 +44,9 @@ class TeamsAdd extends Component {
       }
     ])
 
+
+    
     if(Object.keys(valid).length > 0) this.setState({ errors: valid })
-    let self = this
     if(Object.keys(valid).length === 0) {
       const createTeam = axios.post('/api/teams', { name, manager, city, state, user_id })
       .then((result) => {

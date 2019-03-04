@@ -143,6 +143,8 @@ class CreateScorecardRosters extends Component {
 	}
 
 	async handleSubmit(event) {
+		event.preventDefault()
+		
 		await this.setState({ active: 1 })
 		this.saveScorecardRoster(true)
 	}
@@ -151,21 +153,19 @@ class CreateScorecardRosters extends Component {
 		event.preventDefault()
 
 		let valid = validate([ { 
-						name: 'Home Team Positions',
+						name: 'Home team positions',
 						field_name: 'home_team_positions',
 						rules: 'no_duplicates',
 						value: this.state.home_scorecard
 					},
 					{ 
-						name: 'Visiting Team Positions',
+						name: 'Visiting team positions',
 						field_name: 'visiting_team_positions',
 						rules: 'no_duplicates',
 						value: this.state.visiting_scorecard
 					}
 		])
 
-		event.preventDefault()
-		
 		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
 		if(Object.keys(valid).length === 0) {
 			this.saveScorecardRoster(false)
@@ -241,6 +241,7 @@ class CreateScorecardRosters extends Component {
 							 />
 				    	</div>
 					</div>
+					{ (this.state.home_scorecard.length === 9)  &&  <RosterFullAlert /> }
 					<div className="md:flex md:items-center mb-6">
 						{ this.state.home_scorecard.length > 0 &&  
 								<Roster 
@@ -281,6 +282,7 @@ class CreateScorecardRosters extends Component {
 							/>
 				    	</div>
 					</div>
+					{ (this.state.visiting_scorecard.length === 9) &&  <RosterFullAlert /> }
 
 					<div className="md:flex md:items-center mb-6">
 						{ this.state.visiting_scorecard.length > 0 &&  
@@ -309,6 +311,16 @@ class CreateScorecardRosters extends Component {
 			</div>
 		)
 	}
+}
+
+function RosterFullAlert() {
+		return ( <div className="md:flex md:items-center mb-6">
+					<div className="md:w-1/3"></div>
+					<div className="md:w-2/3 text-red text-sm">
+						Roster is full.
+					</div>
+				</div> 
+			)
 }
 
 export default CreateScorecardRosters
