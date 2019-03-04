@@ -144,14 +144,16 @@ class CreateScorecardRosters extends Component {
 
 	async handleSubmit(event) {
 		event.preventDefault()
-		
+		this.setState({ errors: [] })
+
 		await this.setState({ active: 1 })
 		this.saveScorecardRoster(true)
 	}
 
 	handleSaveRoster(event) {
 		event.preventDefault()
-
+		this.setState({ errors: [] })
+		
 		let valid = validate([ { 
 						name: 'Home team positions',
 						field_name: 'home_team_positions',
