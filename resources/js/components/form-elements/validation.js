@@ -47,6 +47,11 @@ export function validate(data) {
 					results[ array.custom_field_name ] = 'Minutes must be a number.'
 				}
 			}
+
+			if(rule === 'rosters_must_be_full' && (array.value[0].length !== 9 || array.value[1].length !== 9)) {
+				console.log(array.field_name)
+				results[ array.field_name ] = 'Both rosters must have 9 players.'
+			}
 		})
 	})
 

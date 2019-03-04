@@ -146,12 +146,39 @@ class CreateScorecardRosters extends Component {
 		event.preventDefault()
 		this.setState({ errors: [] })
 
+		let valid = validate([
+			{ 
+				name: 'Rosters',
+				field_name: 'full_rosters',
+				rules: 'rosters_must_be_full',
+				value: [ this.state.home_scorecard, this.state.visiting_scorecard ]
+			},
+			{
+				name: 'Starting Pitcher',
+				field_name: 'home_starting_pitcher',
+				rules: 'required',
+				value: (typeof this.state.home_starting_pitcher[0] !== 'undefined') ? this.state.home_starting_pitcher[0] : ''
+			},
+			{
+				name: 'Starting Pitcher',
+				field_name: 'visiting_starting_pitcher',
+				rules: 'required',
+				value: (typeof this.state.visiting_starting_pitcher[0] !== 'undefined') ? this.state.visiting_starting_pitcher[0] : ''
+			}
+		])
+
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
 		await this.setState({ active: 1 })
-		this.saveScorecardRoster(true)
+		if(Object.keys(valid).length === 0) this.saveScorecardRoster(true)
 	}
 
 	handleSaveRoster(event) {
 		event.preventDefault()
+		this.setState({ errors: [] })
+		this.saveScorecardRoster(false)
+	}
+
+	saveScorecardRoster(redirect) {
 		this.setState({ errors: [] })
 
 		let valid = validate([ { 
@@ -170,29 +197,25 @@ class CreateScorecardRosters extends Component {
 
 		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
 		if(Object.keys(valid).length === 0) {
-			this.saveScorecardRoster(false)
-		}
-	}
-
-	saveScorecardRoster(redirect) {
-		document.getElementById("overlay").style.display = "block";
+			document.getElementById("overlay").style.display = "block";
   
-		const { id, home_scorecard, visiting_scorecard, home_starting_pitcher, visiting_starting_pitcher,  active } = this.state
+			const { id, home_scorecard, visiting_scorecard, home_starting_pitcher, visiting_starting_pitcher,  active } = this.state
 
-		axios.post('/api/roster', { 
-					scorecard_id: this.state.id, 
-					active: active, 
-					scorecard_roster_home: home_scorecard, 
-					scorecard_roster_visiting: visiting_scorecard,
-					home_starting_pitcher: home_starting_pitcher,
-					visiting_starting_pitcher: visiting_starting_pitcher 
-				})
-	        .then((result) => {
-	          if(result.status === 200) {
-	          	document.getElementById("overlay").style.display = "none";
-	            if(redirect) this.props.history.push('/scorecard/' + this.state.id)
-	          }
-	        })
+			axios.post('/api/roster', { 
+						scorecard_id: this.state.id, 
+						active: active, 
+						scorecard_roster_home: home_scorecard, 
+						scorecard_roster_visiting: visiting_scorecard,
+						home_starting_pitcher: home_starting_pitcher,
+						visiting_starting_pitcher: visiting_starting_pitcher 
+					})
+		        .then((result) => {
+		          if(result.status === 200) {
+		          	document.getElementById("overlay").style.display = "none";
+		            if(redirect) this.props.history.push('/scorecard/' + this.state.id)
+		          }
+		        })
+		}
 	}
 
 	convertPlayerDataForScorecard(row, key, index) {
@@ -228,6 +251,7 @@ class CreateScorecardRosters extends Component {
 							/>
 				    	</div>
 					</div>
+					{ this.state.errors.home_starting_pitcher && ( <div className="error">{ this.state.errors.home_starting_pitcher }</div> ) }
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
 						  <label htmlFor="inline-home-roster">
@@ -269,6 +293,8 @@ class CreateScorecardRosters extends Component {
 								options={ this.state.visiting_pitchers_dropdown } />
 				    	</div>
 					</div>
+					{ this.state.errors.visiting_starting_pitcher && ( <div className="error">{ this.state.errors.visiting_starting_pitcher }</div> ) }
+
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
 						  <label htmlFor="inline-visiting-roster">
@@ -295,8 +321,9 @@ class CreateScorecardRosters extends Component {
 									action={ this.updateRosterPosition.bind(this) }
 								/>}
 					</div>
-					{ this.state.errors.visiting_team_positions && ( <div className="error mb-4">{ this.state.errors.visiting_team_positions }</div> ) }
+					{ this.state.errors.visiting_team_positions && ( <div className="error">{ this.state.errors.visiting_team_positions }</div> ) }
 
+					{ this.state.errors.full_rosters && <div className="error">{ this.state.errors.full_rosters }</div>}
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>
 						<div className="md:w-2/3">
