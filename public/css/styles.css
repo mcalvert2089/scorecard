@@ -4936,6 +4936,29 @@ label {
   height: 100vh;
 }
 
+#menu-button-container {
+  display: flex;
+  align-items: center;
+  padding-left: .75rem;
+  padding-right: .75rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  border-width: 1px;
+  border-radius: .25rem;
+}
+
+#menu-button-container:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+#menu-button {
+  fill: currentColor;
+  height: .75rem;
+  width: .75rem;
+  color: #fff;
+}
+
 #flyoutMenu {
   width: 100vw;
   height: 100vh;
