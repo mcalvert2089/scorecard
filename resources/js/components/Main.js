@@ -61,7 +61,7 @@ class Main extends Component {
                   <Route exact path='/' component={Home} />
 
                   <RedirectIfLoggedIn path="/login" component={Login} />
-                  <RedirectIfLoggedIn path="/register-new-account" component={Register} />
+                  <RedirectIfLoggedIn path="/register" component={Register} />
                   <RedirectIfLoggedIn path='/activate/:key' component={ActivateAccount} />
                   <RedirectIfLoggedIn path='/account-reset' component={AccountReset} />
                   <RedirectIfLoggedIn path='/password/reset/:token/:email' component={PasswordReset} />

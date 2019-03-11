@@ -79,11 +79,13 @@ class RegisterController extends Controller
                 'password' => str_random(30).time(),
                 'activation_key' => str_random(30).time()
             ]);
+            dump($user);
+
+            return $user->notify(new UserRegisteredSuccessfully($user));
         } catch (\Exception $exception) {
             logger()->error($exception);
             return 'Unable to create new user.';
         }
-        return $user->notify(new UserRegisteredSuccessfully($user));
     }
 
     /**

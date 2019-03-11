@@ -55,14 +55,14 @@ export default class Register extends React.Component {
 			axios.post('/register', { email })
 			.then((result) => {
 			  if(result.status === 200) {
-			  	self.setState({ showForm: true })
+			  	self.setState({ showForm: false })
 			  }
 			})
 			.catch(function (error) {
 				let errorMessage = (typeof error.response.data.errors.email[0] !== 'undefined') ? error.response.data.errors.email[0] : 'An error has occured'
 				self.setState({ errors: { email: errorMessage } })
 			})
-		}
+		}	
 	}
 
 	render() {
@@ -72,7 +72,7 @@ export default class Register extends React.Component {
 				<form className="w-full max-w-md container mx-auto" onSubmit={this.handleSubmit}>
 				  <div className="flex flex-wrap -mx-3 mb-6">
 				    <div className="w-full px-3 mb-6 md:mb-0">
-				      <label>Email</label>
+				     	 <label>Email</label>
 				      <input className="text-field" type="text" name="email" onChange={this.handleChange} />
 				    </div>
 				    { this.state.errors.email && ( <div className="error">{ this.state.errors.email }</div> ) }
