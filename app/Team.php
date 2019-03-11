@@ -19,7 +19,7 @@ class Team extends Model
     public function getScorecardRosters($scorecard_id) {
         $scorecard = Scorecard::find($scorecard_id);
         $pitchers = ScorecardPitcher::whereScorecardId($scorecard_id)->orderBy('scorecard_order')->get();
-        $scorecardRosters = ScorecardRoster::with('player_info')->whereScorecardId($scorecard_id)->orderBy('batting_order')->get();
+        $scorecardRosters = ScorecardRoster::with([ 'player_info', 'position_info:id,position_id,position_txt' ])->whereScorecardId($scorecard_id)->orderBy('batting_order')->get();
         $players = Player::where('team_id', $scorecard->home_team_id)->orWhere('team_id', $scorecard->visiting_team_id)->get();
 
         // FULL ROSTERS

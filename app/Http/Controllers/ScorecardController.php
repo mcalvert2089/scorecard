@@ -18,7 +18,7 @@ class ScorecardController extends Controller
     public function index() {
         return Scorecard::with([ 'home_team', 'visiting_team' ])
                 ->whereUserId(auth()->user()->id)
-                ->orderBy('game_date')
+                ->orderBy('game_date', 'desc')
                 ->get();
     }
 

@@ -7,7 +7,6 @@ import { togglePageLoad } from '../../../../js/actions/index'
 import ScSelect from '../../form-elements/ScSelect'
 import Roster from './Roster'
 import Loading from '../../Loading'
-
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { validate } from '../../form-elements/validation'
@@ -35,7 +34,7 @@ class CreateScorecardRosters extends Component {
 			home_pitchers_dropdown: [],
 			visiting_pitchers_dropdown: [],
 			active: 0,
-			isHidden: true
+			errors: []
 	    }
 
 	    this.handleChange = this.handleChange.bind(this)
@@ -58,11 +57,11 @@ class CreateScorecardRosters extends Component {
 											})
 						
 						const home_scorecard_roster = result.data.home_scorecard_roster.map(function(row, index) {
-							return this.convertPlayerDataForScorecard(row, index)
+							return this.convertPlayerDataForScorecard(row, 'home_scorecard', index)
 						}.bind(this))
 
 						const visiting_scorecard_roster = result.data.visiting_scorecard_roster.map(function(row, index) {
-							return this.convertPlayerDataForScorecard(row, index)
+							return this.convertPlayerDataForScorecard(row, 'visiting_scorecard', index)
 						}.bind(this))
 
 						const home_pitchers_dropdown = result.data.home_roster.map(function (row, index) {
@@ -105,40 +104,25 @@ class CreateScorecardRosters extends Component {
 	}
 
 	componentWillUnmount() {
-		this.state.isLoading = false
 		store.dispatch(togglePageLoad({ pageLoading: true }))
 	}
 
 	handleChange(e) {
-		const roster = (e.target.name === 'home_scorecard') ? this.state.home_roster : this.state.visiting_roster
+		let key = e.target.name
+		let data = []
+		const roster = (e.target.name === 'home_scorecard') ? this.state.home_roster.slice() : this.state.visiting_roster.slice()
 		const index = roster.findIndex(row => row.id === e.target.value)
-		let player = { id: roster[index].id, player_info: roster[index] }
+		const player = { id: roster[index].id, player_info: roster[index] }
+		
+		const player_scorecard = this.convertPlayerDataForScorecard(player, key, this.state[key].length)
+		data = this.state[key].concat(player_scorecard)
 
-		player = this.convertPlayerDataForScorecard(player, this.state.home_scorecard.length);
-
-		// TO-DO: figure out a better way to do this (DRY)
-		if((e.target.name === 'home_scorecard')) {
-			this.setState((state) => {
-		      const home_scorecard = state.home_scorecard.concat(player)
-
-		      return {
-		        home_scorecard
-		      }
-		    })	
-		} else {
-			this.setState((state) => {
-		      const visiting_scorecard = state.visiting_scorecard.concat(player)
-
-		      return {
-		        visiting_scorecard
-		      }
-		    })
-		}
+		if(key && data) this.setState({ [key]:  data })
 	}
 
 	handlePitcherChange(e) {
 		const roster = (e.target.name === 'home_starting_pitcher') ? this.state.home_roster.slice() : this.state.visiting_roster.slice()
-		const index = roster.findIndex(row => row.id === e.target.value)
+		const index = roster.findIndex(row => row.player_id === e.target.value * 1)
 		let pitcher = (typeof roster[index] !== 'undefined') ? roster[index] : []
 
 		if(e.target.name === 'home_starting_pitcher') this.setState({ home_starting_pitcher: pitcher })
@@ -146,64 +130,105 @@ class CreateScorecardRosters extends Component {
 	}
 
 
-	updateRosterPosition(player_id, event) {
-		let homeIndex = this.state.home_scorecard.findIndex(row => row.player_id === player_id)
-		let visitingIndex = this.state.visiting_scorecard.findIndex(row => row.player_id === player_id)
-		
-		if(homeIndex !== -1) {
-			let clone_state = this.state.home_scorecard.slice()
-			clone_state[homeIndex].position = event.target.value
-			this.setState({ home_scorecard: clone_state})
-		}
+	updateRosterPosition(type, player_id, event) {
+		const value = event.target.value
+		const index = this.state[type].findIndex(row => row.player_id === player_id)
+		let clone_state = this.state[type].slice()
+		const position_data = this.state.positions_dropdown.find(row => row.value === value)
 
-		if(visitingIndex !== -1) {
-			let clone_state = this.state.visiting_scorecard.slice()
-			clone_state[visitingIndex].position = event.target.value
-			this.setState({ visiting_scorecard: clone_state})
-		}
+		clone_state[index].position = value
+		clone_state[index].position_txt = position_data.label
+
+		if(type && index !== -1) this.setState({ [type]: clone_state})
 	}
 
 	async handleSubmit(event) {
 		event.preventDefault()
-		await this.setState({ active: 1 })
-		this.saveScorecardRoster(true)
+		this.setState({ errors: [] })
+
+		let valid = validate([
+			{ 
+				name: 'Rosters',
+				field_name: 'full_rosters',
+				rules: 'rosters_must_be_full',
+				value: [ this.state.home_scorecard, this.state.visiting_scorecard ]
+			},
+			{
+				name: 'Home Starting Pitcher',
+				field_name: 'home_starting_pitcher',
+				rules: 'required',
+				value: this.state.home_starting_pitcher.player_id
+			},
+			{
+				name: 'Visiting Starting Pitcher',
+				field_name: 'visiting_starting_pitcher',
+				rules: 'required',
+				value: this.state.visiting_starting_pitcher.player_id
+			}
+		])
+
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
+		if(Object.keys(valid).length === 0) {
+			await this.setState({ active: 1 })
+			this.saveScorecardRoster(true)
+		}
 	}
 
 	handleSaveRoster(event) {
 		event.preventDefault()
+		this.setState({ errors: [] })
 		this.saveScorecardRoster(false)
 	}
 
 	saveScorecardRoster(redirect) {
-		document.getElementById("overlay").style.display = "block";
-  
-		const { id, home_scorecard, visiting_scorecard, home_starting_pitcher, visiting_starting_pitcher,  active } = this.state
+		this.setState({ errors: [] })
 
-		axios.post('/api/roster', { 
-					scorecard_id: this.state.id, 
-					active: active, 
-					scorecard_roster_home: home_scorecard, 
-					scorecard_roster_visiting: visiting_scorecard,
-					home_starting_pitcher: home_starting_pitcher,
-					visiting_starting_pitcher: visiting_starting_pitcher 
-				})
-	        .then((result) => {
-	          if(result.status === 200) {
-	          	document.getElementById("overlay").style.display = "none";
-	            if(redirect) this.props.history.push('/scorecard/' + this.state.id)
-	          }
-	        })
+		let valid = validate([ { 
+						name: 'Home team positions',
+						field_name: 'home_team_positions',
+						rules: 'no_duplicates',
+						value: this.state.home_scorecard
+					},
+					{ 
+						name: 'Visiting team positions',
+						field_name: 'visiting_team_positions',
+						rules: 'no_duplicates',
+						value: this.state.visiting_scorecard
+					}
+		])
+
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
+		if(Object.keys(valid).length === 0) {
+			document.getElementById("overlay").style.display = "block";
+  
+			const { id, home_scorecard, visiting_scorecard, home_starting_pitcher, visiting_starting_pitcher,  active } = this.state
+
+			axios.post('/api/roster', { 
+						scorecard_id: this.state.id, 
+						active: active, 
+						scorecard_roster_home: home_scorecard, 
+						scorecard_roster_visiting: visiting_scorecard,
+						home_starting_pitcher: home_starting_pitcher,
+						visiting_starting_pitcher: visiting_starting_pitcher 
+					})
+		        .then((result) => {
+		          if(result.status === 200) {
+		          	document.getElementById("overlay").style.display = "none";
+		            if(redirect) this.props.history.push('/scorecard/' + this.state.id)
+		          }
+		        })
+		}
 	}
 
-	convertPlayerDataForScorecard(row, index) {
+	convertPlayerDataForScorecard(row, key, index) {
 		return {
 			id: row.id,
 			player_id: row.player_info.player_id,
 			team_id: (row.team_id) ? row.team_id : row.player_info.team_id,
 			name_use: row.player_info.name_use,
 			name_last: row.player_info.name_last,
-			position: (row.position) ? row.position : row.player_info.primary_position,
-			position_txt: row.player_info.position_txt,
+			position: (typeof row.position_info !== 'undefined' && typeof row.position_info.position_id !== 'undefined') ? row.position_info.position_id : row.player_info.primary_position,
+			position_txt: (typeof row.position_info !== 'undefined' && typeof row.position_info.position_txt !== 'undefined') ? row.position_info.position_txt : row.player_info.position_txt,
 			batting_order: index + 1
 		}
 	}
@@ -220,7 +245,12 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="home_starting_pitcher" value={ this.state.home_starting_pitcher.player_id } onChange={ this.handlePitcherChange.bind(this) } options={ this.state.home_pitchers_dropdown } />
+							<ScSelect 
+								name="home_starting_pitcher" 
+								value={ this.state.home_starting_pitcher.player_id } 
+								onChange={ this.handlePitcherChange.bind(this) } 
+								options={ this.state.home_pitchers_dropdown } 
+							/>
 				    	</div>
 					</div>
 					<div className="md:flex md:items-center mb-6">
@@ -230,12 +260,25 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="home_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.home_dropdown } disabled={ this.state.home_scorecard.length === 9 } />
+							<ScSelect 
+								name="home_scorecard" 
+								onChange={ this.handleChange.bind(this) } 
+								options={ this.state.home_dropdown } 
+								disabled={ this.state.home_scorecard.length === 9 }
+							 />
 				    	</div>
 					</div>
+					{ (this.state.home_scorecard.length === 9)  &&  <RosterFullAlert /> }
 					<div className="md:flex md:items-center mb-6">
-						{ this.state.home_scorecard.length > 0 &&  <Roster players={ this.state.home_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) } />}
+						{ this.state.home_scorecard.length > 0 &&  
+								<Roster 
+									type="home_scorecard" 
+									players={ this.state.home_scorecard } 
+									positions_dropdown={ this.state.positions_dropdown } 
+									action={ this.updateRosterPosition.bind(this) } 
+								/>}
 					</div>
+					{ this.state.errors.home_team_positions && ( <div className="error">{ this.state.errors.home_team_positions }</div> ) }
 					<h2>Visiting Team</h2>
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
@@ -244,9 +287,14 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="visiting_starting_pitcher" value={ this.state.visiting_starting_pitcher.player_id } onChange={ this.handlePitcherChange.bind(this) } options={ this.state.visiting_pitchers_dropdown } />
+							<ScSelect 
+								name="visiting_starting_pitcher" 
+								value={ this.state.visiting_starting_pitcher.player_id } 
+								onChange={ this.handlePitcherChange.bind(this) } 
+								options={ this.state.visiting_pitchers_dropdown } />
 				    	</div>
 					</div>
+
 					<div className="md:flex md:items-center mb-6">
 						<div className="md:w-1/3">
 						  <label htmlFor="inline-visiting-roster">
@@ -254,15 +302,30 @@ class CreateScorecardRosters extends Component {
 						  </label>
 						</div>
 						<div className="md:w-2/3">
-							<ScSelect name="visiting_scorecard" onChange={ this.handleChange.bind(this) } options={ this.state.visiting_dropdown }  disabled={ this.state.visiting_scorecard.length === 9 } />
+							<ScSelect 
+								name="visiting_scorecard" 
+								onChange={ this.handleChange.bind(this) }
+								options={ this.state.visiting_dropdown } 
+								disabled={ this.state.visiting_scorecard.length === 9 } 
+							/>
 				    	</div>
 					</div>
-					
+					{ (this.state.visiting_scorecard.length === 9) &&  <RosterFullAlert /> }
 
 					<div className="md:flex md:items-center mb-6">
-						{ this.state.visiting_scorecard.length > 0 &&  <Roster players={ this.state.visiting_scorecard } positions_dropdown={ this.state.positions_dropdown } action={ this.updateRosterPosition.bind(this) }  />}
+						{ this.state.visiting_scorecard.length > 0 &&  
+								<Roster 
+									type="visiting_scorecard" 
+									players={ this.state.visiting_scorecard } 
+									positions_dropdown={ this.state.positions_dropdown } 
+									action={ this.updateRosterPosition.bind(this) }
+								/>}
 					</div>
+					{ this.state.errors.visiting_team_positions && ( <div className="error">{ this.state.errors.visiting_team_positions }</div> ) }
 
+					{ this.state.errors.full_rosters && <div className="error">{ this.state.errors.full_rosters }</div>}
+					{ this.state.errors.home_starting_pitcher && ( <div className="error">{ this.state.errors.home_starting_pitcher }</div> ) }
+					{ this.state.errors.visiting_starting_pitcher && ( <div className="error">{ this.state.errors.visiting_starting_pitcher }</div> ) }
 					
 					<div className="md:flex md:items-center">
 						<div className="md:w-1/3"></div>
@@ -280,6 +343,16 @@ class CreateScorecardRosters extends Component {
 			</div>
 		)
 	}
+}
+
+function RosterFullAlert() {
+		return ( <div className="md:flex md:items-center mb-6">
+					<div className="md:w-1/3"></div>
+					<div className="md:w-2/3 text-red text-sm">
+						Cannot add more players. Roster is full.
+					</div>
+				</div> 
+			)
 }
 
 export default CreateScorecardRosters

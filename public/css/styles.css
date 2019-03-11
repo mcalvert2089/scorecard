@@ -4620,6 +4620,10 @@ table {
   z-index: auto;
 }
 
+main {
+  padding-bottom: 2rem;
+}
+
 h1,
 h2,
 h3,
@@ -4716,7 +4720,7 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .7);
   z-index: 2;
   cursor: pointer;
 }
@@ -4755,6 +4759,7 @@ header {
   position: relative;
   margin-top: .75rem;
   margin-left: .75rem;
+  margin-bottom: .75rem;
 }
 
 .form-box {
@@ -4770,6 +4775,10 @@ header {
 
 select:disabled {
   border-color: #e3342f;
+}
+
+select.position {
+  width: 21px;
 }
 
 .roster-dropdown {
@@ -4925,6 +4934,29 @@ label {
           transform: translate3d(-100vw, 0, 0);
   width: 100vw;
   height: 100vh;
+}
+
+#menu-button-container {
+  display: flex;
+  align-items: center;
+  padding-left: .75rem;
+  padding-right: .75rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  border-width: 1px;
+  border-radius: .25rem;
+}
+
+#menu-button-container:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+#menu-button {
+  fill: currentColor;
+  height: .75rem;
+  width: .75rem;
+  color: #fff;
 }
 
 #flyoutMenu {

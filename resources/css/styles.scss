@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+main {
+	@apply pb-8;
+}
 h1, h2, h3, h4, h5, h6 {
 	margin:0 0 16px 0 !important;
 }
@@ -59,7 +62,7 @@ header {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.7);
 	z-index: 2;
 	cursor: pointer;
 }
@@ -79,7 +82,7 @@ header {
 }
 
 .error {
-	@apply .bg-red-lightest .border .border-red-light .text-red-dark .px-4 .py-3 .rounded .relative mt-3 ml-3;
+	@apply .bg-red-lightest .border .border-red-light .text-red-dark .px-4 .py-3 .rounded .relative mt-3 ml-3 mb-3;
 }
 
 .form-box {
@@ -88,6 +91,10 @@ header {
 
 select:disabled {
 	@apply border-red;
+}
+
+select.position {
+	width: 21px;
 }
 
 .roster-dropdown {
@@ -176,7 +183,19 @@ label {
     transform: translate3d(-100vw, 0, 0);
     width: 100vw;
     height: 100vh;
-}  
+}
+
+#menu-button-container {
+	@apply flex items-center px-3 py-2 border rounded;
+}
+
+#menu-button-container:hover {
+	@apply text-white border-white;
+}
+
+#menu-button {
+	@apply fill-current h-3 w-3 text-white;
+}
 
 #flyoutMenu {
   width: 100vw;

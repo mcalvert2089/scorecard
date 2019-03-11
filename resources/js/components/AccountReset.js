@@ -41,8 +41,7 @@ class AccountReset extends Component {
 	      }
 	    ])
 
-		this.setState({ errors: valid })
-    
+		if(Object.keys(valid).length > 0) this.setState({ errors: valid })
     	if(Object.keys(valid).length === 0) {
     		store.dispatch(togglePageLoad({ pageLoading: true }))
 			const { email } = this.state

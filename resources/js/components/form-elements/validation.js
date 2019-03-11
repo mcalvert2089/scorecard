@@ -6,8 +6,9 @@ export function validate(data) {
 	data.forEach(function(array) {
 		let rules = array.rules.split('|')
 		rules.forEach(function(rule) {
-			if(rule === 'required' && validator.isEmpty(array.value)) {
-				results[ array.field_name ] = array.name + ' is required.'
+			if(rule === 'required') {
+				let required_value = (typeof array.value !== 'undefined') ? array.value : ''
+				if(validator.isEmpty(required_value.toString())) results[ array.field_name ] = array.name + ' is required.'
 			}
 
 			if(rule === 'email' && ! validator.isEmail(array.value) && ! validator.isEmpty(array.value)) {
@@ -16,6 +17,17 @@ export function validate(data) {
 
 			if(rule === 'number' && ! validator.isEmpty(array.value) && isNaN(array.value)) {
 				results[ array.field_name ] = array.name + ' must be a number.'
+			}
+
+			if(rule === 'no_duplicates') {
+				var valueArr = array.value.map(item => item.position);
+				var duplicates = valueArr.map(function(item, idx){ 
+				    return (valueArr.indexOf(item) !== idx) ? array.value[idx].position_txt : ''
+				}.bind(array)).filter(row => row);
+
+				duplicates = duplicates.filter((item, idx) => duplicates.indexOf(item) === idx)
+
+				if(duplicates.length) results[ array.field_name ] = array.name + ' must be unique. Found multiple entries (' + duplicates.join(', ') + ').'
 			}
 
 			// CUSTOM VALIDATIONS
@@ -35,6 +47,14 @@ export function validate(data) {
 				} else if(isNaN(minutes)) {
 					results[ array.custom_field_name ] = 'Minutes must be a number.'
 				}
+			}
+
+			if(rule === 'rosters_must_be_full' 
+					&& typeof array.value[0] !== 'undefined' 
+					&& typeof array.value[1] !== 'undefined' 
+					&& (array.value[0].length !== 9 || array.value[1].length !== 9)) 
+			{
+				results[ array.field_name ] = 'Both rosters must have 9 players.'
 			}
 		})
 	})
