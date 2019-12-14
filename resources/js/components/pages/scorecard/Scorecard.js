@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import axios from 'axios'
-import { togglePageLoad } from '../../../../js/actions/index'
+import { togglePageLoad } from '../../../actions/index'
 
 const mapStateToProps = (state) => ({ 
   teams: state.teams,

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from "react-redux"
 import axios from 'axios'
-import { togglePageLoad, saveAllTeams } from '../../../js/actions/index'
+import { togglePageLoad, saveAllTeams } from '../../actions/index'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
 const addStyle = {

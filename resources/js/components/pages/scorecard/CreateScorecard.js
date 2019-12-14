@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import axios from 'axios'
-import { togglePageLoad, saveAllTeams, saveAllPlayerPositions } from '../../../../js/actions/index'
+import { togglePageLoad, saveAllTeams, saveAllPlayerPositions } from '../../../actions/index'
 import ScSelect from '../../form-elements/ScSelect'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'

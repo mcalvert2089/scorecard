@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from "react-redux"
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
-import { togglePageLoad, saveScorecards } from '../../../../js/actions/index'
+import { togglePageLoad, saveScorecards } from '../../../actions/index'
 import axios from 'axios'
 
 const mapStateToProps = (state) => ({ 
