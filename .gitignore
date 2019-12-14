@@ -4,6 +4,7 @@
 /public/js/app.js
 /storage/*.key
 /vendor
+**/.DS_Store
 .env
 .env.testing
 .phpunit.result.cache
