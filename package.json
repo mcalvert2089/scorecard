@@ -46,6 +46,6 @@
         "redux-burger-menu": "^0.2.8",
         "redux-devtools": "^3.5.0",
         "redux-starter-kit": "^0.4.1",
-        "validator": "^10.11.0"
+        "validator": "^13.7.0"
     }
 }
